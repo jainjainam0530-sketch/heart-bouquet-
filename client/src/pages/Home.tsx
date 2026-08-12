@@ -153,20 +153,62 @@ export default function Home() {
     if (stageRect) setBurst({ id: Date.now(), x: rect.left - stageRect.left + rect.width / 2, y: rect.top - stageRect.top + rect.height / 2 });
   }
 
-  async function shareGarden() {
-    if (!model) return;
+  function getGardenUrl() {
+    if (!model) return "";
     const url = new URL(window.location.href);
     url.searchParams.set("name", model.name);
     url.searchParams.set("v", String(model.variationId));
-    const shareData = { title: `${model.name}'s little garden`, text: `A small digital bouquet grown just for ${model.name}.`, url: url.toString() };
+    url.searchParams.delete("view");
+    return url.toString();
+  }
+
+  function showShareState(message: string) {
+    setShareState(message);
+    window.setTimeout(() => setShareState(""), 2600);
+  }
+
+  async function shareGarden() {
+    if (!model) return;
+    const gardenUrl = getGardenUrl();
+    const shareData = { title: `${model.name}'s little garden`, text: `A small digital bouquet grown just for ${model.name}.`, url: gardenUrl };
     try {
       if (navigator.share) await navigator.share(shareData);
       else {
-        await navigator.clipboard.writeText(url.toString());
-        setShareState("Link copied");
-        window.setTimeout(() => setShareState(""), 2200);
+        await navigator.clipboard.writeText(gardenUrl);
+        showShareState("Link copied");
       }
-    } catch { setShareState("The garden is still yours to keep"); window.setTimeout(() => setShareState(""), 2200); }
+    } catch { showShareState("The garden is still yours to keep"); }
+  }
+
+  function shareOnWhatsApp() {
+    if (!model) return;
+    const gardenUrl = getGardenUrl();
+    const message = `A small digital garden made for ${model.name}: ${gardenUrl}`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+    showShareState("WhatsApp is ready to share");
+  }
+
+  async function shareOnInstagram() {
+    if (!model) return;
+    const gardenUrl = getGardenUrl();
+    try {
+      await navigator.clipboard.writeText(gardenUrl);
+      window.open("https://www.instagram.com/", "_blank", "noopener,noreferrer");
+      showShareState("Link copied — paste it into Instagram");
+    } catch {
+      showShareState("Copy the link and paste it into Instagram");
+    }
+  }
+
+  async function copyGardenLink() {
+    const gardenUrl = getGardenUrl();
+    if (!gardenUrl) return;
+    try {
+      await navigator.clipboard.writeText(gardenUrl);
+      showShareState("Link copied");
+    } catch {
+      showShareState("Your garden link is ready to share");
+    }
   }
 
   function growAnother() {
@@ -190,6 +232,6 @@ export default function Home() {
 
     {(stage === "growing" || stage === "bouquet") && model && <main className="garden-screen"><div className="scene-topline"><div className="brand-lockup"><img src={STORAGE_LOGO} alt="" className="brand-mark" /><span className="brand-wordmark">the love bouquet</span></div><span className="scene-index">02 / 03</span></div><div className="garden-layout"><header className="garden-intro"><p className="eyebrow">{stage === "growing" ? "a garden is taking shape" : "a garden written for you"}</p><h1>{stage === "growing" ? <>Growing something<br /><em>for {model.name}…</em></> : <>This one is yours,<br /><em>{model.name}. ♥</em></>}</h1><p className="garden-lede">{stage === "growing" ? growthLabel : personalityLine(model)}</p><div className="code-signature"><span className="code-dot" /> {model.styleName.toLowerCase()} / {model.palette.name.toLowerCase()} / {model.flowers.length} blooms</div></header><div className={`bouquet-column ${stage === "growing" ? "is-growing" : "is-finished"}`}><div className="bouquet-figure" ref={artRef}><div className="bloom-dust dust-one" /><div className="bloom-dust dust-two" /><div className="bloom-dust dust-three" /><div className="petal-fall" aria-hidden="true"><span>✦</span><span>·</span><span>✦</span></div><BouquetArtwork model={model} activeFlower={activeFlower} onFlower={handleFlower} growthProgress={growthProgress} />{burst && <div className="heart-burst" key={burst.id} style={{ left: burst.x, top: burst.y }} aria-hidden="true"><span>♥</span><span>♥</span><span>♥</span><span>✦</span></div>}</div>{stage === "growing" ? <div className="growth-status"><span className="growth-status-line" /><span>{Math.round(growthProgress * 100)}% grown</span></div> : <p className="tap-hint"><span className="tap-line" /> tap a flower to hear what it holds</p>}</div><section className="garden-rail" aria-live="polite">{stage === "growing" ? <div className="growth-card"><span className="message-kicker">{growthLabel}</span><div className="growth-bar"><span style={{ width: `${growthProgress * 100}%` }} /></div><p>Every stem, leaf, and petal is finding its place.</p></div> : <>{selectedMessage && <div className="flower-message is-shown"><span className="message-kicker">a little response from the garden</span><p>{FLOWER_META[selectedMessage.type].interaction}</p></div>}<div className="garden-note"><span className="message-kicker">a note from Jainam</span><p>{generatePersonalNote(model)}</p></div></>} </section></div>{stage === "bouquet" && <section className="garden-card"><div><span className="message-kicker">a little garden for</span><h2>{model.name}</h2><p>Made by Jainam, with a few lines of code and a bit too much time spent choosing the flowers.</p></div><div className="chosen-flowers"><span className="message-kicker">flowers chosen for you</span><div>{gardenTypes.map((flower) => <span key={flower.label}><b>{flower.symbol}</b>{flower.label}</span>)}</div></div></section>}<div className="garden-actions">{stage === "bouquet" && <button className="final-invite" type="button" onClick={() => setStage("final")}><span>One more thing</span><span className="invite-heart">♥</span></button>}</div><footer className="scene-footer"><span>hand-grown in code</span><span className="footer-thread" /><span>with a little bit of heart</span></footer></main>}
 
-    {stage === "final" && model && <main className="final-screen"><div className="final-letter-backdrop" /><svg className="final-memory-bouquet" viewBox="0 0 420 520" aria-hidden="true"><path d="M210 510C207 420 206 335 210 118M210 510C175 421 122 352 74 260M211 510C244 416 295 334 350 227M210 510C194 422 166 351 152 191M212 510C240 430 278 385 304 290" fill="none" stroke="var(--palette-leaf, #52745c)" strokeWidth="4" strokeLinecap="round" /><path d="M141 380C103 372 78 346 80 323C110 326 134 343 141 380ZM280 391C320 383 345 359 344 336C313 339 290 355 280 391ZM171 307C139 294 124 270 132 251C157 258 174 276 171 307ZM253 280C288 267 302 244 294 226C268 233 253 250 253 280Z" fill="var(--palette-leaf, #52745c)" opacity=".65" /><g fill="var(--palette-petal, #d56a82)" opacity=".72"><path d="M210 134C184 121 181 93 198 80C207 73 215 86 216 101C221 84 235 76 245 88C258 105 240 127 210 134Z" /><path d="M92 270C69 258 69 237 84 228C93 223 98 233 99 245C104 232 115 228 122 238C132 253 115 267 92 270Z" /><path d="M345 237C322 225 322 204 337 195C346 190 351 200 352 212C357 199 368 195 375 205C385 220 368 234 345 237Z" /></g><path d="M166 466C191 481 231 484 255 467" fill="none" stroke="var(--palette-gold, #d6a46d)" strokeWidth="2" opacity=".75" /></svg><div className="final-letter-inner"><span className="eyebrow">03 / 03 · one more thing</span><div className="final-rule" /><p className="final-copy">It’s only a small digital bouquet, but I wanted to make something that couldn’t simply be bought from a shop.</p><p className="final-copy">So I grew this one in code — just for you.</p><p className="final-copy final-copy-soft">From Jainam,<br />with a little bit of code. <span className="tiny-heart">♥</span></p><div className="final-heart">✿</div><div className="final-actions"><button className="share-button" type="button" onClick={shareGarden}>Share this garden <span>♥</span></button><button className="return-button" type="button" onClick={growAnother}>Grow another bouquet <span>✦</span></button></div>{shareState && <p className="share-state" role="status">{shareState}</p>}</div></main>}
+    {stage === "final" && model && <main className="final-screen"><div className="final-letter-backdrop" /><svg className="final-memory-bouquet" viewBox="0 0 420 520" aria-hidden="true"><path d="M210 510C207 420 206 335 210 118M210 510C175 421 122 352 74 260M211 510C244 416 295 334 350 227M210 510C194 422 166 351 152 191M212 510C240 430 278 385 304 290" fill="none" stroke="var(--palette-leaf, #52745c)" strokeWidth="4" strokeLinecap="round" /><path d="M141 380C103 372 78 346 80 323C110 326 134 343 141 380ZM280 391C320 383 345 359 344 336C313 339 290 355 280 391ZM171 307C139 294 124 270 132 251C157 258 174 276 171 307ZM253 280C288 267 302 244 294 226C268 233 253 250 253 280Z" fill="var(--palette-leaf, #52745c)" opacity=".65" /><g fill="var(--palette-petal, #d56a82)" opacity=".72"><path d="M210 134C184 121 181 93 198 80C207 73 215 86 216 101C221 84 235 76 245 88C258 105 240 127 210 134Z" /><path d="M92 270C69 258 69 237 84 228C93 223 98 233 99 245C104 232 115 228 122 238C132 253 115 267 92 270Z" /><path d="M345 237C322 225 322 204 337 195C346 190 351 200 352 212C357 199 368 195 375 205C385 220 368 234 345 237Z" /></g><path d="M166 466C191 481 231 484 255 467" fill="none" stroke="var(--palette-gold, #d6a46d)" strokeWidth="2" opacity=".75" /></svg><div className="final-letter-inner"><span className="eyebrow">03 / 03 · one more thing</span><div className="final-rule" /><p className="final-copy">It’s only a small digital bouquet, but I wanted to make something that couldn’t simply be bought from a shop.</p><p className="final-copy">So I grew this one in code — just for you.</p><p className="final-copy final-copy-soft">From Jainam,<br />with a little bit of code. <span className="tiny-heart">♥</span></p><div className="final-heart">✿</div><div className="final-actions"><button className="share-button primary-share" type="button" onClick={shareGarden}>Share this garden <span>♥</span></button><button className="social-button whatsapp-share" type="button" onClick={shareOnWhatsApp} aria-label="Share this bouquet on WhatsApp"><span>↗</span> WhatsApp</button><button className="social-button instagram-share" type="button" onClick={shareOnInstagram} aria-label="Share this bouquet on Instagram"><span>◎</span> Instagram</button><button className="social-button copy-link" type="button" onClick={copyGardenLink}>Copy link</button><button className="return-button" type="button" onClick={growAnother}>Grow another bouquet <span>✦</span></button></div>{shareState && <p className="share-state" role="status">{shareState}</p>}</div></main>}
   </div>;
 }

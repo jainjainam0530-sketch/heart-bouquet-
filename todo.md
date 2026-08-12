@@ -47,6 +47,14 @@
 - [x] Keep shared or bookmarked bouquet URLs reproducible when a variation ID is present.
 - [x] Validate repeated generations visually and confirm each result changes from the previous bouquet.
 
+## Social Sharing Update
+
+- [x] Add a visible Share button on the final bouquet screen.
+- [x] Add dedicated WhatsApp and Instagram actions.
+- [x] Keep a general Web Share action and copy-link fallback.
+- [x] Preserve the bouquet name and variation ID in every shared URL.
+- [x] Validate the share controls on mobile and desktop.
+
 ## Sharing and Bouquet Variation Update
 
 - [ ] Add dedicated WhatsApp share and Instagram share actions.
