@@ -1,0 +1,25 @@
+/* Midnight Conservatory flower library: names and interactions stay extensible while artwork remains procedural SVG. */
+
+export type FlowerType = "rose" | "tulip" | "cherry" | "daisy" | "sunflower" | "hibiscus" | "lavender" | "carnation" | "wildflower";
+
+export type FlowerMeta = {
+  label: string;
+  symbol: string;
+  personality: string;
+  interaction: string;
+};
+
+export const FLOWER_META: Record<FlowerType, FlowerMeta> = {
+  rose: { label: "Rose", symbol: "✿", personality: "romantic", interaction: "A little extra romance for you." },
+  tulip: { label: "Tulip", symbol: "❀", personality: "sweet", interaction: "Okay, this one is ridiculously cute." },
+  cherry: { label: "Cherry blossom", symbol: "✦", personality: "dreamy", interaction: "A soft little moment, just for you." },
+  daisy: { label: "Daisy", symbol: "✽", personality: "cheerful", interaction: "Tiny flower. Big personality." },
+  sunflower: { label: "Sunflower", symbol: "✺", personality: "sunny", interaction: "Someone brought the sunshine." },
+  hibiscus: { label: "Hibiscus", symbol: "✾", personality: "bold", interaction: "A bold bloom for a one-of-a-kind person." },
+  lavender: { label: "Lavender", symbol: "❋", personality: "calm", interaction: "A little calm in the middle of everything." },
+  carnation: { label: "Carnation", symbol: "❉", personality: "warm", interaction: "A frilled little reminder that you are adored." },
+  wildflower: { label: "Wildflower", symbol: "✧", personality: "playful", interaction: "A tiny wild thing with a very big heart." },
+};
+
+export const FLOWER_TYPES = Object.keys(FLOWER_META) as FlowerType[];
+

@@ -77,3 +77,7 @@ The mark is a small abstract **rose-bracket glyph**: two opposing curved stems e
 - The bouquet avoids emoji-like heart-flower simplicity by using layered procedural petals, varied silhouettes, asymmetrical leaves, and curved stems; the heart language is reserved for tiny accents and interaction feedback.
 - The final scene is a true culmination: the bouquet dims into a remembered object while a centered private letter takes over, connected by a ceremonial gold thread.
 - The brand lockup uses the rose-bracket glyph with a Cormorant Garamond italic wordmark treatment; uppercase sans text remains metadata only.
+- The experience now includes a private name-entry threshold before the garden grows; the visitor’s name changes the actual visual bouquet, not only the copy.
+- Bloom For You adds a slightly playful best-friend warmth to the existing cinematic romanticism, expressed through compact notes, flower-specific lines, and a “grow another bouquet” loop without weakening the premium botanical restraint.
+- Primary blooms use specimen-like asymmetric petal silhouettes; heart shapes remain tiny accents for affection and interaction feedback only.
+- The gold thread is a continuous ceremonial motif across the invitation underline, bouquet binding, and final scene underline. The final scene retains a dim inline-SVG memory of the bouquet behind the letter.

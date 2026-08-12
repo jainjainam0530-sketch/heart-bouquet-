@@ -6,4 +6,13 @@
 - [x] Verify flower tap interactions, short romantic messages, bloom timing, and heart-particle responses.
 - [x] Verify the typed bouquet message and final “One more thing” reveal.
 - [x] Run the full page-load-to-final-reveal journey on desktop and portrait mobile.
-- [ ] Save a final checkpoint and deliver the project version.
+- [x] Save a final checkpoint and deliver the project version.
+
+## Bloom For You Personalization Update
+
+- [x] Add the personal introduction and best-friend name-entry experience.
+- [x] Normalize the entered name and derive a deterministic seed.
+- [x] Use the seed to vary palette, flower selection, count, sizes, arrangement, stems, leaves, and note copy.
+- [x] Expand the procedural flower library with cherry blossoms, daisies, sunflower, hibiscus, lavender, carnation, and wildflowers where selected.
+- [x] Add personalized bouquet generation, a cute/flirty note, and a grow-another-bouquet flow.
+- [x] Validate that different names produce visibly different, repeatable bouquets.

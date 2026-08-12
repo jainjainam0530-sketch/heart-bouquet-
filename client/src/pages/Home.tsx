@@ -1,235 +1,118 @@
-/* Midnight Conservatory: an intimate, cinematic botanical stage. Keep the bouquet code-built, the pacing deliberate, and every interaction soft. */
+/* Midnight Conservatory: the gift now opens into a name-driven Bloom For You garden. The bouquet is procedural SVG, never stock imagery. */
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type MouseEvent } from "react";
+import { createBouquet, flowerList, type BouquetFlower, type BouquetModel, type Palette } from "@/lib/bouquetEngine";
+import { FLOWER_META, type FlowerType } from "@/lib/flowerLibrary";
+import { normalizeName } from "@/lib/nameSeed";
+import { generatePersonalNote, personalityLine } from "@/lib/noteGenerator";
 
-type Scene = "opening" | "bouquet";
-type FlowerType = "rose" | "tulip" | "sprig";
-
-type Flower = {
-  id: string;
-  name: string;
-  type: FlowerType;
-  x: number;
-  y: number;
-  delay: number;
-  message: string;
-  hue: "rose" | "blush" | "cream";
-};
-
+type Stage = "opening" | "intro" | "growing" | "bouquet" | "final";
 type Burst = { id: number; x: number; y: number } | null;
 
 const STORAGE_LOGO = "/manus-storage/rose-bracket-mark_371373a1.png";
+const urlParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
+const sharedName = normalizeName(urlParams?.get("name") ?? "");
+const previewView = urlParams?.get("view");
 
-const flowers: Flower[] = [
-  { id: "north-rose", name: "The north rose", type: "rose", x: 250, y: 120, delay: 0.15, message: "Made this one just for you.", hue: "rose" },
-  { id: "left-tulip", name: "The left tulip", type: "tulip", x: 145, y: 210, delay: 0.55, message: "You make ordinary days feel special.", hue: "blush" },
-  { id: "right-rose", name: "The right rose", type: "rose", x: 345, y: 195, delay: 0.85, message: "Every petal holds a little piece of my heart.", hue: "blush" },
-  { id: "center-rose", name: "The center rose", type: "rose", x: 245, y: 250, delay: 1.05, message: "This one bloomed when I thought of your smile.", hue: "rose" },
-  { id: "far-tulip", name: "The far tulip", type: "tulip", x: 380, y: 280, delay: 1.25, message: "A small reminder: you are deeply loved.", hue: "cream" },
-  { id: "front-rose", name: "The front rose", type: "rose", x: 190, y: 355, delay: 1.9, message: "I would choose you in every version of this story.", hue: "rose" },
-  { id: "left-sprig", name: "The left sprig", type: "sprig", x: 95, y: 325, delay: 0.2, message: "For all the quiet joy you bring with you.", hue: "cream" },
-  { id: "right-sprig", name: "The right sprig", type: "sprig", x: 405, y: 360, delay: 0.38, message: "There is always room for one more little wonder.", hue: "blush" },
-  { id: "far-left-sprig", name: "The far left sprig", type: "sprig", x: 72, y: 246, delay: 0.56, message: "You turn small moments into keepsakes.", hue: "blush" },
-  { id: "far-right-sprig", name: "The far right sprig", type: "sprig", x: 428, y: 236, delay: 0.72, message: "A little bloom for every reason I adore you.", hue: "cream" },
-  { id: "high-left-sprig", name: "The high left sprig", type: "sprig", x: 154, y: 116, delay: 0.84, message: "You are my favorite kind of beautiful.", hue: "cream" },
-  { id: "high-right-sprig", name: "The high right sprig", type: "sprig", x: 364, y: 116, delay: 0.98, message: "I hope this finds you smiling.", hue: "blush" },
-  { id: "front-left-sprig", name: "The front left sprig", type: "sprig", x: 126, y: 394, delay: 1.14, message: "For the warmth you carry into every room.", hue: "cream" },
-  { id: "front-right-sprig", name: "The front right sprig", type: "sprig", x: 372, y: 411, delay: 1.3, message: "Love looks a little like this: handmade and growing.", hue: "blush" },
-  { id: "low-sprig", name: "The low sprig", type: "sprig", x: 244, y: 424, delay: 1.45, message: "One more tiny yes to you.", hue: "cream" },
-];
-
-const leafDetails = [
-  { x: 192, y: 437, rotation: -26, scale: 1.02 }, { x: 309, y: 442, rotation: 28, scale: .98 },
-  { x: 222, y: 391, rotation: -43, scale: .84 }, { x: 286, y: 365, rotation: 38, scale: .88 },
-  { x: 164, y: 466, rotation: -51, scale: .92 }, { x: 334, y: 486, rotation: 49, scale: 1.02 },
-  { x: 180, y: 319, rotation: -58, scale: .7 }, { x: 322, y: 314, rotation: 56, scale: .72 },
-  { x: 133, y: 286, rotation: -66, scale: .64 }, { x: 369, y: 273, rotation: 65, scale: .68 },
-  { x: 207, y: 271, rotation: -36, scale: .62 }, { x: 302, y: 249, rotation: 39, scale: .64 },
-  { x: 151, y: 374, rotation: -14, scale: .76 }, { x: 353, y: 389, rotation: 18, scale: .78 },
-  { x: 226, y: 477, rotation: -9, scale: .7 }, { x: 281, y: 480, rotation: 11, scale: .72 },
-];
-
-const typedCopy = "Some gifts are bought. Some gifts are made. And some are written — one line of code at a time.";
-
-function makeLoveNotes() {
-  return Array.from({ length: 220 }, (_, index) => {
-    const seed = index + 1;
-    const x = (seed * 47.17) % 100;
-    const y = (seed * 31.61 + (seed % 7) * 4) % 100;
-    const rotation = ((seed * 29) % 34) - 17;
-    const size = 9 + (seed % 5) * 1.8;
-    const opacity = 0.2 + (seed % 6) * 0.055;
-    const duration = 6.5 + (seed % 8) * 0.65;
-    const delay = -((seed * 1.37) % 8);
-    return { x, y, rotation, size, opacity, duration, delay };
-  });
+function PetalRose({ palette }: { palette: Palette }) {
+  return <g className="rose-head">{Array.from({ length: 24 }, (_, index) => { const ring = index % 3; const angle = index * 15; const scale = ring === 0 ? .58 : ring === 1 ? .78 : 1; const depth = ring === 0 ? 12 : ring === 1 ? 7 : 2; return <path key={index} d="M0 11C-21 12-38 2-41-14C-44-29-35-43-22-44C-10-45-4-36 1-26C6-38 16-46 27-41C40-35 43-20 36-8C28 5 14 12 0 11Z" fill={ring === 0 ? "url(#roseCore)" : ring === 1 ? "url(#roseInner)" : "url(#petalMain)"} opacity={ring === 0 ? .96 : ring === 1 ? .88 : .82} transform={`rotate(${angle}) translate(0 ${depth}) scale(${scale})`} className={`petal petal-ring-${ring}`} />; })}<path d="M-28-17C-17-28-4-32 7-25M-19-1C-8-8 4-9 15-3" fill="none" stroke={palette.highlight} strokeOpacity=".48" strokeWidth="1.8" strokeLinecap="round" /><circle cx="0" cy="0" r="5" fill="url(#roseCore)" opacity=".8" /></g>;
 }
 
-function RoseHead({ hue }: { hue: Flower["hue"] }) {
-  const fill = hue === "rose" ? "url(#rosePetal)" : hue === "blush" ? "url(#blushPetal)" : "url(#creamPetal)";
-  return (
-    <g className="rose-head">
-      {Array.from({ length: 24 }, (_, index) => {
-        const ring = index % 3;
-        const angle = index * 15;
-        const scale = ring === 0 ? .58 : ring === 1 ? .78 : 1;
-        const depth = ring === 0 ? 12 : ring === 1 ? 7 : 2;
-        return (
-          <path
-            key={`rose-petal-${index}`}
-            d="M0 11C-20 5-36-7-38-22C-40-37-28-49-16-45C-7-43-3-35 0-26C3-37 10-46 21-44C35-41 41-28 35-15C29-2 16 7 0 11Z"
-            fill={ring === 0 ? "url(#roseCore)" : ring === 1 ? "url(#roseInner)" : fill}
-            opacity={ring === 0 ? .95 : ring === 1 ? .88 : .82}
-            transform={`rotate(${angle}) translate(0 ${depth}) scale(${scale})`}
-            className={`petal petal-ring-${ring}`}
-          />
-        );
-      })}
-      <path d="M-27-15C-17-30-3-35 9-27M-18 0C-8-8 4-10 16-3" fill="none" stroke="rgba(255,226,220,.46)" strokeWidth="2" strokeLinecap="round" className="petal-highlight" />
-      <circle cx="0" cy="0" r="5" fill="#6f213a" opacity=".74" />
-    </g>
-  );
+function PetalTulip({ palette }: { palette: Palette }) {
+  return <g className="tulip-head">{Array.from({ length: 7 }, (_, index) => <path key={index} d="M-23-8C-30-30-18-49 0-55C18-49 30-30 23-8C18 8 9 16 0 18C-9 16-18 8-23-8Z" fill={index === 3 ? "url(#petalInner)" : "url(#petalMain)"} opacity={index === 3 ? .96 : .78} transform={`rotate(${(index - 3) * 9}) translate(0 ${index === 3 ? 4 : 0}) scale(${index === 3 ? 1.03 : .92 + (index % 2) * .04})`} className="petal" />)}<path d="M-20-10C-15-27-7-38 0-45M0-45C8-38 15-26 20-10" fill="none" stroke={palette.highlight} strokeOpacity=".5" strokeWidth="1.7" strokeLinecap="round" /></g>;
 }
 
-function TulipHead({ hue }: { hue: Flower["hue"] }) {
-  const fill = hue === "cream" ? "url(#creamPetal)" : hue === "blush" ? "url(#blushPetal)" : "url(#rosePetal)";
-  return (
-    <g className="tulip-head">
-      {Array.from({ length: 7 }, (_, index) => (
-        <path
-          key={`tulip-petal-${index}`}
-          d="M0 9C-25-1-31-27-8-56C-2-45 0-34 0-21C2-36 6-48 12-57C34-29 26-3 0 9Z"
-          fill={index === 3 ? "url(#tulipInner)" : fill}
-          opacity={index === 3 ? .96 : .78}
-          transform={`rotate(${(index - 3) * 10}) translate(0 ${index === 3 ? 4 : 0}) scale(${index === 3 ? 1.03 : .95 + (index % 2) * .04})`}
-          className="petal tulip-petal"
-        />
-      ))}
-      <path d="M-25-25c6 12 13 18 21 23" fill="none" stroke="rgba(255,237,231,.45)" strokeWidth="2" strokeLinecap="round" />
-    </g>
-  );
+function PetalCherry({ palette }: { palette: Palette }) {
+  return <g className="cherry-head">{Array.from({ length: 5 }, (_, index) => <ellipse key={index} cx="0" cy="-12" rx="10" ry="19" fill="url(#petalSoft)" transform={`rotate(${index * 72})`} opacity=".9" />)}<circle r="6" fill={palette.gold} /><circle r="2" fill={palette.deep} /></g>;
 }
 
-function SprigHead({ hue }: { hue: Flower["hue"] }) {
-  const fill = hue === "cream" ? "url(#creamPetal)" : "url(#blushPetal)";
-  return (
-    <g className="sprig-head">
-      {Array.from({ length: 5 }, (_, index) => (
-        <ellipse key={`sprig-petal-${index}`} cx="0" cy="-11" rx="7" ry="15" fill={fill} transform={`rotate(${index * 72})`} opacity={.82 + (index % 2) * .08} />
-      ))}
-      <circle cx="0" cy="0" r="6" fill="url(#roseCore)" />
-      <circle cx="0" cy="0" r="2.5" fill="#f8d69a" />
-    </g>
-  );
+function PetalDaisy({ palette }: { palette: Palette }) {
+  return <g className="daisy-head">{Array.from({ length: 8 }, (_, index) => <ellipse key={index} cx="0" cy="-15" rx="7" ry="23" fill="#fff0dc" opacity=".88" transform={`rotate(${index * 45})`} />)}<circle r="10" fill={palette.gold} /><circle r="4" fill={palette.deep} /></g>;
 }
 
-function FlowerHead({ flower }: { flower: Flower }) {
-  if (flower.type === "rose") return <RoseHead hue={flower.hue} />;
-  if (flower.type === "tulip") return <TulipHead hue={flower.hue} />;
-  return <SprigHead hue={flower.hue} />;
+function PetalSunflower({ palette }: { palette: Palette }) {
+  return <g className="sunflower-head">{Array.from({ length: 14 }, (_, index) => <ellipse key={index} cx="0" cy="-21" rx="7" ry="30" fill="#e6b45f" opacity=".92" transform={`rotate(${index * 25.7})`} />)}<circle r="19" fill="#70402e" /><circle r="10" fill={palette.deep} opacity=".85" /></g>;
 }
 
-function Bouquet({ activeFlower, bloomReady, onFlower }: { activeFlower: string | null; bloomReady: boolean; onFlower: (flower: Flower, event?: React.MouseEvent<SVGGElement>) => void }) {
-  return (
-    <svg className="bouquet-svg" viewBox="0 0 500 600" role="img" aria-label="A code-built bouquet of roses, tulips, leaves, and small flowers">
-      <defs>
-        <linearGradient id="stem" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#8ab39a" /><stop offset=".55" stopColor="#416b53" /><stop offset="1" stopColor="#1d3b30" /></linearGradient>
-        <linearGradient id="leaf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#8fb99b" /><stop offset=".45" stopColor="#49765b" /><stop offset="1" stopColor="#203d30" /></linearGradient>
-        <radialGradient id="rosePetal" cx="30%" cy="20%"><stop offset="0" stopColor="#ffd4d1" /><stop offset=".32" stopColor="#e98c9d" /><stop offset=".8" stopColor="#b64063" /><stop offset="1" stopColor="#632039" /></radialGradient>
-        <radialGradient id="blushPetal" cx="30%" cy="20%"><stop offset="0" stopColor="#fff0e3" /><stop offset=".35" stopColor="#f2b3b1" /><stop offset=".8" stopColor="#ca667c" /><stop offset="1" stopColor="#70263e" /></radialGradient>
-        <radialGradient id="creamPetal" cx="30%" cy="18%"><stop offset="0" stopColor="#fff6da" /><stop offset=".35" stopColor="#f6d7a7" /><stop offset=".78" stopColor="#c58b79" /><stop offset="1" stopColor="#6c3347" /></radialGradient>
-        <radialGradient id="roseInner"><stop offset="0" stopColor="#f7b0b4" /><stop offset="1" stopColor="#8f294d" /></radialGradient>
-        <radialGradient id="roseCore"><stop offset="0" stopColor="#ffd2c2" /><stop offset=".6" stopColor="#d66c7b" /><stop offset="1" stopColor="#9a3655" /></radialGradient>
-        <radialGradient id="tulipInner"><stop offset="0" stopColor="#f5b9ad" /><stop offset="1" stopColor="#7f2947" /></radialGradient>
-        <filter id="flowerShadow" x="-45%" y="-45%" width="190%" height="190%"><feDropShadow dx="0" dy="9" stdDeviation="7" floodColor="#000" floodOpacity=".45" /></filter>
-      </defs>
+function PetalHibiscus({ palette }: { palette: Palette }) {
+  return <g className="hibiscus-head">{Array.from({ length: 5 }, (_, index) => <path key={index} d="M0 4C-30-8-35-36-13-50C-5-55 0-42 0-29C3-43 12-56 22-48C43-31 30-7 0 4Z" fill="url(#petalMain)" opacity=".86" transform={`rotate(${index * 72})`} />)}<circle r="8" fill={palette.deep} /><path d="M0 5C8-9 12-21 11-37" stroke={palette.gold} strokeWidth="3" fill="none" strokeLinecap="round" /></g>;
+}
 
-      <g className="stems" aria-hidden="true">
-        {[
-          "M253 535C247 440 250 330 250 115", "M250 535C224 444 188 356 144 205", "M251 537C289 436 329 318 345 190",
-          "M244 538C201 456 142 391 95 322", "M266 537C310 474 363 405 405 357", "M249 535C229 452 213 397 190 351",
-          "M245 538C190 469 120 379 72 246", "M260 537C308 453 370 365 428 236", "M241 536C225 423 184 236 154 116",
-          "M263 535C279 429 331 230 364 116", "M250 536C246 482 244 456 244 424", "M247 535C225 454 161 408 126 394",
-          "M270 535C305 461 344 435 372 411",
-        ].map((path, index) => <path key={`stem-${index}`} d={path} stroke="url(#stem)" strokeWidth={index < 3 ? 6 : 3.4 + (index % 3)} fill="none" className="stem-line" style={{ "--stem-delay": `${index * .08}s` } as React.CSSProperties} />)}
-      </g>
+function PetalLavender({ palette }: { palette: Palette }) {
+  return <g className="lavender-head"><path d="M0 30C-4 10-3-15 1-53" stroke={palette.leafLight} strokeWidth="3" fill="none" />{Array.from({ length: 9 }, (_, index) => <ellipse key={index} cx={index % 2 ? 7 : -7} cy={20 - index * 9} rx="8" ry="12" fill="url(#petalSoft)" opacity=".9" transform={`rotate(${index % 2 ? 22 : -22} ${index % 2 ? 7 : -7} ${20 - index * 9})`} />)}</g>;
+}
 
-      <g className="leaves" aria-hidden="true">
-        {leafDetails.map((leaf, index) => (
-          <g key={`leaf-${index}`} transform={`translate(${leaf.x} ${leaf.y}) rotate(${leaf.rotation}) scale(${leaf.scale})`} className="leaf-shape">
-            <path d="M0 0C-43-3-58-28-48-48C-23-45-3-29 0 0Z" fill="url(#leaf)" stroke="#9bc2aa" strokeOpacity=".34" strokeWidth="1.4" />
-            <path d="M-3-3C-22-14-37-26-46-42" stroke="#b2d0b2" strokeOpacity=".42" strokeWidth="1.4" fill="none" strokeLinecap="round" />
-          </g>
-        ))}
-      </g>
+function PetalCarnation({ palette }: { palette: Palette }) {
+  return <g className="carnation-head">{Array.from({ length: 18 }, (_, index) => <path key={index} d="M0 5C-17-3-21-19-8-29C-3-34 0-25 0-18C4-29 13-32 17-24C24-10 13 0 0 5Z" fill="url(#petalSoft)" opacity=".82" transform={`rotate(${index * 20}) scale(${.72 + (index % 3) * .12})`} />)}<circle r="7" fill={palette.deep} opacity=".7" /></g>;
+}
 
-      <g className="ribbon" aria-hidden="true">
-        <path d="M193 511C216 527 233 531 251 532c19-1 38-6 57-22l-8 44c-23 12-45 15-62 14-21 0-42-5-61-15Z" fill="#b95770" opacity=".96" />
-        <path d="M215 535c-12 23-17 38-12 54 16-7 30-21 39-43Z" fill="#9e3d59" />
-        <path d="M284 535c12 23 17 38 12 54-16-7-30-21-39-43Z" fill="#773048" />
-        <path d="M212 523c20 8 49 10 77 0" stroke="#f0b578" strokeOpacity=".65" strokeWidth="2" fill="none" />
-      </g>
+function PetalWildflower({ palette }: { palette: Palette }) {
+  return <g className="wildflower-head">{Array.from({ length: 5 }, (_, index) => <ellipse key={index} cx="0" cy="-10" rx="6" ry="13" fill={index % 2 ? palette.highlight : palette.secondary} transform={`rotate(${index * 72})`} opacity=".88" />)}<circle r="4" fill={palette.gold} /></g>;
+}
 
-      {flowers.map((flower) => (
-        <g key={flower.id} transform={`translate(${flower.x} ${flower.y})`}>
-          <g
-            className={`flower flower-${flower.type} ${activeFlower === flower.id ? "is-active" : ""} ${bloomReady ? "is-bloomed" : ""}`}
-            style={{ "--bloom-delay": `${flower.delay}s` } as React.CSSProperties}
-            role="button"
-            tabIndex={0}
-            aria-label={`Tap ${flower.name}`}
-            onClick={(event) => onFlower(flower, event)}
-            onKeyDown={(event) => {
-              if (event.key === "Enter" || event.key === " ") {
-                event.preventDefault();
-                onFlower(flower);
-              }
-            }}
-          >
-            <title>{flower.name}</title>
-            <FlowerHead flower={flower} />
-          </g>
-        </g>
-      ))}
-    </svg>
-  );
+function FlowerHead({ type, palette }: { type: FlowerType; palette: Palette }) {
+  if (type === "rose") return <PetalRose palette={palette} />;
+  if (type === "tulip") return <PetalTulip palette={palette} />;
+  if (type === "cherry") return <PetalCherry palette={palette} />;
+  if (type === "daisy") return <PetalDaisy palette={palette} />;
+  if (type === "sunflower") return <PetalSunflower palette={palette} />;
+  if (type === "hibiscus") return <PetalHibiscus palette={palette} />;
+  if (type === "lavender") return <PetalLavender palette={palette} />;
+  if (type === "carnation") return <PetalCarnation palette={palette} />;
+  return <PetalWildflower palette={palette} />;
+}
+
+function BouquetArtwork({ model, activeFlower, onFlower, growthProgress }: { model: BouquetModel; activeFlower: string | null; onFlower: (flower: BouquetFlower, event: MouseEvent<SVGGElement>) => void; growthProgress: number }) {
+  const palette = model.palette;
+  return <svg className="bouquet-svg" viewBox="0 0 500 600" role="img" aria-label={`A code-built personalized bouquet for ${model.name}`}>
+    <defs>
+      <linearGradient id="stemGradient" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor={palette.leafLight} /><stop offset=".5" stopColor={palette.leaf} /><stop offset="1" stopColor="#1e342b" /></linearGradient>
+      <linearGradient id="leafGradient" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor={palette.leafLight} /><stop offset=".5" stopColor={palette.leaf} /><stop offset="1" stopColor="#233b30" /></linearGradient>
+      <radialGradient id="petalMain" cx="28%" cy="18%"><stop offset="0" stopColor={palette.highlight} /><stop offset=".4" stopColor={palette.secondary} /><stop offset="1" stopColor={palette.petal} /></radialGradient>
+      <radialGradient id="petalSoft" cx="30%" cy="15%"><stop offset="0" stopColor={palette.highlight} /><stop offset=".5" stopColor={palette.secondary} /><stop offset="1" stopColor={palette.petal} /></radialGradient>
+      <radialGradient id="petalInner"><stop offset="0" stopColor={palette.secondary} /><stop offset="1" stopColor={palette.deep} /></radialGradient>
+      <radialGradient id="roseInner"><stop offset="0" stopColor={palette.secondary} /><stop offset="1" stopColor={palette.deep} /></radialGradient>
+      <radialGradient id="roseCore"><stop offset="0" stopColor={palette.highlight} /><stop offset=".65" stopColor={palette.petal} /><stop offset="1" stopColor={palette.deep} /></radialGradient>
+      <filter id="flowerShadow" x="-45%" y="-45%" width="190%" height="190%"><feDropShadow dx="0" dy="9" stdDeviation="7" floodColor="#000" floodOpacity=".45" /></filter>
+    </defs>
+    <g className="stems" aria-hidden="true">{model.flowers.map((flower, index) => <path key={`stem-${flower.id}`} d={`M250 560 C${250 + flower.bend} 488, ${flower.x + flower.bend / 2} ${flower.y + 110}, ${flower.x} ${flower.y + 26}`} stroke="url(#stemGradient)" strokeWidth={flower.role === "hero" ? 6 : 3.4 + (index % 3)} fill="none" className="stem-line" style={{ "--stem-delay": `${flower.delay}s` } as CSSProperties} />)}</g>
+    <g className="leaves" aria-hidden="true">{model.leaves.map((leaf, index) => <g key={`leaf-${index}`} transform={`translate(${leaf.x} ${leaf.y}) rotate(${leaf.rotation}) scale(${leaf.scale})`} className="leaf-shape"><path d="M0 0C-43-3-58-28-48-48C-23-45-3-29 0 0Z" fill="url(#leafGradient)" stroke={palette.leafLight} strokeOpacity=".34" strokeWidth="1.4" /><path d="M-3-3C-22-14-37-26-46-42" stroke={palette.leafLight} strokeOpacity=".42" strokeWidth="1.4" fill="none" strokeLinecap="round" /></g>)}</g>
+    <g className={`bouquet-ribbon ${growthProgress > .76 ? "is-ready" : ""}`} aria-hidden="true"><path d="M193 511C216 527 233 531 251 532c19-1 38-6 57-22l-8 44c-23 12-45 15-62 14-21 0-42-5-61-15Z" fill={palette.petal} /><path d="M215 535c-12 23-17 38-12 54 16-7 30-21 39-43Z" fill={palette.deep} /><path d="M284 535c12 23 17 38 12 54-16-7-30-21-39-43Z" fill={palette.deep} opacity=".8" /><path d="M212 523c20 8 49 10 77 0" stroke={palette.gold} strokeOpacity=".7" strokeWidth="2" fill="none" /><circle cx="251" cy="530" r="13" fill={palette.secondary} opacity=".9" /></g>
+    {model.flowers.map((flower) => <g key={flower.id} transform={`translate(${flower.x} ${flower.y}) rotate(${flower.rotation}) scale(${flower.scale})`}><g className={`flower flower-${flower.type} ${activeFlower === flower.id ? "is-active" : ""}`} style={{ "--bloom-delay": `${flower.delay}s`, "--bloom-progress": growthProgress } as CSSProperties} role="button" tabIndex={0} aria-label={`Tap the ${FLOWER_META[flower.type].label}`} onClick={(event) => onFlower(flower, event)} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); onFlower(flower, event as unknown as MouseEvent<SVGGElement>); } }}><title>{FLOWER_META[flower.type].label}</title><FlowerHead type={flower.type} palette={palette} /></g></g>)}
+  </svg>;
 }
 
 export default function Home() {
-  const requestedScene = window.location.pathname === "/final" ? "final" : window.location.pathname === "/bouquet" ? "bouquet" : new URLSearchParams(window.location.search).get("scene");
-  const [scene, setScene] = useState<Scene>(() => {
-    return requestedScene === "bouquet" || requestedScene === "final" ? "bouquet" : "opening";
-  });
-  const [bloomReady, setBloomReady] = useState(requestedScene === "bouquet" || requestedScene === "final");
-  const [finalReveal, setFinalReveal] = useState(requestedScene === "final");
+  const [stage, setStage] = useState<Stage>(() => previewView === "intro" || previewView === "growing" || previewView === "bouquet" || previewView === "final" ? previewView : "opening");
+  const [name, setName] = useState(sharedName);
+  const [model, setModel] = useState<BouquetModel | null>(sharedName ? createBouquet(sharedName) : previewView && previewView !== "intro" ? createBouquet("best friend") : null);
+  const [growthProgress, setGrowthProgress] = useState(previewView === "bouquet" || previewView === "final" ? 1 : previewView === "growing" ? .52 : 0);
   const [activeFlower, setActiveFlower] = useState<string | null>(null);
-  const [typedText, setTypedText] = useState("");
   const [burst, setBurst] = useState<Burst>(null);
-  const figureRef = useRef<HTMLDivElement>(null);
-  const loveNotes = useMemo(makeLoveNotes, []);
+  const [error, setError] = useState("");
+  const [shareState, setShareState] = useState("");
+  const artRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (scene !== "opening") return;
-    const timer = window.setTimeout(() => setScene("bouquet"), 4700);
+    if (stage !== "opening") return;
+    const timer = window.setTimeout(() => setStage(model ? "growing" : "intro"), 4400);
     return () => window.clearTimeout(timer);
-  }, [scene]);
+  }, [stage, model]);
 
   useEffect(() => {
-    if (scene !== "bouquet") return;
-    const timer = window.setTimeout(() => setBloomReady(true), 5600);
-    return () => window.clearTimeout(timer);
-  }, [scene]);
-
-  useEffect(() => {
-    if (!bloomReady) return;
-    let current = 0;
+    if (stage !== "growing" || !model) return;
+    const start = performance.now();
+    const duration = 6600;
     const timer = window.setInterval(() => {
-      current += 1;
-      setTypedText(typedCopy.slice(0, current));
-      if (current >= typedCopy.length) window.clearInterval(timer);
-    }, 29);
+      const progress = Math.min(1, (performance.now() - start) / duration);
+      setGrowthProgress(progress);
+      if (progress >= 1) {
+        window.clearInterval(timer);
+        window.setTimeout(() => setStage("bouquet"), 360);
+      }
+    }, 48);
     return () => window.clearInterval(timer);
-  }, [bloomReady]);
+  }, [stage, model]);
 
   useEffect(() => {
     if (!burst) return;
@@ -237,109 +120,71 @@ export default function Home() {
     return () => window.clearTimeout(timer);
   }, [burst]);
 
-  const handleFlower = (flower: Flower, event?: React.MouseEvent<SVGGElement>) => {
-    setActiveFlower(flower.id);
-    if (figureRef.current && event) {
-      const flowerRect = event.currentTarget.getBoundingClientRect();
-      const stageRect = figureRef.current.getBoundingClientRect();
-      setBurst({ id: Date.now(), x: flowerRect.left - stageRect.left + flowerRect.width / 2, y: flowerRect.top - stageRect.top + flowerRect.height / 2 });
-    } else {
-      setBurst({ id: Date.now(), x: 50, y: 44 });
+  const growthLabel = growthProgress < .18 ? "Growing something" : growthProgress < .34 ? "Letting the stems find their shape" : growthProgress < .53 ? "Unfolding a few leaves" : growthProgress < .74 ? "Choosing the flowers" : growthProgress < .9 ? "Adding a little ribbon" : "Letting it settle";
+  const selectedMessage = model?.flowers.find((flower) => flower.id === activeFlower);
+  const gardenTypes = useMemo(() => model ? flowerList(model) : [], [model]);
+
+  function startGrowth(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const normalized = normalizeName(name);
+    if (!normalized) {
+      setError("Give me a name to grow this for.");
+      return;
     }
-  };
+    setError("");
+    const nextModel = createBouquet(normalized);
+    setName(normalized);
+    setModel(nextModel);
+    setActiveFlower(null);
+    setGrowthProgress(0);
+    setStage("growing");
+    const url = new URL(window.location.href);
+    url.searchParams.set("name", normalized);
+    window.history.replaceState({}, "", url);
+  }
 
-  const selectedMessage = flowers.find((flower) => flower.id === activeFlower)?.message;
+  function handleFlower(flower: BouquetFlower, event: MouseEvent<SVGGElement>) {
+    setActiveFlower(flower.id);
+    const rect = event.currentTarget.getBoundingClientRect();
+    const stageRect = artRef.current?.getBoundingClientRect();
+    if (stageRect) setBurst({ id: Date.now(), x: rect.left - stageRect.left + rect.width / 2, y: rect.top - stageRect.top + rect.height / 2 });
+  }
 
-  return (
-    <div className={`experience ${scene} ${finalReveal ? "final-mode" : ""}`}>
-      <section className={`opening-scene ${scene !== "opening" ? "is-leaving" : ""}`} aria-hidden={scene !== "opening"}>
-        <div className="opening-glow opening-glow-one" />
-        <div className="opening-glow opening-glow-two" />
-        <div className="love-note-field">
-          {loveNotes.map((note, index) => (
-            <span
-              key={index}
-              className="love-note"
-              style={{ "--note-x": `${note.x}%`, "--note-y": `${note.y}%`, "--note-rotation": `${note.rotation}deg`, "--note-size": `${note.size}px`, "--note-opacity": note.opacity, "--note-duration": `${note.duration}s`, "--note-delay": `${note.delay}s` } as React.CSSProperties}
-            >
-              I love you <b>♥</b>
-            </span>
-          ))}
-        </div>
-        <div className="opening-caption">
-          <span className="opening-caption-line" />
-          <span>for the one who makes the world softer</span>
-        </div>
-        <span className="sr-only">A field of tiny love notes is unfolding.</span>
-      </section>
+  async function shareGarden() {
+    if (!model) return;
+    const url = new URL(window.location.href);
+    url.searchParams.set("name", model.name);
+    const shareData = { title: `${model.name}'s little garden`, text: `A small digital bouquet grown just for ${model.name}.`, url: url.toString() };
+    try {
+      if (navigator.share) await navigator.share(shareData);
+      else {
+        await navigator.clipboard.writeText(url.toString());
+        setShareState("Link copied");
+        window.setTimeout(() => setShareState(""), 2200);
+      }
+    } catch { setShareState("The garden is still yours to keep"); window.setTimeout(() => setShareState(""), 2200); }
+  }
 
-      <main className={`bouquet-scene ${scene === "bouquet" ? "is-visible" : ""}`}>
-        <div className="scene-grain" aria-hidden="true" />
-        <div className="scene-topline">
-          <div className="brand-lockup">
-            <img src={STORAGE_LOGO} alt="" className="brand-mark" />
-            <span className="brand-wordmark">the love bouquet</span>
-          </div>
-          <span className="scene-index">01 / 02</span>
-        </div>
+  function growAnother() {
+    setStage("intro");
+    setName("");
+    setModel(null);
+    setActiveFlower(null);
+    setGrowthProgress(0);
+    const url = new URL(window.location.href);
+    url.searchParams.delete("name");
+    window.history.replaceState({}, "", url);
+  }
 
-        <div className="bouquet-layout">
-          <header className="intro-block">
-            <p className="eyebrow">A bouquet written in code</p>
-            <h1>Some flowers are grown.<br /><em>These were written.</em></h1>
-            <p className="intro-copy">A small digital garden for the person who makes every ordinary day feel a little more like spring.</p>
-            <div className="code-signature"><span className="code-dot" /> <span>stems.js</span><span className="code-separator">/</span><span>made with love</span></div>
-          </header>
+  const rootStyle = model ? { "--atmosphere": model.palette.atmosphere, "--palette-petal": model.palette.petal, "--palette-deep": model.palette.deep, "--palette-gold": model.palette.gold } as CSSProperties : undefined;
 
-          <div className="bouquet-column">
-            <div className="bouquet-orbit orbit-one" />
-            <div className="bouquet-orbit orbit-two" />
-            <div className="bouquet-figure" ref={figureRef}>
-              <div className="bloom-dust dust-one" />
-              <div className="bloom-dust dust-two" />
-              <div className="bloom-dust dust-three" />
-              <div className="petal-fall" aria-hidden="true"><span>✦</span><span>·</span><span>✦</span><span>·</span></div>
-              <Bouquet activeFlower={activeFlower} bloomReady={bloomReady} onFlower={handleFlower} />
-              {burst && (
-                <div className="heart-burst" key={burst.id} style={{ left: burst.x, top: burst.y }} aria-hidden="true">
-                  <span>♥</span><span>♥</span><span>♥</span><span>✦</span><span>♥</span>
-                </div>
-              )}
-            </div>
-            <p className="tap-hint"><span className="tap-line" /> tap a flower to hear what it holds</p>
-          </div>
+  return <div className={`experience stage-${stage}`} style={rootStyle}>
+    <section className={`opening-scene ${stage !== "opening" ? "is-leaving" : ""}`} aria-hidden={stage !== "opening"}><div className="opening-glow opening-glow-one" /><div className="opening-glow opening-glow-two" /><div className="love-note-field">{Array.from({ length: 220 }, (_, index) => { const seed = index + 1; const x = (seed * 47.17) % 100; const y = (seed * 31.61 + (seed % 7) * 4) % 100; const rotation = ((seed * 29) % 34) - 17; const size = 9 + (seed % 5) * 1.8; return <span key={index} className="love-note" style={{ "--note-x": `${x}%`, "--note-y": `${y}%`, "--note-rotation": `${rotation}deg`, "--note-size": `${size}px`, "--note-opacity": .2 + (seed % 6) * .055, "--note-duration": `${6.5 + (seed % 8) * .65}s`, "--note-delay": `${-((seed * 1.37) % 8)}s` } as CSSProperties}>I love you <b>♥</b></span>; })}</div><div className="opening-caption"><span className="opening-caption-line" /><span>for the one who makes the world softer</span></div></section>
 
-          <section className="message-rail" aria-live="polite">
-            <div className={`flower-message ${activeFlower ? "is-shown" : ""}`}>
-              <span className="message-kicker">a little note from the garden</span>
-              <p>{selectedMessage || "Every flower here has a little piece of my heart."}</p>
-            </div>
-            <div className={`bouquet-message ${bloomReady ? "is-ready" : ""}`}>
-              <span className="message-kicker">for you, <span className="tiny-heart">♥</span></span>
-              <p className="typed-message">“{typedText}”<span className="typing-cursor" /></p>
-              <p className="message-signoff">I made this bouquet for you.</p>
-            </div>
-            <button className={`final-invite ${bloomReady ? "is-ready" : ""}`} type="button" onClick={() => setFinalReveal(true)}>
-              <span>One more thing</span><span className="invite-heart">♥</span>
-            </button>
-          </section>
-        </div>
+    {stage === "intro" && <main className="intro-screen"><div className="scene-topline"><div className="brand-lockup"><img src={STORAGE_LOGO} alt="" className="brand-mark" /><span className="brand-wordmark">the love bouquet</span></div><span className="scene-index">01 / 03</span></div><div className="intro-layout"><div className="intro-copy-block"><p className="eyebrow">a small digital gift for my best friend</p><h1>A little something,<br /><em>made just for you.</em></h1><p className="intro-subtitle">A small gift for my best friend. <span className="tiny-heart">♥</span></p><p className="intro-instruction">Tell me your name and I’ll grow something special.</p><form className="name-form" onSubmit={startGrowth}><label htmlFor="gift-name">What should I call you? <span>✦</span></label><input id="gift-name" value={name} onChange={(event) => setName(event.target.value)} placeholder="Your name" autoComplete="given-name" autoFocus /><button type="submit">Grow My Bouquet <span>✿</span></button>{error && <p className="form-error" role="alert">{error}</p>}</form><div className="intro-thread"><span /> made one line at a time <span /></div></div><div className="intro-botanical" aria-hidden="true"><div className="intro-orbit" /><div className="intro-stem stem-a" /><div className="intro-stem stem-b" /><div className="intro-bloom bloom-a">✿</div><div className="intro-bloom bloom-b">❀</div><div className="intro-bloom bloom-c">✦</div><div className="intro-spark">✦</div></div></div></main>}
 
-        <footer className="scene-footer"><span>crafted one line at a time</span><span className="footer-thread" /><span>with all my heart</span></footer>
-      </main>
+    {(stage === "growing" || stage === "bouquet") && model && <main className="garden-screen"><div className="scene-topline"><div className="brand-lockup"><img src={STORAGE_LOGO} alt="" className="brand-mark" /><span className="brand-wordmark">the love bouquet</span></div><span className="scene-index">02 / 03</span></div><div className="garden-layout"><header className="garden-intro"><p className="eyebrow">{stage === "growing" ? "a garden is taking shape" : "a garden written for you"}</p><h1>{stage === "growing" ? <>Growing something<br /><em>for {model.name}…</em></> : <>This one is yours,<br /><em>{model.name}. ♥</em></>}</h1><p className="garden-lede">{stage === "growing" ? growthLabel : personalityLine(model)}</p><div className="code-signature"><span className="code-dot" /> {model.palette.name.toLowerCase()} / {model.flowers.length} blooms</div></header><div className={`bouquet-column ${stage === "growing" ? "is-growing" : "is-finished"}`}><div className="bouquet-figure" ref={artRef}><div className="bloom-dust dust-one" /><div className="bloom-dust dust-two" /><div className="bloom-dust dust-three" /><div className="petal-fall" aria-hidden="true"><span>✦</span><span>·</span><span>✦</span></div><BouquetArtwork model={model} activeFlower={activeFlower} onFlower={handleFlower} growthProgress={growthProgress} />{burst && <div className="heart-burst" key={burst.id} style={{ left: burst.x, top: burst.y }} aria-hidden="true"><span>♥</span><span>♥</span><span>♥</span><span>✦</span></div>}</div>{stage === "growing" ? <div className="growth-status"><span className="growth-status-line" /><span>{Math.round(growthProgress * 100)}% grown</span></div> : <p className="tap-hint"><span className="tap-line" /> tap a flower to hear what it holds</p>}</div><section className="garden-rail" aria-live="polite">{stage === "growing" ? <div className="growth-card"><span className="message-kicker">{growthLabel}</span><div className="growth-bar"><span style={{ width: `${growthProgress * 100}%` }} /></div><p>Every stem, leaf, and petal is finding its place.</p></div> : <><div className="flower-message is-shown"><span className="message-kicker">a little note from the garden</span><p>{selectedMessage ? FLOWER_META[selectedMessage.type].interaction : generatePersonalNote(model)}</p></div><div className="garden-note"><span className="message-kicker">a note for {model.name}</span><p>“{generatePersonalNote(model)}”</p></div></>} </section></div>{stage === "bouquet" && <section className="garden-card"><div><span className="message-kicker">a little garden for</span><h2>{model.name}</h2><p>Hand-grown with a few lines of code and a questionable amount of affection.</p></div><div className="chosen-flowers"><span className="message-kicker">flowers chosen for you</span><div>{gardenTypes.map((flower) => <span key={flower.label}><b>{flower.symbol}</b>{flower.label}</span>)}</div></div></section>}<div className="garden-actions">{stage === "bouquet" && <button className="final-invite" type="button" onClick={() => setStage("final")}><span>One more thing</span><span className="invite-heart">♥</span></button>}</div><footer className="scene-footer"><span>hand-grown in code</span><span className="footer-thread" /><span>with a little bit of heart</span></footer></main>}
 
-      <div className={`final-letter ${finalReveal ? "is-visible" : ""}`} aria-hidden={!finalReveal}>
-        <div className="final-letter-backdrop" />
-        <div className="final-letter-inner">
-          <span className="eyebrow">02 / 02 · the last petal</span>
-          <div className="final-rule" />
-          <p className="final-copy">If I could give you a real bouquet every time I wanted to remind you how special you are, I would.</p>
-          <p className="final-copy">So I made you one instead.</p>
-          <p className="final-copy final-copy-soft">Not because it’s better than real flowers…<br />but because this one will always have a little piece of me in its code.</p>
-          <div className="final-heart">♥</div>
-          <button className="return-button" type="button" onClick={() => setFinalReveal(false)}>Keep the bouquet close <span>↗</span></button>
-        </div>
-      </div>
-    </div>
-  );
+    {stage === "final" && model && <main className="final-screen"><div className="final-letter-backdrop" /><svg className="final-memory-bouquet" viewBox="0 0 420 520" aria-hidden="true"><path d="M210 510C207 420 206 335 210 118M210 510C175 421 122 352 74 260M211 510C244 416 295 334 350 227M210 510C194 422 166 351 152 191M212 510C240 430 278 385 304 290" fill="none" stroke="var(--palette-leaf, #52745c)" strokeWidth="4" strokeLinecap="round" /><path d="M141 380C103 372 78 346 80 323C110 326 134 343 141 380ZM280 391C320 383 345 359 344 336C313 339 290 355 280 391ZM171 307C139 294 124 270 132 251C157 258 174 276 171 307ZM253 280C288 267 302 244 294 226C268 233 253 250 253 280Z" fill="var(--palette-leaf, #52745c)" opacity=".65" /><g fill="var(--palette-petal, #d56a82)" opacity=".72"><path d="M210 134C184 121 181 93 198 80C207 73 215 86 216 101C221 84 235 76 245 88C258 105 240 127 210 134Z" /><path d="M92 270C69 258 69 237 84 228C93 223 98 233 99 245C104 232 115 228 122 238C132 253 115 267 92 270Z" /><path d="M345 237C322 225 322 204 337 195C346 190 351 200 352 212C357 199 368 195 375 205C385 220 368 234 345 237Z" /></g><path d="M166 466C191 481 231 484 255 467" fill="none" stroke="var(--palette-gold, #d6a46d)" strokeWidth="2" opacity=".75" /></svg><div className="final-letter-inner"><span className="eyebrow">03 / 03 · one more thing</span><div className="final-rule" /><p className="final-copy">It’s only a small digital bouquet, but I wanted to make something that couldn’t simply be bought from a shop.</p><p className="final-copy">So I grew this one in code — just for you.</p><p className="final-copy final-copy-soft">From your best friend,<br />with a little bit of code. <span className="tiny-heart">♥</span></p><div className="final-heart">✿</div><div className="final-actions"><button className="share-button" type="button" onClick={shareGarden}>Share this garden <span>♥</span></button><button className="return-button" type="button" onClick={growAnother}>Grow another bouquet <span>✦</span></button></div>{shareState && <p className="share-state" role="status">{shareState}</p>}</div></main>}
+  </div>;
 }
