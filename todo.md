@@ -24,3 +24,11 @@
 - [x] Ensure the garden card lists exactly the unique flower varieties rendered in the bouquet.
 - [x] Rewrite the note templates in a simple, specific first-person voice that feels handmade by Jainam.
 - [x] Validate the revised opening, bouquet card, notes, and final scene on mobile and desktop.
+
+## Exact Note and CTA Refinement
+
+- [x] Use Jainam’s supplied note verbatim for every completed bouquet.
+- [x] Preserve the note’s line breaks and friendly sign-off in the garden note area.
+- [x] Rename the primary action to “Grow My Garden.”
+- [x] Give the primary action a clearer hover, press, and focus treatment.
+- [x] Validate the note and CTA on mobile and desktop.

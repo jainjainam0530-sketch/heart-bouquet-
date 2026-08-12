@@ -202,7 +202,11 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
 .name-form button:hover { color: var(--rose-light); border-color: var(--rose-light); background: transparent; }
 .final-memory-bouquet { position: absolute; z-index: 0; left: 50%; bottom: -5%; width: min(62vw, 620px); height: 88%; opacity: .16; filter: blur(.2px); transform: translateX(-50%); }
 .final-screen .final-letter-inner { position: relative; z-index: 2; }
+.garden-note p { white-space: pre-line; max-width: 360px; line-height: 1.45; }
+.name-form button { display: inline-flex; align-items: center; gap: 10px; width: fit-content; min-height: 44px; margin-top: 14px; padding: 0 16px; border: 1px solid rgba(214,164,109,.64); background: rgba(213,106,130,.14); box-shadow: 0 8px 20px rgba(0,0,0,.16); transition: color .22s ease, background .22s ease, border-color .22s ease, transform .18s var(--ease-silk), box-shadow .22s ease; }
+.name-form button:hover { color: #1c0b12; background: var(--gold); border-color: var(--gold); box-shadow: 0 12px 24px rgba(0,0,0,.24); transform: translateY(-2px); }
+.name-form button:active { color: var(--warm-white); background: var(--velvet-rose); border-color: var(--velvet-rose); transform: translateY(1px) scale(.98); box-shadow: 0 4px 10px rgba(0,0,0,.18); }
 @media (max-width: 640px) {
-  .name-form button { width: max-content; }
+  .name-form button { width: fit-content; }
   .final-memory-bouquet { width: 100vw; height: 77%; bottom: -5%; opacity: .12; }
 }
