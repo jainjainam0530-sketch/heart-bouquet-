@@ -32,3 +32,17 @@
 - [x] Rename the primary action to “Grow My Garden.”
 - [x] Give the primary action a clearer hover, press, and focus treatment.
 - [x] Validate the note and CTA on mobile and desktop.
+
+## Bouquet Variation Update
+
+- [x] Make different names choose visibly different flower families.
+- [x] Make palette, silhouette, scale, stems, foliage, and ribbon color vary with the name seed.
+- [x] Compare multiple named bouquets in preview and verify they do not default to the same visual composition.
+
+## Sharing and Bouquet Variation Update
+
+- [ ] Add dedicated WhatsApp share and Instagram share actions.
+- [ ] Keep the existing Web Share API and copy-link fallback available.
+- [ ] Make bouquet flower-family selection vary more clearly between names.
+- [ ] Make palette, silhouette, scale, stem structure, foliage, and ribbon color vary with the seed.
+- [ ] Compare multiple names in preview and verify they do not default to the same bouquet feel.

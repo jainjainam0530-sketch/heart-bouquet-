@@ -1,4 +1,4 @@
-/* Midnight Conservatory bouquet engine: the entered name controls palette, species, structure, and motion. */
+/* Midnight Conservatory bouquet engine: a name now selects a full visual composition family, not just a text label. */
 
 import { between, createRng, hashName, normalizeName, pick } from "./nameSeed";
 import { FLOWER_META, type FlowerType } from "./flowerLibrary";
@@ -39,11 +39,30 @@ export type BouquetModel = {
   name: string;
   seed: number;
   palette: Palette;
+  styleName: string;
   flowers: BouquetFlower[];
   leaves: BouquetLeaf[];
   dominant: FlowerType;
   selectedTypes: FlowerType[];
   wind: number;
+};
+
+type BouquetStyle = {
+  name: string;
+  flowerSet: FlowerType[];
+  positions: Array<[number, number]>;
+  minCount: number;
+  maxCount: number;
+  spread: number;
+  yJitter: number;
+  scaleBias: number;
+  leafMin: number;
+  leafMax: number;
+  leafTilt: number;
+  leafYMin: number;
+  leafYMax: number;
+  paletteOffset: number;
+  stemBend: number;
 };
 
 const PALETTES: Palette[] = [
@@ -57,58 +76,99 @@ const PALETTES: Palette[] = [
   { name: "Romantic Wine", petal: "#be526f", deep: "#4a192d", highlight: "#ffd4cd", secondary: "#dd8c99", leaf: "#3d604d", leafLight: "#8eaf94", gold: "#d0a36d", atmosphere: "#2b101b" },
 ];
 
-const FLOWER_SETS: FlowerType[][] = [
-  ["rose", "tulip", "daisy", "lavender"],
-  ["hibiscus", "cherry", "carnation", "wildflower"],
-  ["sunflower", "daisy", "lavender", "tulip"],
-  ["rose", "cherry", "carnation", "tulip"],
-  ["rose", "lavender", "wildflower", "daisy"],
+const BOUQUET_STYLES: BouquetStyle[] = [
+  {
+    name: "Tall Rose Arch",
+    flowerSet: ["rose", "rose", "tulip", "daisy", "lavender"],
+    positions: [[250, 108], [150, 182], [350, 168], [235, 244], [378, 250], [105, 304], [419, 313], [184, 348], [314, 357], [140, 416], [366, 426], [250, 430], [78, 247], [430, 238]],
+    minCount: 11, maxCount: 14, spread: 20, yJitter: 13, scaleBias: .98, leafMin: 13, leafMax: 18, leafTilt: 0, leafYMin: 250, leafYMax: 510, paletteOffset: 0, stemBend: 1,
+  },
+  {
+    name: "Sunlit Handful",
+    flowerSet: ["sunflower", "hibiscus", "daisy", "wildflower", "tulip"],
+    positions: [[250, 138], [168, 210], [333, 218], [112, 269], [390, 278], [206, 304], [301, 321], [99, 367], [402, 374], [160, 418], [345, 420], [252, 451], [60, 306], [440, 302]],
+    minCount: 10, maxCount: 13, spread: 34, yJitter: 18, scaleBias: 1.06, leafMin: 12, leafMax: 16, leafTilt: 12, leafYMin: 285, leafYMax: 515, paletteOffset: 6, stemBend: 1.3,
+  },
+  {
+    name: "Lavender Drift",
+    flowerSet: ["lavender", "lavender", "cherry", "daisy", "wildflower"],
+    positions: [[250, 108], [212, 166], [301, 176], [157, 242], [355, 248], [230, 275], [325, 291], [113, 338], [398, 352], [178, 401], [342, 414], [250, 453], [78, 283], [430, 293]],
+    minCount: 12, maxCount: 15, spread: 18, yJitter: 11, scaleBias: .86, leafMin: 15, leafMax: 20, leafTilt: -9, leafYMin: 230, leafYMax: 505, paletteOffset: 2, stemBend: .8,
+  },
+  {
+    name: "Wide Meadow",
+    flowerSet: ["cherry", "daisy", "carnation", "wildflower", "tulip"],
+    positions: [[250, 156], [122, 230], [380, 226], [188, 260], [318, 268], [80, 318], [433, 327], [142, 363], [360, 372], [197, 405], [306, 413], [250, 448], [55, 268], [448, 260]],
+    minCount: 12, maxCount: 16, spread: 42, yJitter: 22, scaleBias: .91, leafMin: 16, leafMax: 20, leafTilt: 8, leafYMin: 275, leafYMax: 515, paletteOffset: 5, stemBend: 1.45,
+  },
+  {
+    name: "Deep Wine Cluster",
+    flowerSet: ["rose", "hibiscus", "carnation", "tulip"],
+    positions: [[250, 142], [188, 205], [315, 198], [134, 264], [369, 265], [214, 286], [291, 300], [104, 349], [401, 356], [171, 397], [344, 405], [250, 432], [76, 282], [430, 294]],
+    minCount: 10, maxCount: 14, spread: 24, yJitter: 15, scaleBias: 1.09, leafMin: 11, leafMax: 15, leafTilt: -4, leafYMin: 260, leafYMax: 510, paletteOffset: 7, stemBend: 1.1,
+  },
 ];
-const POSITIONS = [
-  [250, 128], [160, 214], [346, 190], [248, 258], [386, 286], [112, 315], [422, 354], [192, 360], [304, 350], [145, 406], [370, 420], [249, 424], [75, 250], [430, 240], [184, 120], [334, 112],
+
+const FLOWER_FAMILIES: FlowerType[][] = [
+  ["rose", "tulip", "daisy", "lavender"],
+  ["sunflower", "hibiscus", "daisy", "wildflower"],
+  ["cherry", "daisy", "carnation", "wildflower"],
+  ["rose", "hibiscus", "carnation", "tulip"],
+  ["lavender", "cherry", "wildflower", "daisy"],
+  ["sunflower", "rose", "daisy", "cherry"],
+  ["hibiscus", "carnation", "tulip", "lavender"],
+  ["rose", "tulip", "carnation", "wildflower"],
+  ["cherry", "lavender", "daisy", "hibiscus"],
+  ["sunflower", "wildflower", "tulip", "carnation"],
 ];
 
 export function createBouquet(rawName: string): BouquetModel {
   const name = normalizeName(rawName) || "best friend";
   const seed = hashName(name);
   const rng = createRng(seed);
-  const palette = pick(rng, PALETTES);
-  const selectedSet = pick(rng, FLOWER_SETS);
-  const dominant = pick(rng, selectedSet);
-  const count = 10 + Math.floor(rng() * 5);
+  const firstCode = name.charCodeAt(0) || 0;
+  const style = BOUQUET_STYLES[(seed + name.length * 17 + firstCode) % BOUQUET_STYLES.length];
+  const flowerSet = FLOWER_FAMILIES[(seed + name.length * 31 + firstCode) % FLOWER_FAMILIES.length];
+  const paletteSeed = hashName(`${name}-palette`);
+  const palette = PALETTES[(paletteSeed + style.paletteOffset) % PALETTES.length];
+  const dominant = flowerSet[0];
+  const count = style.minCount + Math.floor(rng() * (style.maxCount - style.minCount + 1));
   const flowers: BouquetFlower[] = [];
 
   for (let index = 0; index < count; index += 1) {
     const role = index < 3 ? "hero" : index < 7 ? "support" : "filler";
-    const type = index < selectedSet.length ? selectedSet[index] : index === 0 ? dominant : pick(rng, selectedSet);
-    const [baseX, baseY] = POSITIONS[index % POSITIONS.length];
-    const spread = role === "hero" ? 22 : role === "support" ? 28 : 34;
+    const type = index < flowerSet.length ? flowerSet[index] : pick(rng, flowerSet);
+    const [baseX, baseY] = style.positions[index % style.positions.length];
+    const spread = style.spread + (index % 3) * 6;
+    const baseScale = role === "hero" ? between(rng, .88, 1.14) : role === "support" ? between(rng, .67, .93) : between(rng, .36, .58);
     flowers.push({
       id: `${type}-${index}-${seed}`,
       type,
       x: baseX + between(rng, -spread, spread),
-      y: baseY + between(rng, -14, 14),
-      scale: role === "hero" ? between(rng, .88, 1.14) : role === "support" ? between(rng, .67, .93) : between(rng, .36, .58),
-      rotation: between(rng, -13, 13),
-      delay: role === "hero" ? 2.2 + index * .18 : role === "support" ? 1.35 + index * .15 : .75 + index * .12,
-      bend: between(rng, -58, 58),
+      y: baseY + between(rng, -style.yJitter, style.yJitter),
+      scale: Math.max(.31, baseScale * style.scaleBias),
+      rotation: between(rng, -15, 15),
+      delay: role === "hero" ? 2.15 + index * .18 : role === "support" ? 1.25 + index * .15 : .65 + index * .12,
+      bend: between(rng, -58, 58) * style.stemBend,
       role,
     });
   }
 
-  const leaves = Array.from({ length: 12 + Math.floor(rng() * 6) }, (_, index) => {
+  const leafCount = style.leafMin + Math.floor(rng() * (style.leafMax - style.leafMin + 1));
+  const leaves = Array.from({ length: leafCount }, (_, index) => {
     const side = index % 2 === 0 ? "left" : "right";
+    const left = side === "left";
     return {
-      x: between(rng, side === "left" ? 92 : 260, side === "left" ? 245 : 408),
-      y: between(rng, 260, 500),
-      rotation: between(rng, side === "left" ? -72 : 18, side === "left" ? -18 : 72),
-      scale: between(rng, .52, .98),
+      x: between(rng, left ? 70 : 270, left ? 238 : 430),
+      y: between(rng, style.leafYMin, style.leafYMax),
+      rotation: between(rng, left ? -82 + style.leafTilt : 12 + style.leafTilt, left ? -18 + style.leafTilt : 82 + style.leafTilt),
+      scale: between(rng, .48, 1.02),
       side: side as "left" | "right",
     };
   });
 
   const selectedTypes = Array.from(new Set(flowers.map((flower) => flower.type)));
-  return { name, seed, palette, flowers, leaves, dominant, selectedTypes, wind: between(rng, -2.5, 2.5) };
+  return { name, seed, palette, styleName: style.name, flowers, leaves, dominant, selectedTypes, wind: between(rng, -3.5, 3.5) };
 }
 
 export function flowerList(model: BouquetModel) {
