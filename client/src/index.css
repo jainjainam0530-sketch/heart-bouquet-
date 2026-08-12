@@ -219,7 +219,24 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
 .instagram-share:hover { background: linear-gradient(120deg, rgba(245,133,41,.22), rgba(193,53,132,.22), rgba(88,81,219,.22)); border-color: rgba(224,126,176,.72); }
 .copy-link:hover { background: rgba(214,164,109,.2); border-color: rgba(214,164,109,.75); }
 .share-button.primary-share { color: var(--warm-white); }
+.qr-overlay { position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; padding: 22px; background: rgba(12,3,9,.78); backdrop-filter: blur(12px); }
+.qr-card { position: relative; width: min(100%, 340px); padding: 28px 24px 22px; border: 1px solid rgba(214,164,109,.42); background: #fff7ef; color: #321321; box-shadow: 0 24px 80px rgba(0,0,0,.45); text-align: center; }
+.qr-card h2 { margin: 9px 0 18px; font: italic 32px/1 "Cormorant Garamond", serif; color: #321321; }
+.qr-card .message-kicker { color: #8b5a52; }
+.qr-close { position: absolute; top: 10px; right: 12px; width: 30px; height: 30px; padding: 0; border: 0; color: #7f4c53; background: transparent; font-size: 25px; line-height: 1; }
+.qr-close:hover { color: #321321; }
+.qr-image { display: block; width: min(100%, 238px); height: auto; margin: 0 auto 14px; border: 8px solid #fff7ef; image-rendering: pixelated; }
+.qr-caption { max-width: 245px; margin: 0 auto; color: #7b625e; font: 14px/1.42 "Cormorant Garamond", serif; }
+.qr-loading, .qr-error { min-height: 238px; display: grid; place-items: center; margin: 0; color: #7b625e; font-size: 12px; line-height: 1.5; }
+.qr-error { color: #9a4157; }
+.qr-card-actions { display: flex; justify-content: center; gap: 10px; margin-top: 20px; }
+.qr-action { min-height: 36px; padding: 0 14px; border: 1px solid #bc7e6e; color: #fff7ef; background: #8d4657; font-size: 11px; letter-spacing: .05em; transition: transform .18s var(--ease-silk), background .2s ease; }
+.qr-action:hover { background: #682e43; transform: translateY(-2px); }
+.qr-action:active { transform: translateY(1px) scale(.98); }
+.qr-action-muted { color: #6d4049; background: transparent; }
+.qr-action-muted:hover { color: #321321; background: #f1ddd4; }
 @media (max-width: 640px) {
   .final-actions { gap: 10px 8px; }
   .social-button, .share-button.primary-share, .return-button { font-size: 9px; }
+  .qr-card { width: min(100%, 315px); padding-inline: 20px; }
 }

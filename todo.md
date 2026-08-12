@@ -55,6 +55,14 @@
 - [x] Preserve the bouquet name and variation ID in every shared URL.
 - [x] Validate the share controls on mobile and desktop.
 
+## QR Code Sharing Update
+
+- [x] Add a Generate QR code action to the final sharing controls.
+- [x] Encode the exact bouquet name and variation URL in the QR payload.
+- [x] Show the QR code in an accessible responsive dialog or panel.
+- [x] Add a download option for the generated QR image.
+- [x] Validate QR rendering and mobile presentation.
+
 ## Sharing and Bouquet Variation Update
 
 - [ ] Add dedicated WhatsApp share and Instagram share actions.
