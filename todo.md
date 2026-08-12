@@ -16,3 +16,11 @@
 - [x] Expand the procedural flower library with cherry blossoms, daisies, sunflower, hibiscus, lavender, carnation, and wildflowers where selected.
 - [x] Add personalized bouquet generation, a cute/flirty note, and a grow-another-bouquet flow.
 - [x] Validate that different names produce visibly different, repeatable bouquets.
+
+## Natural Personal Gift Refinement
+
+- [x] Replace the intense opening wording with a more comfortable, general gift introduction.
+- [x] Add the author credit: “A small gift from Jainam to you.”
+- [x] Ensure the garden card lists exactly the unique flower varieties rendered in the bouquet.
+- [x] Rewrite the note templates in a simple, specific first-person voice that feels handmade by Jainam.
+- [x] Validate the revised opening, bouquet card, notes, and final scene on mobile and desktop.

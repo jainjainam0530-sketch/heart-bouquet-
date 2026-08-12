@@ -57,9 +57,13 @@ const PALETTES: Palette[] = [
   { name: "Romantic Wine", petal: "#be526f", deep: "#4a192d", highlight: "#ffd4cd", secondary: "#dd8c99", leaf: "#3d604d", leafLight: "#8eaf94", gold: "#d0a36d", atmosphere: "#2b101b" },
 ];
 
-const HEROES: FlowerType[] = ["rose", "rose", "hibiscus", "sunflower", "rose"];
-const SUPPORT: FlowerType[] = ["tulip", "tulip", "cherry", "daisy", "carnation", "lavender"];
-const FILLERS: FlowerType[] = ["wildflower", "cherry", "daisy", "lavender", "carnation"];
+const FLOWER_SETS: FlowerType[][] = [
+  ["rose", "tulip", "daisy", "lavender"],
+  ["hibiscus", "cherry", "carnation", "wildflower"],
+  ["sunflower", "daisy", "lavender", "tulip"],
+  ["rose", "cherry", "carnation", "tulip"],
+  ["rose", "lavender", "wildflower", "daisy"],
+];
 const POSITIONS = [
   [250, 128], [160, 214], [346, 190], [248, 258], [386, 286], [112, 315], [422, 354], [192, 360], [304, 350], [145, 406], [370, 420], [249, 424], [75, 250], [430, 240], [184, 120], [334, 112],
 ];
@@ -69,13 +73,14 @@ export function createBouquet(rawName: string): BouquetModel {
   const seed = hashName(name);
   const rng = createRng(seed);
   const palette = pick(rng, PALETTES);
-  const dominant = pick(rng, HEROES);
+  const selectedSet = pick(rng, FLOWER_SETS);
+  const dominant = pick(rng, selectedSet);
   const count = 10 + Math.floor(rng() * 5);
   const flowers: BouquetFlower[] = [];
 
   for (let index = 0; index < count; index += 1) {
     const role = index < 3 ? "hero" : index < 7 ? "support" : "filler";
-    const type = index === 0 ? dominant : role === "hero" ? pick(rng, HEROES) : role === "support" ? pick(rng, SUPPORT) : pick(rng, FILLERS);
+    const type = index < selectedSet.length ? selectedSet[index] : index === 0 ? dominant : pick(rng, selectedSet);
     const [baseX, baseY] = POSITIONS[index % POSITIONS.length];
     const spread = role === "hero" ? 22 : role === "support" ? 28 : 34;
     flowers.push({
@@ -109,4 +114,3 @@ export function createBouquet(rawName: string): BouquetModel {
 export function flowerList(model: BouquetModel) {
   return model.selectedTypes.map((type) => FLOWER_META[type]);
 }
-

@@ -4,17 +4,20 @@ import { FLOWER_META } from "./flowerLibrary";
 import type { BouquetModel } from "./bouquetEngine";
 
 const GENERAL = [
-  (name: string) => `${name}, I was going to give you flowers… then I thought, why not grow you a whole little garden?`,
-  (name: string) => `${name}, I tried coding a bouquet as lovely as you. The code is still trying to keep up.`,
-  (name: string) => `${name}, this bouquet has one tiny problem… it still isn’t as lovely as the person it was made for.`,
-  (name: string) => `${name}, a small garden for my best friend — hand-grown with a questionable amount of affection.`,
+  (name: string) => `I made this little garden for you, ${name}. Hope it makes you smile.`,
+  (name: string) => `You like flowers, so I made you a small garden instead.`,
+  (name: string) => `I wanted to give you something small, but not forgettable.`,
+  (name: string) => `This is my slightly overthought way of saying you’re one of my favorite people.`,
+  (name: string) => `I know it isn’t a real bouquet, but I made it carefully anyway.`,
+  (name: string) => `The flowers are doing their best. I think you’ll like them.`,
+  (name: string) => `A little garden for you, because you make ordinary days better.`,
 ];
 
 const DOMINANT: Partial<Record<string, (name: string) => string>> = {
-  rose: (name) => `${name}, the roses wanted to make a dramatic entrance for you.`,
-  lavender: (name) => `Something about lavender felt very you, ${name} — calm, pretty, and impossible to ignore.`,
-  sunflower: (name) => `This garden needed a little sunshine, ${name}. So obviously, it brought its own.`,
-  cherry: (name) => `This little garden decided you deserved something soft and dreamy, ${name}.`,
+  rose: () => `I put the roses in first. They felt like the right place to start.`,
+  lavender: (name) => `I added lavender because it felt calm, like a good day with you, ${name}.`,
+  sunflower: () => `The sunflower is here because every bouquet needs a bright spot.`,
+  cherry: () => `The little blossoms looked nice, so I kept them.`,
 };
 
 export function generatePersonalNote(model: BouquetModel) {
@@ -28,4 +31,3 @@ export function personalityLine(model: BouquetModel) {
   const personalities = model.selectedTypes.slice(0, 3).map((type) => FLOWER_META[type].personality);
   return `${personalities.join(", ")} little blooms, arranged specifically for you.`;
 }
-

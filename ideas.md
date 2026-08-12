@@ -81,3 +81,5 @@ The mark is a small abstract **rose-bracket glyph**: two opposing curved stems e
 - Bloom For You adds a slightly playful best-friend warmth to the existing cinematic romanticism, expressed through compact notes, flower-specific lines, and a “grow another bouquet” loop without weakening the premium botanical restraint.
 - Primary blooms use specimen-like asymmetric petal silhouettes; heart shapes remain tiny accents for affection and interaction feedback only.
 - The gold thread is a continuous ceremonial motif across the invitation underline, bouquet binding, and final scene underline. The final scene retains a dim inline-SVG memory of the bouquet behind the letter.
+- The public-facing opening is intentionally comfortable for friends to see: it frames the page as a small gift from Jainam rather than leading with intense romantic declarations.
+- Personal notes use plain first-person language, small concrete observations, and restrained warmth so they read as handmade copy rather than generated flirtation.
