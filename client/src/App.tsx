@@ -1,3 +1,5 @@
+/* Midnight Conservatory shell: keep the experience free of app chrome and let the gift own the viewport. */
+
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
@@ -11,6 +13,8 @@ function Router() {
   return (
     <Switch>
       <Route path={"/"} component={Home} />
+      <Route path={"/bouquet"} component={Home} />
+      <Route path={"/final"} component={Home} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
