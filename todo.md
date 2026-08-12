@@ -39,6 +39,14 @@
 - [x] Make palette, silhouette, scale, stems, foliage, and ribbon color vary with the name seed.
 - [x] Compare multiple named bouquets in preview and verify they do not default to the same visual composition.
 
+## No-Repeat Bouquet System
+
+- [x] Add a persistent variation counter for every new bouquet generation.
+- [x] Store a short recent-bouquet history in browser storage.
+- [x] Avoid reusing recent variation combinations, including flower family, style, palette, and arrangement.
+- [x] Keep shared or bookmarked bouquet URLs reproducible when a variation ID is present.
+- [x] Validate repeated generations visually and confirm each result changes from the previous bouquet.
+
 ## Sharing and Bouquet Variation Update
 
 - [ ] Add dedicated WhatsApp share and Instagram share actions.

@@ -38,6 +38,7 @@ export type BouquetLeaf = {
 export type BouquetModel = {
   name: string;
   seed: number;
+  variationId: number;
   palette: Palette;
   styleName: string;
   flowers: BouquetFlower[];
@@ -122,14 +123,14 @@ const FLOWER_FAMILIES: FlowerType[][] = [
   ["sunflower", "wildflower", "tulip", "carnation"],
 ];
 
-export function createBouquet(rawName: string): BouquetModel {
+export function createBouquet(rawName: string, variationId = 0): BouquetModel {
   const name = normalizeName(rawName) || "best friend";
-  const seed = hashName(name);
+  const seed = (hashName(name) + Math.imul(variationId + 1, 2654435761)) >>> 0;
   const rng = createRng(seed);
   const firstCode = name.charCodeAt(0) || 0;
   const style = BOUQUET_STYLES[(seed + name.length * 17 + firstCode) % BOUQUET_STYLES.length];
   const flowerSet = FLOWER_FAMILIES[(seed + name.length * 31 + firstCode) % FLOWER_FAMILIES.length];
-  const paletteSeed = hashName(`${name}-palette`);
+  const paletteSeed = (hashName(`${name}-palette`) + Math.imul(variationId + 3, 2246822519)) >>> 0;
   const palette = PALETTES[(paletteSeed + style.paletteOffset) % PALETTES.length];
   const dominant = flowerSet[0];
   const count = style.minCount + Math.floor(rng() * (style.maxCount - style.minCount + 1));
@@ -168,7 +169,7 @@ export function createBouquet(rawName: string): BouquetModel {
   });
 
   const selectedTypes = Array.from(new Set(flowers.map((flower) => flower.type)));
-  return { name, seed, palette, styleName: style.name, flowers, leaves, dominant, selectedTypes, wind: between(rng, -3.5, 3.5) };
+  return { name, seed, variationId, palette, styleName: style.name, flowers, leaves, dominant, selectedTypes, wind: between(rng, -3.5, 3.5) };
 }
 
 export function flowerList(model: BouquetModel) {

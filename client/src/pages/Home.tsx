@@ -5,6 +5,7 @@ import { createBouquet, flowerList, type BouquetFlower, type BouquetModel, type 
 import { FLOWER_META, type FlowerType } from "@/lib/flowerLibrary";
 import { normalizeName } from "@/lib/nameSeed";
 import { generatePersonalNote, personalityLine } from "@/lib/noteGenerator";
+import { createFreshBouquet } from "@/lib/variationHistory";
 
 type Stage = "opening" | "intro" | "growing" | "bouquet" | "final";
 type Burst = { id: number; x: number; y: number } | null;
@@ -13,6 +14,7 @@ const STORAGE_LOGO = "/manus-storage/rose-bracket-mark_371373a1.png";
 const urlParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
 const sharedName = normalizeName(urlParams?.get("name") ?? "");
 const previewView = urlParams?.get("view");
+const sharedVariationId = Number.parseInt(urlParams?.get("v") ?? "0", 10) || 0;
 
 function PetalRose({ palette }: { palette: Palette }) {
   return <g className="rose-head">{Array.from({ length: 24 }, (_, index) => { const ring = index % 3; const angle = index * 15; const scale = ring === 0 ? .58 : ring === 1 ? .78 : 1; const depth = ring === 0 ? 12 : ring === 1 ? 7 : 2; return <path key={index} d="M0 11C-21 12-38 2-41-14C-44-29-35-43-22-44C-10-45-4-36 1-26C6-38 16-46 27-41C40-35 43-20 36-8C28 5 14 12 0 11Z" fill={ring === 0 ? "url(#roseCore)" : ring === 1 ? "url(#roseInner)" : "url(#petalMain)"} opacity={ring === 0 ? .96 : ring === 1 ? .88 : .82} transform={`rotate(${angle}) translate(0 ${depth}) scale(${scale})`} className={`petal petal-ring-${ring}`} />; })}<path d="M-28-17C-17-28-4-32 7-25M-19-1C-8-8 4-9 15-3" fill="none" stroke={palette.highlight} strokeOpacity=".48" strokeWidth="1.8" strokeLinecap="round" /><circle cx="0" cy="0" r="5" fill="url(#roseCore)" opacity=".8" /></g>;
@@ -85,7 +87,7 @@ function BouquetArtwork({ model, activeFlower, onFlower, growthProgress }: { mod
 export default function Home() {
   const [stage, setStage] = useState<Stage>(() => previewView === "intro" || previewView === "growing" || previewView === "bouquet" || previewView === "final" ? previewView : "opening");
   const [name, setName] = useState(sharedName);
-  const [model, setModel] = useState<BouquetModel | null>(sharedName ? createBouquet(sharedName) : previewView && previewView !== "intro" ? createBouquet("best friend") : null);
+  const [model, setModel] = useState<BouquetModel | null>(sharedName ? createBouquet(sharedName, sharedVariationId) : previewView && previewView !== "intro" ? createBouquet("best friend") : null);
   const [growthProgress, setGrowthProgress] = useState(previewView === "bouquet" || previewView === "final" ? 1 : previewView === "growing" ? .52 : 0);
   const [activeFlower, setActiveFlower] = useState<string | null>(null);
   const [burst, setBurst] = useState<Burst>(null);
@@ -132,7 +134,7 @@ export default function Home() {
       return;
     }
     setError("");
-    const nextModel = createBouquet(normalized);
+    const nextModel = createFreshBouquet(normalized);
     setName(normalized);
     setModel(nextModel);
     setActiveFlower(null);
@@ -140,6 +142,7 @@ export default function Home() {
     setStage("growing");
     const url = new URL(window.location.href);
     url.searchParams.set("name", normalized);
+    url.searchParams.set("v", String(nextModel.variationId));
     window.history.replaceState({}, "", url);
   }
 
@@ -154,6 +157,7 @@ export default function Home() {
     if (!model) return;
     const url = new URL(window.location.href);
     url.searchParams.set("name", model.name);
+    url.searchParams.set("v", String(model.variationId));
     const shareData = { title: `${model.name}'s little garden`, text: `A small digital bouquet grown just for ${model.name}.`, url: url.toString() };
     try {
       if (navigator.share) await navigator.share(shareData);
@@ -173,6 +177,7 @@ export default function Home() {
     setGrowthProgress(0);
     const url = new URL(window.location.href);
     url.searchParams.delete("name");
+    url.searchParams.delete("v");
     window.history.replaceState({}, "", url);
   }
 
