@@ -219,6 +219,7 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
 .instagram-share:hover { background: linear-gradient(120deg, rgba(245,133,41,.22), rgba(193,53,132,.22), rgba(88,81,219,.22)); border-color: rgba(224,126,176,.72); }
 .copy-link:hover { background: rgba(214,164,109,.2); border-color: rgba(214,164,109,.75); }
 .share-button.primary-share { color: var(--warm-white); }
+.flower:focus-visible { outline: none; filter: url(#flowerShadow) drop-shadow(0 0 7px rgba(255,215,207,.9)); }
 .qr-overlay { position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; padding: 22px; background: rgba(12,3,9,.78); backdrop-filter: blur(12px); }
 .qr-card { position: relative; width: min(100%, 340px); padding: 28px 24px 22px; border: 1px solid rgba(214,164,109,.42); background: #fff7ef; color: #321321; box-shadow: 0 24px 80px rgba(0,0,0,.45); text-align: center; }
 .qr-card h2 { margin: 9px 0 18px; font: italic 32px/1 "Cormorant Garamond", serif; color: #321321; }

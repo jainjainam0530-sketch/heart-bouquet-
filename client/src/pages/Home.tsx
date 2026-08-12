@@ -1,6 +1,6 @@
 /* Midnight Conservatory: the gift now opens into a name-driven Bloom For You garden. The bouquet is procedural SVG, never stock imagery. */
 
-import { useEffect, useMemo, useRef, useState, type CSSProperties, type MouseEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type MouseEvent, type SyntheticEvent } from "react";
 import QRCode from "qrcode";
 import { createBouquet, flowerList, type BouquetFlower, type BouquetModel, type Palette } from "@/lib/bouquetEngine";
 import { FLOWER_META, type FlowerType } from "@/lib/flowerLibrary";
@@ -14,7 +14,8 @@ type Burst = { id: number; x: number; y: number } | null;
 const STORAGE_LOGO = "/manus-storage/rose-bracket-mark_371373a1.png";
 const urlParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
 const sharedName = normalizeName(urlParams?.get("name") ?? "");
-const previewView = urlParams?.get("view");
+const pathname = typeof window !== "undefined" ? window.location.pathname : "/";
+const previewView = urlParams?.get("view") ?? (pathname === "/bouquet" ? "bouquet" : pathname === "/final" ? "final" : null);
 const sharedVariationId = Number.parseInt(urlParams?.get("v") ?? "0", 10) || 0;
 
 function PetalRose({ palette }: { palette: Palette }) {
@@ -65,7 +66,7 @@ function FlowerHead({ type, palette }: { type: FlowerType; palette: Palette }) {
   return <PetalWildflower palette={palette} />;
 }
 
-function BouquetArtwork({ model, activeFlower, onFlower, growthProgress }: { model: BouquetModel; activeFlower: string | null; onFlower: (flower: BouquetFlower, event: MouseEvent<SVGGElement>) => void; growthProgress: number }) {
+function BouquetArtwork({ model, activeFlower, onFlower, growthProgress }: { model: BouquetModel; activeFlower: string | null; onFlower: (flower: BouquetFlower, event: SyntheticEvent<SVGGElement>) => void; growthProgress: number }) {
   const palette = model.palette;
   return <svg className="bouquet-svg" viewBox="0 0 500 600" role="img" aria-label={`A code-built personalized bouquet for ${model.name}`}>
     <defs>
@@ -81,7 +82,7 @@ function BouquetArtwork({ model, activeFlower, onFlower, growthProgress }: { mod
     <g className="stems" aria-hidden="true">{model.flowers.map((flower, index) => <path key={`stem-${flower.id}`} d={`M250 560 C${250 + flower.bend} 488, ${flower.x + flower.bend / 2} ${flower.y + 110}, ${flower.x} ${flower.y + 26}`} stroke="url(#stemGradient)" strokeWidth={flower.role === "hero" ? 6 : 3.4 + (index % 3)} fill="none" className="stem-line" style={{ "--stem-delay": `${flower.delay}s` } as CSSProperties} />)}</g>
     <g className="leaves" aria-hidden="true">{model.leaves.map((leaf, index) => <g key={`leaf-${index}`} transform={`translate(${leaf.x} ${leaf.y}) rotate(${leaf.rotation}) scale(${leaf.scale})`} className="leaf-shape"><path d="M0 0C-43-3-58-28-48-48C-23-45-3-29 0 0Z" fill="url(#leafGradient)" stroke={palette.leafLight} strokeOpacity=".34" strokeWidth="1.4" /><path d="M-3-3C-22-14-37-26-46-42" stroke={palette.leafLight} strokeOpacity=".42" strokeWidth="1.4" fill="none" strokeLinecap="round" /></g>)}</g>
     <g className={`bouquet-ribbon ${growthProgress > .76 ? "is-ready" : ""}`} aria-hidden="true"><path d="M193 511C216 527 233 531 251 532c19-1 38-6 57-22l-8 44c-23 12-45 15-62 14-21 0-42-5-61-15Z" fill={palette.petal} /><path d="M215 535c-12 23-17 38-12 54 16-7 30-21 39-43Z" fill={palette.deep} /><path d="M284 535c12 23 17 38 12 54-16-7-30-21-39-43Z" fill={palette.deep} opacity=".8" /><path d="M212 523c20 8 49 10 77 0" stroke={palette.gold} strokeOpacity=".7" strokeWidth="2" fill="none" /><circle cx="251" cy="530" r="13" fill={palette.secondary} opacity=".9" /></g>
-    {model.flowers.map((flower) => <g key={flower.id} transform={`translate(${flower.x} ${flower.y}) rotate(${flower.rotation}) scale(${flower.scale})`}><g className={`flower flower-${flower.type} ${activeFlower === flower.id ? "is-active" : ""}`} style={{ "--bloom-delay": `${flower.delay}s`, "--bloom-progress": growthProgress } as CSSProperties} role="button" tabIndex={0} aria-label={`Tap the ${FLOWER_META[flower.type].label}`} onClick={(event) => onFlower(flower, event)} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); onFlower(flower, event as unknown as MouseEvent<SVGGElement>); } }}><title>{FLOWER_META[flower.type].label}</title><FlowerHead type={flower.type} palette={palette} /></g></g>)}
+    {model.flowers.map((flower) => <g key={flower.id} transform={`translate(${flower.x} ${flower.y}) rotate(${flower.rotation}) scale(${flower.scale})`}><g className={`flower flower-${flower.type} ${activeFlower === flower.id ? "is-active" : ""}`} style={{ "--bloom-delay": `${flower.delay}s`, "--bloom-progress": growthProgress } as CSSProperties} role="button" tabIndex={0} aria-pressed={activeFlower === flower.id} aria-label={`Tap the ${FLOWER_META[flower.type].label}`} onClick={(event) => onFlower(flower, event)} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); onFlower(flower, event); } }}><title>{FLOWER_META[flower.type].label}</title><FlowerHead type={flower.type} palette={palette} /></g></g>)}
   </svg>;
 }
 
@@ -150,7 +151,7 @@ export default function Home() {
     window.history.replaceState({}, "", url);
   }
 
-  function handleFlower(flower: BouquetFlower, event: MouseEvent<SVGGElement>) {
+  function handleFlower(flower: BouquetFlower, event: SyntheticEvent<SVGGElement>) {
     setActiveFlower(flower.id);
     const rect = event.currentTarget.getBoundingClientRect();
     const stageRect = artRef.current?.getBoundingClientRect();
@@ -172,6 +173,23 @@ export default function Home() {
     window.setTimeout(() => setShareState(""), 2600);
   }
 
+  async function copyText(text: string) {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+      return;
+    }
+    const helper = document.createElement("textarea");
+    helper.value = text;
+    helper.setAttribute("readonly", "true");
+    helper.style.position = "fixed";
+    helper.style.opacity = "0";
+    document.body.appendChild(helper);
+    helper.select();
+    const copied = document.execCommand("copy");
+    helper.remove();
+    if (!copied) throw new Error("Clipboard unavailable");
+  }
+
   async function shareGarden() {
     if (!model) return;
     const gardenUrl = getGardenUrl();
@@ -179,7 +197,7 @@ export default function Home() {
     try {
       if (navigator.share) await navigator.share(shareData);
       else {
-        await navigator.clipboard.writeText(gardenUrl);
+        await copyText(gardenUrl);
         showShareState("Link copied");
       }
     } catch { showShareState("The garden is still yours to keep"); }
@@ -189,17 +207,17 @@ export default function Home() {
     if (!model) return;
     const gardenUrl = getGardenUrl();
     const message = `A small digital garden made for ${model.name}: ${gardenUrl}`;
-    window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
-    showShareState("WhatsApp is ready to share");
+    const opened = window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+    showShareState(opened ? "WhatsApp is ready to share" : "Pop-up blocked — use Copy link instead");
   }
 
   async function shareOnInstagram() {
     if (!model) return;
     const gardenUrl = getGardenUrl();
     try {
-      await navigator.clipboard.writeText(gardenUrl);
-      window.open("https://www.instagram.com/", "_blank", "noopener,noreferrer");
-      showShareState("Link copied — paste it into Instagram");
+      await copyText(gardenUrl);
+      const opened = window.open("https://www.instagram.com/", "_blank", "noopener,noreferrer");
+      showShareState(opened ? "Link copied — paste it into Instagram" : "Link copied — open Instagram to share");
     } catch {
       showShareState("Copy the link and paste it into Instagram");
     }
@@ -209,7 +227,7 @@ export default function Home() {
     const gardenUrl = getGardenUrl();
     if (!gardenUrl) return;
     try {
-      await navigator.clipboard.writeText(gardenUrl);
+      await copyText(gardenUrl);
       showShareState("Link copied");
     } catch {
       showShareState("Your garden link is ready to share");
@@ -240,7 +258,11 @@ export default function Home() {
     const link = document.createElement("a");
     link.href = qrDataUrl;
     link.download = `${model.name.toLowerCase().replace(/[^a-z0-9]+/g, "-") || "garden"}-bouquet-qr.png`;
+    link.rel = "noopener";
+    link.style.display = "none";
+    document.body.appendChild(link);
     link.click();
+    link.remove();
   }
 
   useEffect(() => {
