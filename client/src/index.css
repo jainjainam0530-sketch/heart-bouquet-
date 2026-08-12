@@ -236,8 +236,30 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
 .qr-action:active { transform: translateY(1px) scale(.98); }
 .qr-action-muted { color: #6d4049; background: transparent; }
 .qr-action-muted:hover { color: #321321; background: #f1ddd4; }
+.garden-screen .growth-card { position: relative; overflow: hidden; border-color: rgba(214,164,109,.32); background: linear-gradient(135deg, rgba(53,18,31,.76), rgba(28,10,20,.68)); box-shadow: 0 16px 42px rgba(0,0,0,.2); }
+.garden-screen .growth-card::before { content: ""; position: absolute; inset: -30% -20%; background: radial-gradient(circle, rgba(213,106,130,.2), transparent 58%); animation: garden-breathe 3.8s ease-in-out infinite; pointer-events: none; }
+.garden-screen .growth-card > * { position: relative; z-index: 1; }
+.growth-card p::after { content: ""; display: inline-block; width: 1.1em; text-align: left; animation: loading-dots 1.35s steps(4, end) infinite; }
+.growth-status { position: relative; }
+.growth-status::before { content: ""; position: absolute; left: 50%; top: -11px; width: 58px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); transform: translateX(-50%); animation: thread-shimmer 2.4s ease-in-out infinite; }
+.final-invite { position: relative; display: inline-flex; align-items: center; gap: 14px; min-height: 48px; padding: 0 18px 0 20px; border: 1px solid rgba(214,164,109,.72); border-radius: 999px; color: var(--warm-white); background: linear-gradient(105deg, rgba(213,106,130,.16), rgba(214,164,109,.14)); box-shadow: 0 10px 30px rgba(0,0,0,.18), inset 0 0 0 1px rgba(255,255,255,.035); font-size: 11px; letter-spacing: .1em; transition: color .22s ease, background .22s ease, border-color .22s ease, transform .18s var(--ease-silk), box-shadow .22s ease; }
+.final-invite::after { content: ""; position: absolute; left: 20px; right: 48px; bottom: 8px; height: 1px; background: var(--gold); transform: scaleX(.25); transform-origin: left; transition: transform .3s var(--ease-silk); opacity: .8; }
+.final-invite:hover { color: #210d15; background: var(--gold); border-color: var(--gold); box-shadow: 0 16px 36px rgba(0,0,0,.3); transform: translateY(-3px); }
+.final-invite:hover::after { transform: scaleX(1); background: #5a2837; }
+.final-invite:active { transform: translateY(1px) scale(.98); }
+.final-invite:focus-visible { outline: 2px solid var(--rose-light); outline-offset: 5px; }
+.invite-heart { display: inline-grid; place-items: center; width: 27px; height: 27px; border: 1px solid rgba(255,255,255,.26); border-radius: 50%; color: var(--rose-light); background: rgba(0,0,0,.12); font-size: 15px; transition: transform .22s var(--ease-silk), background .22s ease, color .22s ease; }
+.final-invite:hover .invite-heart { color: #5a2837; background: rgba(255,255,255,.32); transform: rotate(10deg) scale(1.08); }
+@keyframes garden-breathe { 0%,100% { transform: scale(.94); opacity: .55; } 50% { transform: scale(1.08); opacity: 1; } }
+@keyframes loading-dots { 0% { content: ""; } 33% { content: "."; } 66% { content: ".."; } 100% { content: "..."; } }
+@keyframes thread-shimmer { 0%,100% { opacity: .35; transform: translateX(-50%) scaleX(.65); } 50% { opacity: 1; transform: translateX(-50%) scaleX(1); } }
 @media (max-width: 640px) {
   .final-actions { gap: 10px 8px; }
   .social-button, .share-button.primary-share, .return-button { font-size: 9px; }
   .qr-card { width: min(100%, 315px); padding-inline: 20px; }
+  .final-invite { min-height: 46px; padding-inline: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .garden-screen .growth-card::before, .growth-card p::after, .growth-status::before { animation: none; }
+  .final-invite, .final-invite::after, .invite-heart { transition: none; }
 }

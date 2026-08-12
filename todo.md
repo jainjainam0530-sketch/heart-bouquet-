@@ -72,6 +72,14 @@
 - [x] Check responsive layouts, keyboard focus, accessible labels, and runtime console/network errors.
 - [x] Re-run the complete validation suite and document any fixes.
 
+## Loading and Final CTA Refinement
+
+- [x] Add a beautiful staged loading animation while the unique bouquet is generated.
+- [x] Rotate natural garden-building status messages during generation.
+- [x] Respect reduced-motion preferences for the new loading treatment.
+- [x] Make One more thing more visibly clickable with clear hover, press, and focus states.
+- [x] Validate loading timing and final CTA behavior on mobile and desktop.
+
 ## Sharing and Bouquet Variation Update
 
 - [ ] Add dedicated WhatsApp share and Instagram share actions.
