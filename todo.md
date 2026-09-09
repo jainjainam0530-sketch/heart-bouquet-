@@ -80,6 +80,14 @@
 - [x] Make One more thing more visibly clickable with clear hover, press, and focus states.
 - [x] Validate loading timing and final CTA behavior on mobile and desktop.
 
+## Success Transition and Custom Note System
+
+- [ ] Add a subtle success transition effect (bloom/glow) when the bouquet finishes growing.
+- [ ] Implement a proper custom-note editing system in the intro screen.
+- [ ] Ensure the custom note persists in the shared URL (base64 encoded).
+- [ ] Provide a "Reset to Default" option for the note.
+- [ ] Validate the transition and note persistence on mobile and desktop.
+
 ## Sharing and Bouquet Variation Update
 
 - [ ] Add dedicated WhatsApp share and Instagram share actions.

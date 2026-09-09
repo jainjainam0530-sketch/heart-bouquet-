@@ -263,3 +263,89 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
   .garden-screen .growth-card::before, .growth-card p::after, .growth-status::before { animation: none; }
   .final-invite, .final-invite::after, .invite-heart { transition: none; }
 }
+
+/* Success Bloom Transition */
+.is-blooming .bouquet-figure {
+  animation: bloom-success 1.2s var(--ease-silk) forwards;
+}
+
+@keyframes bloom-success {
+  0% { transform: scale(1); filter: brightness(1) drop-shadow(0 0 0 rgba(214,164,109,0)); }
+  40% { transform: scale(1.08); filter: brightness(1.2) drop-shadow(0 0 25px rgba(214,164,109,.6)); }
+  100% { transform: scale(1); filter: brightness(1) drop-shadow(0 0 0 rgba(214,164,109,0)); }
+}
+
+/* Note Editor UI */
+.note-editor-trigger {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+}
+
+.edit-note-btn {
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--rose-light);
+  opacity: 0.8;
+  background: transparent;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.edit-note-btn:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.note-editor-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(12, 3, 9, 0.85);
+  backdrop-filter: blur(8px);
+  animation: fade-in 0.3s ease-out;
+}
+
+.note-editor-card {
+  position: relative;
+  width: min(100%, 420px);
+  padding: 32px 28px;
+  border: 1px solid rgba(214, 164, 109, 0.3);
+  background: #1c0b12;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+  text-align: left;
+}
+
+.note-textarea {
+  width: 100%;
+  height: 160px;
+  margin: 16px 0;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(214, 164, 109, 0.2);
+  color: var(--warm-white);
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.note-textarea:focus {
+  border-color: var(--gold);
+}
+
+.note-textarea::placeholder {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
