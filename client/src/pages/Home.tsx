@@ -12,7 +12,7 @@ import { createFreshBouquet } from "@/lib/variationHistory";
 type Stage = "opening" | "intro" | "growing" | "bouquet" | "final";
 type Burst = { id: number; x: number; y: number } | null;
 
-const STORAGE_LOGO = "/manus-storage/rose-bracket-mark_371373a1.png";
+const STORAGE_LOGO = "/manus-storage/gift-logo-v2_349c5563.png";
 const urlParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
 const sharedName = normalizeName(urlParams?.get("name") ?? "");
 const pathname = typeof window !== "undefined" ? window.location.pathname : "/";

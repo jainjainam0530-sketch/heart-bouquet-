@@ -119,3 +119,18 @@
 - [x] Keep the mute/unmute control visible and accessible in the panel.
 - [x] Support closing the panel by selecting a melody, clicking outside, or pressing Escape.
 - [x] Validate the panel and melody switching on mobile and desktop.
+
+## Logo Update
+
+- [x] Generate a cute, minimalist logo (flower/heart motif).
+- [x] Ensure the logo has a transparent background.
+- [x] Replace the current logo in the website header and gift card.
+- [x] Update the favicon with the new logo.
+- [x] Validate the logo appearance at various sizes.
+
+## Logo Refinement Update
+
+- [x] Refine the minimalist logo with a new color palette.
+- [x] Preserve the flower/heart motif and transparent background.
+- [x] Update the website and favicon with the recolored version.
+- [x] Validate the new palette’s contrast and readability.
