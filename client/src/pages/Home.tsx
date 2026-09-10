@@ -125,6 +125,9 @@ export default function Home() {
   const [qrDataUrl, setQrDataUrl] = useState("");
   const [qrError, setQrError] = useState("");
   const [printOpen, setPrintOpen] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const [autoplayBlocked, setAutoplayBlocked] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const artRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -135,6 +138,14 @@ export default function Home() {
 
   useEffect(() => {
     if (stage !== "growing" || !model) return;
+
+    if (audioRef.current && !isMuted) {
+      audioRef.current.play().catch(err => {
+        console.log("Autoplay prevented:", err);
+        setAutoplayBlocked(true);
+      });
+    }
+
     const start = performance.now();
     const duration = 6600;
     const timer = window.setInterval(() => {
@@ -317,15 +328,54 @@ export default function Home() {
     setModel(null);
     setActiveFlower(null);
     setGrowthProgress(0);
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
     const url = new URL(window.location.href);
     url.searchParams.delete("name");
     url.searchParams.delete("v");
     window.history.replaceState({}, "", url);
   }
 
+  function toggleMute() {
+    if (!audioRef.current) return;
+    const nextMuted = !isMuted;
+    setIsMuted(nextMuted);
+    audioRef.current.muted = nextMuted;
+    if (!nextMuted && stage !== "intro" && stage !== "opening") {
+      audioRef.current.play().catch(err => console.log("Play error:", err));
+      setAutoplayBlocked(false);
+    }
+  }
+
+  function startAudioManually() {
+    if (audioRef.current) {
+      audioRef.current.play().then(() => {
+        setAutoplayBlocked(false);
+        setIsMuted(false);
+        audioRef.current!.muted = false;
+      }).catch(err => console.log("Manual play error:", err));
+    }
+  }
+
   const rootStyle = model ? { "--atmosphere": model.palette.atmosphere, "--palette-petal": model.palette.petal, "--palette-deep": model.palette.deep, "--palette-gold": model.palette.gold } as CSSProperties : undefined;
 
   return <div className={`experience stage-${stage}`} style={rootStyle}>
+    <audio ref={audioRef} src="/manus-storage/ambient-garden-melody_5c0d2f70.mp3" loop />
+    <button className={`sound-toggle ${stage === "opening" ? "is-hidden" : ""}`} onClick={toggleMute} aria-label={isMuted ? "Unmute melody" : "Mute melody"}>{isMuted ? "🔇" : "🔊"}</button>
+    {autoplayBlocked && (stage === "growing" || stage === "bouquet") && (
+      <div className="audio-prompt-overlay no-print">
+        <div className="audio-prompt-card">
+          <span className="message-kicker">a little sound for the garden</span>
+          <p>Would you like to hear the ambient melody as the garden grows?</p>
+          <div className="qr-card-actions">
+            <button className="qr-action" onClick={startAudioManually}>Yes, play music</button>
+            <button className="qr-action qr-action-muted" onClick={() => { setAutoplayBlocked(false); setIsMuted(true); }}>No, keep it quiet</button>
+          </div>
+        </div>
+      </div>
+    )}
     <section className={`opening-scene ${stage !== "opening" ? "is-leaving" : ""}`} aria-hidden={stage !== "opening"}><div className="opening-glow opening-glow-one" /><div className="opening-glow opening-glow-two" /><div className="love-note-field">{Array.from({ length: 220 }, (_, index) => { const seed = index + 1; const x = (seed * 47.17) % 100; const y = (seed * 31.61 + (seed % 7) * 4) % 100; const rotation = ((seed * 29) % 34) - 17; const size = 9 + (seed % 5) * 1.8; return <span key={index} className="love-note" style={{ "--note-x": `${x}%`, "--note-y": `${y}%`, "--note-rotation": `${rotation}deg`, "--note-size": `${size}px`, "--note-opacity": .2 + (seed % 6) * .055, "--note-duration": `${6.5 + (seed % 8) * .65}s`, "--note-delay": `${-((seed * 1.37) % 8)}s` } as CSSProperties}>I love you <b>♥</b></span>; })}</div><div className="opening-caption"><span className="opening-caption-line" /><span>for the one who makes the world softer</span></div></section>
 
     {stage === "intro" && <main className="intro-screen"><div className="scene-topline"><div className="brand-lockup"><img src={STORAGE_LOGO} alt="" className="brand-mark" /><span className="brand-wordmark">the love bouquet</span></div><span className="scene-index">01 / 03</span></div><div className="intro-layout"><div className="intro-copy-block"><p className="eyebrow">a small digital gift, made by Jainam</p><h1>A little something,<br /><em>made just for you.</em></h1><p className="intro-subtitle">A small gift from Jainam to you.</p><p className="intro-instruction">Tell me your name and I’ll grow something special.</p><form className="name-form" onSubmit={startGrowth}><label htmlFor="gift-name">What should I call you? <span>✦</span></label><input id="gift-name" value={name} onChange={(event) => setName(event.target.value)} placeholder="Your name" autoComplete="given-name" autoFocus /><div className="note-editor-trigger"><button type="button" onClick={() => setShowNoteEditor(true)} className="edit-note-btn">{customNote ? "Custom Note Set ✓" : "Add a Special Note ✎"}</button></div><button type="submit">Grow My Garden <span>✿</span></button>{formError && <p className="form-error" role="alert">{formError}</p>}</form>{showNoteEditor && <div className="note-editor-overlay"><div className="note-editor-card"><button className="qr-close" onClick={() => setShowNoteEditor(false)}>×</button><span className="message-kicker">something special</span><h2>Personalize the Note</h2><p className="qr-caption">This message will appear beneath the bouquet. Leave empty to use the default friend note.</p><textarea value={customNote} onChange={(e) => setCustomNote(e.target.value)} placeholder="Write your special message here..." className="note-textarea" /><div className="qr-card-actions"><button className="qr-action" onClick={() => setShowNoteEditor(false)}>Save Note</button><button className="qr-action qr-action-muted" onClick={() => { setCustomNote(""); setShowNoteEditor(false); }}>Reset to Default</button></div></div></div>}<div className="intro-thread"><span /> made by Jainam, one line at a time <span /></div></div><div className="intro-botanical" aria-hidden="true"><div className="intro-orbit" /><div className="intro-stem stem-a" /><div className="intro-stem stem-b" /><div className="intro-bloom bloom-a">✿</div><div className="intro-bloom bloom-b">❀</div><div className="intro-bloom bloom-c">✦</div><div className="intro-spark">✦</div></div></div></main>}

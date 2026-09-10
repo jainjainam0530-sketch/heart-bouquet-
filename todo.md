@@ -88,6 +88,14 @@
 - [x] Provide a "Reset to Default" option for the note.
 - [x] Validate the transition and note persistence on mobile and desktop.
 
+## Background Melody Update
+
+- [x] Generate a soft, ambient background melody (lo-fi/piano/orchestral).
+- [x] Implement an audio player that starts when bouquet growth begins.
+- [x] Add a visible sound toggle (Mute/Unmute) to the UI.
+- [x] Handle browser autoplay restrictions with a user-interaction trigger.
+- [x] Validate audio playback and controls on mobile and desktop.
+
 ## Printable Gift Card Update
 
 - [ ] Design a clean, elegant printable gift-card layout with QR code and note.
