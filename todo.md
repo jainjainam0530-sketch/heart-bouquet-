@@ -82,16 +82,8 @@
 
 ## Success Transition and Custom Note System
 
-- [ ] Add a subtle success transition effect (bloom/glow) when the bouquet finishes growing.
-- [ ] Implement a proper custom-note editing system in the intro screen.
-- [ ] Ensure the custom note persists in the shared URL (base64 encoded).
-- [ ] Provide a "Reset to Default" option for the note.
-- [ ] Validate the transition and note persistence on mobile and desktop.
-
-## Sharing and Bouquet Variation Update
-
-- [ ] Add dedicated WhatsApp share and Instagram share actions.
-- [ ] Keep the existing Web Share API and copy-link fallback available.
-- [ ] Make bouquet flower-family selection vary more clearly between names.
-- [ ] Make palette, silhouette, scale, stem structure, foliage, and ribbon color vary with the seed.
-- [ ] Compare multiple names in preview and verify they do not default to the same bouquet feel.
+- [x] Add a subtle success transition effect (bloom/glow) when the bouquet finishes growing.
+- [x] Implement a proper custom-note editing system in the intro screen.
+- [x] Ensure the custom note persists in the shared URL (base64 encoded).
+- [x] Provide a "Reset to Default" option for the note.
+- [x] Validate the transition and note persistence on mobile and desktop.
