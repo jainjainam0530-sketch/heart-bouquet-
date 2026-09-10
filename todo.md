@@ -87,3 +87,11 @@
 - [x] Ensure the custom note persists in the shared URL (base64 encoded).
 - [x] Provide a "Reset to Default" option for the note.
 - [x] Validate the transition and note persistence on mobile and desktop.
+
+## Printable Gift Card Update
+
+- [ ] Design a clean, elegant printable gift-card layout with QR code and note.
+- [ ] Add a "Print Gift Card" action to the final sharing scene.
+- [ ] Implement `@media print` styles to ensure the card prints perfectly on A4/Letter.
+- [ ] Ensure the QR code and exact bouquet link are correctly embedded.
+- [ ] Validate the print preview and layout on mobile and desktop.
