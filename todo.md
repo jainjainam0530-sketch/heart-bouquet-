@@ -111,3 +111,11 @@
 - [ ] Implement `@media print` styles to ensure the card prints perfectly on A4/Letter.
 - [ ] Ensure the QR code and exact bouquet link are correctly embedded.
 - [ ] Validate the print preview and layout on mobile and desktop.
+
+## Slide-Out Melody Panel Update
+
+- [x] Hide melody choices from the main screen behind the sound control.
+- [x] Add a slide-out music panel with Dreamy, Whimsical, and Classic choices.
+- [x] Keep the mute/unmute control visible and accessible in the panel.
+- [x] Support closing the panel by selecting a melody, clicking outside, or pressing Escape.
+- [x] Validate the panel and melody switching on mobile and desktop.

@@ -141,6 +141,7 @@ export default function Home() {
   const [isMuted, setIsMuted] = useState(false);
   const [autoplayBlocked, setAutoplayBlocked] = useState(false);
   const [mood, setMood] = useState<string>(sharedMood);
+  const [isMusicPanelOpen, setIsMusicPanelOpen] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const artRef = useRef<HTMLDivElement>(null);
 
@@ -229,6 +230,15 @@ export default function Home() {
       audioRef.current.play().catch(err => console.log("Mood switch play error:", err));
     }
   }, [mood]);
+
+  useEffect(() => {
+    if (!isMusicPanelOpen) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsMusicPanelOpen(false);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isMusicPanelOpen]);
 
   function handlePrint() {
     if (!qrDataUrl) {
@@ -402,20 +412,46 @@ export default function Home() {
   return <div className={`experience stage-${stage}`} style={rootStyle}>
     <audio ref={audioRef} src={currentMood.src} loop />
     <div className={`sound-controls ${stage === "opening" ? "is-hidden" : ""}`}>
-      <div className="mood-selector">
-        {MOODS.map(m => (
-          <button 
-            key={m.id} 
-            className={`mood-option ${mood === m.id ? "is-active" : ""}`}
-            onClick={() => handleMoodChange(m.id)}
-            title={m.label}
-          >
-            {m.id === "dreamy" ? "✨" : m.id === "whimsical" ? "🎈" : "🏛️"}
-          </button>
-        ))}
-      </div>
-      <button className="sound-toggle" onClick={toggleMute} aria-label={isMuted ? "Unmute melody" : "Mute melody"}>{isMuted ? "🔇" : "🔊"}</button>
+      <button
+        className="sound-toggle"
+        onClick={() => setIsMusicPanelOpen(prev => !prev)}
+        aria-label="Open melody controls"
+        aria-expanded={isMusicPanelOpen}
+        aria-controls="melody-panel"
+      >
+        {isMuted ? "🔇" : "🔊"}
+      </button>
     </div>
+    {isMusicPanelOpen && (
+      <div className="music-panel-backdrop" onClick={() => setIsMusicPanelOpen(false)}>
+        <aside id="melody-panel" className="music-panel" role="dialog" aria-modal="true" aria-labelledby="melody-panel-title" onClick={event => event.stopPropagation()}>
+          <div className="music-panel-header">
+            <div>
+              <span className="message-kicker">sound for the garden</span>
+              <h2 id="melody-panel-title">Choose a mood</h2>
+            </div>
+            <button className="music-panel-close" onClick={() => setIsMusicPanelOpen(false)} aria-label="Close melody controls">×</button>
+          </div>
+          <div className="music-mood-list">
+            {MOODS.map(m => (
+              <button
+                key={m.id}
+                className={`music-mood-choice ${mood === m.id ? "is-active" : ""}`}
+                onClick={() => { handleMoodChange(m.id); setIsMusicPanelOpen(false); }}
+                aria-pressed={mood === m.id}
+              >
+                <span className="music-mood-icon" aria-hidden="true">{m.id === "dreamy" ? "✦" : m.id === "whimsical" ? "❀" : "◈"}</span>
+                <span><strong>{m.label}</strong><small>{m.id === "dreamy" ? "soft and atmospheric" : m.id === "whimsical" ? "light and playful" : "piano and strings"}</small></span>
+                {mood === m.id && <span className="music-mood-check" aria-hidden="true">✓</span>}
+              </button>
+            ))}
+          </div>
+          <button className="music-mute-action" onClick={toggleMute} aria-pressed={isMuted}>
+            <span aria-hidden="true">{isMuted ? "🔇" : "🔊"}</span>{isMuted ? "Unmute melody" : "Mute melody"}
+          </button>
+        </aside>
+      </div>
+    )}
     {autoplayBlocked && (stage === "growing" || stage === "bouquet") && (
       <div className="audio-prompt-overlay no-print">
         <div className="audio-prompt-card">
