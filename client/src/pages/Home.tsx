@@ -18,6 +18,19 @@ const sharedName = normalizeName(urlParams?.get("name") ?? "");
 const pathname = typeof window !== "undefined" ? window.location.pathname : "/";
 const previewView = urlParams?.get("view") ?? (pathname === "/bouquet" ? "bouquet" : pathname === "/final" ? "final" : null);
 const sharedVariationId = Number.parseInt(urlParams?.get("v") ?? "0", 10) || 0;
+const sharedMood = urlParams?.get("mood") ?? "dreamy";
+
+type Mood = {
+  id: string;
+  label: string;
+  src: string;
+};
+
+const MOODS: Mood[] = [
+  { id: "dreamy", label: "Dreamy Lo-Fi", src: "/manus-storage/ambient-garden-melody_5c0d2f70.mp3" },
+  { id: "whimsical", label: "Whimsical Waltz", src: "/manus-storage/whimsical-garden-melody_761bd115.mp3" },
+  { id: "classic", label: "Classic Elegance", src: "/manus-storage/classic-garden-melody_4b53cefa.mp3" },
+];
 
 function decodeNote(encoded: string | null): string {
   if (!encoded) return "";
@@ -127,6 +140,7 @@ export default function Home() {
   const [printOpen, setPrintOpen] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [autoplayBlocked, setAutoplayBlocked] = useState(false);
+  const [mood, setMood] = useState<string>(sharedMood);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const artRef = useRef<HTMLDivElement>(null);
 
@@ -190,10 +204,31 @@ export default function Home() {
     const url = new URL(window.location.href);
     url.searchParams.set("name", normalized);
     url.searchParams.set("v", String(nextModel.variationId));
+    url.searchParams.set("mood", mood);
     if (customNote) url.searchParams.set("note", encodeNote(customNote));
     else url.searchParams.delete("note");
     window.history.replaceState({}, "", url);
   }
+
+  function handleMoodChange(newMood: string) {
+    setMood(newMood);
+    const url = new URL(window.location.href);
+    url.searchParams.set("mood", newMood);
+    window.history.replaceState({}, "", url);
+    
+    // If audio is already playing, switch it immediately
+    if (audioRef.current && !isMuted && stage !== "intro" && stage !== "opening") {
+      audioRef.current.pause();
+      // The useEffect for mood will handle playing the new source
+    }
+  }
+
+  useEffect(() => {
+    if (audioRef.current && stage !== "intro" && stage !== "opening" && !isMuted) {
+      audioRef.current.load();
+      audioRef.current.play().catch(err => console.log("Mood switch play error:", err));
+    }
+  }, [mood]);
 
   function handlePrint() {
     if (!qrDataUrl) {
@@ -212,9 +247,10 @@ export default function Home() {
 
   function getGardenUrl() {
     if (!model) return "";
-    const url = new URL(window.location.href);
+    const url = new URL(window.location.origin);
     url.searchParams.set("name", model.name);
     url.searchParams.set("v", String(model.variationId));
+    url.searchParams.set("mood", mood);
     if (customNote) url.searchParams.set("note", encodeNote(customNote));
     url.searchParams.delete("view");
     url.searchParams.delete("qr");
@@ -361,9 +397,25 @@ export default function Home() {
 
   const rootStyle = model ? { "--atmosphere": model.palette.atmosphere, "--palette-petal": model.palette.petal, "--palette-deep": model.palette.deep, "--palette-gold": model.palette.gold } as CSSProperties : undefined;
 
+  const currentMood = MOODS.find(m => m.id === mood) || MOODS[0];
+
   return <div className={`experience stage-${stage}`} style={rootStyle}>
-    <audio ref={audioRef} src="/manus-storage/ambient-garden-melody_5c0d2f70.mp3" loop />
-    <button className={`sound-toggle ${stage === "opening" ? "is-hidden" : ""}`} onClick={toggleMute} aria-label={isMuted ? "Unmute melody" : "Mute melody"}>{isMuted ? "🔇" : "🔊"}</button>
+    <audio ref={audioRef} src={currentMood.src} loop />
+    <div className={`sound-controls ${stage === "opening" ? "is-hidden" : ""}`}>
+      <div className="mood-selector">
+        {MOODS.map(m => (
+          <button 
+            key={m.id} 
+            className={`mood-option ${mood === m.id ? "is-active" : ""}`}
+            onClick={() => handleMoodChange(m.id)}
+            title={m.label}
+          >
+            {m.id === "dreamy" ? "✨" : m.id === "whimsical" ? "🎈" : "🏛️"}
+          </button>
+        ))}
+      </div>
+      <button className="sound-toggle" onClick={toggleMute} aria-label={isMuted ? "Unmute melody" : "Mute melody"}>{isMuted ? "🔇" : "🔊"}</button>
+    </div>
     {autoplayBlocked && (stage === "growing" || stage === "bouquet") && (
       <div className="audio-prompt-overlay no-print">
         <div className="audio-prompt-card">

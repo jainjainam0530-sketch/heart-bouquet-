@@ -479,12 +479,62 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
   }
 }
 
-/* Sound Toggle */
-.sound-toggle {
+/* Sound Controls */
+.sound-controls {
   position: fixed;
   top: 24px;
   right: 24px;
   z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.4s var(--ease-out);
+}
+
+.sound-controls.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-10px);
+}
+
+.mood-selector {
+  display: flex;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 22px;
+  padding: 4px;
+  gap: 4px;
+}
+
+.mood-option {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s var(--ease-out);
+  background: transparent;
+  border: none;
+  color: var(--warm-white);
+  opacity: 0.5;
+}
+
+.mood-option:hover {
+  opacity: 0.8;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.mood-option.is-active {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.sound-toggle {
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -498,6 +548,7 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
   cursor: pointer;
   transition: all 0.3s var(--ease-out);
   font-size: 18px;
+  border: none;
 }
 
 .sound-toggle:hover {
@@ -507,12 +558,6 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
 
 .sound-toggle:active {
   transform: scale(0.95);
-}
-
-.sound-toggle.is-hidden {
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(-10px);
 }
 
 /* Audio Prompt */

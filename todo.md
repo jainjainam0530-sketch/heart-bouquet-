@@ -96,6 +96,14 @@
 - [x] Handle browser autoplay restrictions with a user-interaction trigger.
 - [x] Validate audio playback and controls on mobile and desktop.
 
+## Selectable Melody Moods Update
+
+- [x] Generate three distinct background melodies: Dreamy (current), Whimsical, and Classic.
+- [x] Add a "Melody Mood" selector to the intro and bouquet scenes.
+- [x] Ensure the selected melody ID persists in the shared URL.
+- [x] Implement seamless audio switching when the mood is changed.
+- [x] Validate mood persistence and playback on mobile and desktop.
+
 ## Printable Gift Card Update
 
 - [ ] Design a clean, elegant printable gift-card layout with QR code and note.
