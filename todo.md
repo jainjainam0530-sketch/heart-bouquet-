@@ -134,3 +134,10 @@
 - [x] Preserve the flower/heart motif and transparent background.
 - [x] Update the website and favicon with the recolored version.
 - [x] Validate the new palette’s contrast and readability.
+
+## Cute Realistic Bouquet Loading Refresh
+
+- [x] Add a soft breathing glow behind the bouquet while it grows.
+- [x] Add subtle firefly lights and a small heart indicator for a warmer, cuter loading mood.
+- [x] Refine the progress track with rounded styling and a gentle moving glint.
+- [x] Preserve reduced-motion behavior and validate desktop/mobile rendering.

@@ -780,3 +780,42 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
   color: var(--warm-white);
   margin-bottom: 32px;
 }
+
+/* Realistic cute growth pass: soft light, organic pacing, and a little garden magic. */
+.garden-screen .bouquet-column.is-growing::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 24%;
+  width: 72%;
+  height: 48%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(213,106,130,.18), transparent 68%);
+  filter: blur(18px);
+  transform: translateX(-50%) scale(.86);
+  animation: garden-glow-breathe 3.6s ease-in-out infinite;
+  pointer-events: none;
+}
+.garden-screen .bouquet-figure { z-index: 1; }
+.growth-fireflies { position: absolute; z-index: 2; inset: 16% 12% 24%; pointer-events: none; }
+.growth-fireflies i { position: absolute; width: 5px; height: 5px; border-radius: 50%; background: #ffe4a7; box-shadow: 0 0 12px 3px rgba(255,210,137,.72); opacity: 0; animation: firefly-float 3.8s ease-in-out infinite; }
+.growth-fireflies i:nth-child(1) { left: 18%; top: 56%; animation-delay: -.4s; }
+.growth-fireflies i:nth-child(2) { left: 76%; top: 34%; animation-delay: -1.7s; transform: scale(.7); }
+.growth-fireflies i:nth-child(3) { left: 61%; top: 72%; animation-delay: -2.6s; transform: scale(.55); }
+.growth-fireflies i:nth-child(4) { left: 35%; top: 18%; animation-delay: -3.1s; transform: scale(.8); }
+.garden-screen .flower { animation-timing-function: cubic-bezier(.2,.85,.28,1); }
+.growth-card-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.growth-card-heart { color: var(--rose-light); font-size: 16px; animation: heart-glow 2.4s ease-in-out infinite; }
+.growth-bar { position: relative; height: 4px; overflow: hidden; border-radius: 999px; box-shadow: inset 0 1px 2px rgba(0,0,0,.2); }
+.growth-bar::after { content: ""; position: absolute; top: 0; bottom: 0; left: -30%; width: 28%; background: linear-gradient(90deg, transparent, rgba(255,242,210,.65), transparent); animation: progress-glint 2.2s ease-in-out infinite; }
+.growth-bar span { position: relative; z-index: 1; border-radius: inherit; box-shadow: 0 0 12px rgba(214,164,109,.28); }
+@keyframes garden-glow-breathe { 0%,100% { opacity: .42; transform: translateX(-50%) scale(.82); } 50% { opacity: .9; transform: translateX(-50%) scale(1.04); } }
+@keyframes firefly-float { 0%,100% { opacity: 0; transform: translate3d(-4px, 10px, 0) scale(.65); } 24% { opacity: .9; } 52% { opacity: .55; transform: translate3d(7px, -12px, 0) scale(1); } 78% { opacity: .75; } }
+@keyframes progress-glint { 0% { transform: translateX(0); opacity: 0; } 25% { opacity: 1; } 70%,100% { transform: translateX(520%); opacity: 0; } }
+@media (max-width: 640px) {
+  .growth-fireflies { inset: 14% 7% 21%; }
+  .growth-card-heart { font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .garden-screen .bouquet-column.is-growing::before, .growth-fireflies i, .growth-card-heart, .growth-bar::after { animation: none; }
+}
