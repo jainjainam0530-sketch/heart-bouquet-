@@ -106,11 +106,11 @@
 
 ## Printable Gift Card Update
 
-- [ ] Design a clean, elegant printable gift-card layout with QR code and note.
-- [ ] Add a "Print Gift Card" action to the final sharing scene.
-- [ ] Implement `@media print` styles to ensure the card prints perfectly on A4/Letter.
-- [ ] Ensure the QR code and exact bouquet link are correctly embedded.
-- [ ] Validate the print preview and layout on mobile and desktop.
+- [x] Design a clean, elegant printable gift-card layout with QR code and a dedicated personal-message column.
+- [x] Add a "Print Gift Card" action to the final sharing scene.
+- [x] Implement `@media print` styles to ensure the card prints cleanly on A4/Letter.
+- [x] Ensure the QR code and exact bouquet link are correctly embedded.
+- [x] Validate the print preview and layout on mobile and desktop.
 
 ## Slide-Out Melody Panel Update
 

@@ -380,6 +380,48 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
   color: var(--warm-white);
 }
 
+.print-card-back {
+  background: #fffdf9;
+  color: #1c0b12;
+}
+
+.print-back-content {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(140px, .8fr) minmax(190px, 1.2fr);
+  align-items: center;
+  gap: 28px;
+  margin-bottom: 28px;
+}
+
+.print-qr-column,
+.print-message-column {
+  min-width: 0;
+}
+
+.print-qr-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.print-message-column {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 24px;
+  border-left: 1px solid rgba(28, 11, 18, .12);
+}
+
+.print-message-label {
+  margin-bottom: 12px;
+  color: #9a6a55;
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
 .print-brand {
   display: flex;
   align-items: center;
@@ -426,7 +468,7 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  margin-bottom: 24px;
+  text-align: center;
   color: #888;
 }
 
@@ -434,10 +476,9 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
   font-family: var(--font-display);
   font-size: 16px;
   line-height: 1.6;
-  text-align: center;
+  text-align: left;
   white-space: pre-wrap;
-  max-width: 280px;
-  margin-bottom: 24px;
+  max-width: 310px;
 }
 
 .print-footer {
@@ -447,6 +488,11 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
 }
 
 @media print {
+  @page {
+    size: landscape;
+    margin: 12mm;
+  }
+
   body * {
     visibility: hidden;
   }
@@ -465,17 +511,41 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
   }
   .print-card-preview {
     width: 100%;
+    max-width: 260mm;
     box-shadow: none;
     border: none;
   }
   .print-card-layout {
+    min-height: 105mm;
     border: 1px solid #000;
+    break-inside: avoid;
+  }
+
+  .print-card-back {
+    break-inside: avoid;
   }
 }
 
 @media (max-width: 768px) {
   .print-card-layout {
     flex-direction: column;
+  }
+
+  .print-back-content {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .print-message-column {
+    padding: 22px 0 0;
+    border-top: 1px solid rgba(28, 11, 18, .12);
+    border-left: 0;
+    text-align: center;
+  }
+
+  .print-note {
+    text-align: center;
+    margin-inline: auto;
   }
 }
 
