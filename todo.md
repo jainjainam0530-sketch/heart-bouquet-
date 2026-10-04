@@ -141,3 +141,10 @@
 - [x] Add subtle firefly lights and a small heart indicator for a warmer, cuter loading mood.
 - [x] Refine the progress track with rounded styling and a gentle moving glint.
 - [x] Preserve reduced-motion behavior and validate desktop/mobile rendering.
+
+## Post-Growth Celebration Update
+
+- [x] Trigger a short celebration during the existing bouquet success-bloom window.
+- [x] Add refined sparkle-ring and starburst details.
+- [x] Add lightweight color-matched confetti particles that fade before the final state.
+- [x] Preserve reduced-motion behavior and validate the journey on responsive previews.

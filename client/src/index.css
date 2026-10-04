@@ -819,3 +819,32 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
 @media (prefers-reduced-motion: reduce) {
   .garden-screen .bouquet-column.is-growing::before, .growth-fireflies i, .growth-card-heart, .growth-bar::after { animation: none; }
 }
+
+/* Post-growth celebration: a brief, refined sparkle and confetti release. */
+.success-celebration { position: absolute; z-index: 5; left: 50%; top: 43%; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.success-celebration.is-active { opacity: 1; }
+.success-celebration::before { content: ""; position: absolute; left: 50%; top: 50%; width: 34px; height: 34px; border: 1px solid rgba(255,224,167,.85); border-radius: 50%; transform: translate(-50%, -50%) scale(.35); animation: celebration-ring 1.2s var(--ease-silk) both; }
+.success-celebration::after { content: "✦"; position: absolute; left: 50%; top: 50%; color: #ffe4a7; font-size: 24px; text-shadow: 0 0 18px rgba(255,215,137,.9); transform: translate(-50%, -50%) scale(.4); animation: celebration-star 1.2s var(--ease-silk) both; }
+.success-celebration i { position: absolute; left: 0; top: 0; width: 7px; height: 12px; border-radius: 2px 2px 4px 4px; background: var(--confetti-color, #d56a82); box-shadow: 0 0 8px color-mix(in srgb, var(--confetti-color, #d56a82) 55%, transparent); transform: translate(-50%, -50%) scale(.2) rotate(0deg); animation: celebration-confetti 1.15s var(--ease-silk) both; animation-delay: var(--confetti-delay, 0s); }
+.success-celebration i:nth-child(1) { --confetti-color: #f3b5b1; --confetti-x: -112px; --confetti-y: -72px; --confetti-rotate: -42deg; --confetti-delay: .02s; }
+.success-celebration i:nth-child(2) { --confetti-color: #d6a46d; --confetti-x: -82px; --confetti-y: -116px; --confetti-rotate: 24deg; --confetti-delay: .08s; }
+.success-celebration i:nth-child(3) { --confetti-color: #a987c6; --confetti-x: -32px; --confetti-y: -138px; --confetti-rotate: -18deg; --confetti-delay: .12s; }
+.success-celebration i:nth-child(4) { --confetti-color: #91b99c; --confetti-x: 24px; --confetti-y: -128px; --confetti-rotate: 52deg; --confetti-delay: .05s; }
+.success-celebration i:nth-child(5) { --confetti-color: #efb2ad; --confetti-x: 78px; --confetti-y: -106px; --confetti-rotate: -32deg; --confetti-delay: .14s; }
+.success-celebration i:nth-child(6) { --confetti-color: #d6a46d; --confetti-x: 114px; --confetti-y: -58px; --confetti-rotate: 31deg; --confetti-delay: .1s; }
+.success-celebration i:nth-child(7) { --confetti-color: #d56a82; --confetti-x: -130px; --confetti-y: -22px; --confetti-rotate: 64deg; --confetti-delay: .16s; }
+.success-celebration i:nth-child(8) { --confetti-color: #f3b5b1; --confetti-x: 132px; --confetti-y: -10px; --confetti-rotate: -56deg; --confetti-delay: .18s; }
+.success-celebration i:nth-child(9) { --confetti-color: #91b99c; --confetti-x: -100px; --confetti-y: 34px; --confetti-rotate: -26deg; --confetti-delay: .2s; }
+.success-celebration i:nth-child(10) { --confetti-color: #a987c6; --confetti-x: 103px; --confetti-y: 42px; --confetti-rotate: 42deg; --confetti-delay: .22s; }
+.success-celebration i:nth-child(11) { --confetti-color: #d6a46d; --confetti-x: -62px; --confetti-y: 76px; --confetti-rotate: 18deg; --confetti-delay: .25s; }
+.success-celebration i:nth-child(12) { --confetti-color: #efb2ad; --confetti-x: 59px; --confetti-y: 82px; --confetti-rotate: -38deg; --confetti-delay: .27s; }
+@keyframes celebration-ring { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.35); } 24% { opacity: .9; } 100% { opacity: 0; transform: translate(-50%, -50%) scale(4.3); } }
+@keyframes celebration-star { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.4) rotate(-25deg); } 24% { opacity: 1; } 70% { opacity: .8; } 100% { opacity: 0; transform: translate(-50%, -50%) scale(1.45) rotate(24deg); } }
+@keyframes celebration-confetti { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.2) rotate(0deg); } 20% { opacity: 1; } 100% { opacity: 0; transform: translate(calc(-50% + var(--confetti-x)), calc(-50% + var(--confetti-y))) scale(1) rotate(var(--confetti-rotate)); } }
+@media (max-width: 640px) {
+  .success-celebration { top: 41%; transform: scale(.72); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .success-celebration.is-active { animation: none; }
+  .success-celebration::before, .success-celebration::after, .success-celebration i { animation-duration: .01ms; animation-iteration-count: 1; }
+}
