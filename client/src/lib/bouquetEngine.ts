@@ -80,47 +80,47 @@ const PALETTES: Palette[] = [
 const BOUQUET_STYLES: BouquetStyle[] = [
   {
     name: "Tall Rose Arch",
-    flowerSet: ["rose", "rose", "tulip", "daisy", "lavender"],
+    flowerSet: ["rose", "rose", "tulip", "peony", "daisy"],
     positions: [[250, 108], [150, 182], [350, 168], [235, 244], [378, 250], [105, 304], [419, 313], [184, 348], [314, 357], [140, 416], [366, 426], [250, 430], [78, 247], [430, 238]],
     minCount: 11, maxCount: 14, spread: 20, yJitter: 13, scaleBias: .98, leafMin: 13, leafMax: 18, leafTilt: 0, leafYMin: 250, leafYMax: 510, paletteOffset: 0, stemBend: 1,
   },
   {
     name: "Sunlit Handful",
-    flowerSet: ["sunflower", "hibiscus", "daisy", "wildflower", "tulip"],
+    flowerSet: ["sunflower", "hibiscus", "orchid", "daisy", "wildflower"],
     positions: [[250, 138], [168, 210], [333, 218], [112, 269], [390, 278], [206, 304], [301, 321], [99, 367], [402, 374], [160, 418], [345, 420], [252, 451], [60, 306], [440, 302]],
     minCount: 10, maxCount: 13, spread: 34, yJitter: 18, scaleBias: 1.06, leafMin: 12, leafMax: 16, leafTilt: 12, leafYMin: 285, leafYMax: 515, paletteOffset: 6, stemBend: 1.3,
   },
   {
     name: "Lavender Drift",
-    flowerSet: ["lavender", "lavender", "cherry", "daisy", "wildflower"],
+    flowerSet: ["lavender", "lavender", "ranunculus", "cherry", "daisy"],
     positions: [[250, 108], [212, 166], [301, 176], [157, 242], [355, 248], [230, 275], [325, 291], [113, 338], [398, 352], [178, 401], [342, 414], [250, 453], [78, 283], [430, 293]],
     minCount: 12, maxCount: 15, spread: 18, yJitter: 11, scaleBias: .86, leafMin: 15, leafMax: 20, leafTilt: -9, leafYMin: 230, leafYMax: 505, paletteOffset: 2, stemBend: .8,
   },
   {
     name: "Wide Meadow",
-    flowerSet: ["cherry", "daisy", "carnation", "wildflower", "tulip"],
+    flowerSet: ["cherry", "daisy", "carnation", "ranunculus", "tulip"],
     positions: [[250, 156], [122, 230], [380, 226], [188, 260], [318, 268], [80, 318], [433, 327], [142, 363], [360, 372], [197, 405], [306, 413], [250, 448], [55, 268], [448, 260]],
     minCount: 12, maxCount: 16, spread: 42, yJitter: 22, scaleBias: .91, leafMin: 16, leafMax: 20, leafTilt: 8, leafYMin: 275, leafYMax: 515, paletteOffset: 5, stemBend: 1.45,
   },
   {
     name: "Deep Wine Cluster",
-    flowerSet: ["rose", "hibiscus", "carnation", "tulip"],
+    flowerSet: ["rose", "peony", "hibiscus", "carnation"],
     positions: [[250, 142], [188, 205], [315, 198], [134, 264], [369, 265], [214, 286], [291, 300], [104, 349], [401, 356], [171, 397], [344, 405], [250, 432], [76, 282], [430, 294]],
     minCount: 10, maxCount: 14, spread: 24, yJitter: 15, scaleBias: 1.09, leafMin: 11, leafMax: 15, leafTilt: -4, leafYMin: 260, leafYMax: 510, paletteOffset: 7, stemBend: 1.1,
   },
 ];
 
 const FLOWER_FAMILIES: FlowerType[][] = [
-  ["rose", "tulip", "daisy", "lavender"],
-  ["sunflower", "hibiscus", "daisy", "wildflower"],
-  ["cherry", "daisy", "carnation", "wildflower"],
-  ["rose", "hibiscus", "carnation", "tulip"],
-  ["lavender", "cherry", "wildflower", "daisy"],
-  ["sunflower", "rose", "daisy", "cherry"],
-  ["hibiscus", "carnation", "tulip", "lavender"],
-  ["rose", "tulip", "carnation", "wildflower"],
-  ["cherry", "lavender", "daisy", "hibiscus"],
-  ["sunflower", "wildflower", "tulip", "carnation"],
+  ["rose", "tulip", "peony", "daisy"],
+  ["sunflower", "hibiscus", "orchid", "daisy"],
+  ["cherry", "daisy", "ranunculus", "wildflower"],
+  ["rose", "hibiscus", "peony", "carnation"],
+  ["lavender", "cherry", "orchid", "daisy"],
+  ["sunflower", "rose", "ranunculus", "cherry"],
+  ["hibiscus", "carnation", "peony", "lavender"],
+  ["rose", "tulip", "orchid", "carnation"],
+  ["cherry", "lavender", "ranunculus", "hibiscus"],
+  ["sunflower", "wildflower", "peony", "carnation"],
 ];
 
 export function createBouquet(rawName: string, variationId = 0): BouquetModel {

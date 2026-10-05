@@ -80,6 +80,18 @@ function PetalCarnation({ palette }: { palette: Palette }) {
   return <g className="carnation-head">{Array.from({ length: 18 }, (_, index) => <path key={index} d="M0 5C-17-3-21-19-8-29C-3-34 0-25 0-18C4-29 13-32 17-24C24-10 13 0 0 5Z" fill="url(#petalSoft)" opacity=".82" transform={`rotate(${index * 20}) scale(${.72 + (index % 3) * .12})`} />)}<circle r="7" fill={palette.deep} opacity=".7" /></g>;
 }
 
+function PetalPeony({ palette }: { palette: Palette }) {
+  return <g className="peony-head">{Array.from({ length: 16 }, (_, index) => { const ring = index % 4; return <path key={index} d="M0 8C-24 8-39-8-34-25C-30-38-15-40-5-28C-8-44 4-52 15-43C27-33 24-17 14-5C30-17 42-7 38 7C34 20 18 25 0 8Z" fill={ring < 2 ? "url(#roseCore)" : "url(#petalMain)"} opacity={.72 + (index % 3) * .08} transform={`rotate(${index * 22.5}) scale(${.68 + ring * .09})`} className="petal" />; })}<circle r="6" fill={palette.highlight} opacity=".86" /></g>;
+}
+
+function PetalOrchid({ palette }: { palette: Palette }) {
+  return <g className="orchid-head"><path d="M0 5C-27-2-36-22-23-37C-15-46-3-35 0-22C3-37 17-47 26-37C38-23 27-3 0 5Z" fill="url(#petalSoft)" opacity=".9" /><path d="M-5 2C-28 18-22 39-5 34C3 32 5 21 2 12C13 26 30 18 27 7C24-3 11-2 0 7Z" fill="url(#petalMain)" opacity=".86" /><path d="M-3 11C-1 22 4 25 11 22C16 19 14 12 7 8Z" fill={palette.gold} opacity=".9" /><circle cx="0" cy="5" r="3" fill={palette.deep} /></g>;
+}
+
+function PetalRanunculus({ palette }: { palette: Palette }) {
+  return <g className="ranunculus-head">{Array.from({ length: 20 }, (_, index) => { const ring = index % 4; return <ellipse key={index} cx="0" cy={-12 - ring * 2} rx={10 - ring * 1.2} ry={17 - ring * 1.3} fill={index % 3 === 0 ? "url(#petalInner)" : "url(#petalSoft)"} opacity={.62 + (index % 4) * .08} transform={`rotate(${index * 18})`} className="petal" />; })}<circle r="5" fill={palette.highlight} opacity=".84" /></g>;
+}
+
 function PetalWildflower({ palette }: { palette: Palette }) {
   return <g className="wildflower-head">{Array.from({ length: 5 }, (_, index) => <ellipse key={index} cx="0" cy="-10" rx="6" ry="13" fill={index % 2 ? palette.highlight : palette.secondary} transform={`rotate(${index * 72})`} opacity=".88" />)}<circle r="4" fill={palette.gold} /></g>;
 }
@@ -93,6 +105,9 @@ function FlowerHead({ type, palette }: { type: FlowerType; palette: Palette }) {
   if (type === "hibiscus") return <PetalHibiscus palette={palette} />;
   if (type === "lavender") return <PetalLavender palette={palette} />;
   if (type === "carnation") return <PetalCarnation palette={palette} />;
+  if (type === "peony") return <PetalPeony palette={palette} />;
+  if (type === "orchid") return <PetalOrchid palette={palette} />;
+  if (type === "ranunculus") return <PetalRanunculus palette={palette} />;
   return <PetalWildflower palette={palette} />;
 }
 

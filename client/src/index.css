@@ -965,3 +965,14 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
 @media (prefers-reduced-motion: reduce) {
   .landing-petal { animation: none; opacity: .5; }
 }
+
+/* Premium flower finish: layered silhouettes stay soft and handmade, with a little couture detail. */
+.garden-screen .flower-peony, .garden-screen .flower-orchid, .garden-screen .flower-ranunculus { filter: url(#flowerShadow) drop-shadow(0 0 5px color-mix(in srgb, var(--palette-petal, #d56a82) 24%, transparent)); }
+.flower-peony .petal, .flower-ranunculus .petal { transform-box: fill-box; transform-origin: center bottom; transition: filter .35s ease, opacity .35s ease; }
+.flower-peony:hover .petal, .flower-peony.is-active .petal, .flower-ranunculus:hover .petal, .flower-ranunculus.is-active .petal { filter: brightness(1.12) saturate(1.1); }
+.flower-orchid { filter: url(#flowerShadow) drop-shadow(0 0 8px rgba(255,218,194,.22)); }
+.flower-orchid .orchid-head { transform-origin: center; transition: transform .35s var(--ease-silk), filter .35s ease; }
+.flower-orchid:hover .orchid-head, .flower-orchid.is-active .orchid-head { transform: translateY(-2px) scale(1.06); filter: brightness(1.1) saturate(1.08); }
+.flower-peony .peony-head { transform-origin: center; }.flower-ranunculus .ranunculus-head { transform-origin: center; }
+.garden-screen .flower-peony.is-active, .garden-screen .flower-orchid.is-active, .garden-screen .flower-ranunculus.is-active { animation: premium-flower-breathe 2.7s ease-in-out infinite; }
+@keyframes premium-flower-breathe { 0%,100% { opacity: 1; transform: translateY(0) scale(1) rotate(0); } 50% { opacity: 1; transform: translateY(-4px) scale(1.04) rotate(1deg); } }

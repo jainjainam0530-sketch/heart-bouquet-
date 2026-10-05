@@ -1,6 +1,6 @@
 /* Midnight Conservatory flower library: names and interactions stay extensible while artwork remains procedural SVG. */
 
-export type FlowerType = "rose" | "tulip" | "cherry" | "daisy" | "sunflower" | "hibiscus" | "lavender" | "carnation" | "wildflower";
+export type FlowerType = "rose" | "tulip" | "cherry" | "daisy" | "sunflower" | "hibiscus" | "lavender" | "carnation" | "wildflower" | "peony" | "orchid" | "ranunculus";
 
 export type FlowerMeta = {
   label: string;
@@ -19,6 +19,9 @@ export const FLOWER_META: Record<FlowerType, FlowerMeta> = {
   lavender: { label: "Lavender", symbol: "❋", personality: "calm", interaction: "A little calm in the middle of everything." },
   carnation: { label: "Carnation", symbol: "❉", personality: "warm", interaction: "A frilled little reminder that you are adored." },
   wildflower: { label: "Wildflower", symbol: "✧", personality: "playful", interaction: "A tiny wild thing with a very big heart." },
+  peony: { label: "Peony", symbol: "✤", personality: "lush", interaction: "A soft, luxurious bloom with room for every feeling." },
+  orchid: { label: "Orchid", symbol: "❁", personality: "elegant", interaction: "A graceful little statement, chosen with care." },
+  ranunculus: { label: "Ranunculus", symbol: "✥", personality: "layered", interaction: "So many petals, and somehow still perfectly sweet." },
 };
 
 export const FLOWER_TYPES = Object.keys(FLOWER_META) as FlowerType[];

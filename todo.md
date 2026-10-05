@@ -176,3 +176,10 @@
 - [x] Add a tiny localized petal tremble directly below the butterfly’s feet.
 - [x] Synchronize the petal response with the butterfly’s landing timing.
 - [x] Validate the completed bouquet with type-check, build, tests, and mobile preview.
+
+## Premium Flower Variety Expansion
+
+- [x] Add premium procedural flower families: Peony, Orchid, and Ranunculus.
+- [x] Add unique silhouettes, layering, highlights, and cute interaction copy for each family.
+- [x] Integrate premium families into deterministic bouquet styles and flower-family selection.
+- [x] Validate representative premium bouquets on mobile with type-check, build, and tests.
