@@ -148,3 +148,10 @@
 - [x] Add refined sparkle-ring and starburst details.
 - [x] Add lightweight color-matched confetti particles that fade before the final state.
 - [x] Preserve reduced-motion behavior and validate the journey on responsive previews.
+
+## Completed Bouquet Butterfly
+
+- [x] Add a decorative butterfly only after the bouquet has finished growing.
+- [x] Animate a short flight path around the flowers before settling near the upper blooms.
+- [x] Add continuous live wing movement with a reduced-motion fallback.
+- [x] Validate the completed bouquet on mobile plus type-check, build, and tests.

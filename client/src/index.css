@@ -848,3 +848,38 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
   .success-celebration.is-active { animation: none; }
   .success-celebration::before, .success-celebration::after, .success-celebration i { animation-duration: .01ms; animation-iteration-count: 1; }
 }
+
+/* Completed-bouquet butterfly: a tiny visitor that circles once, then rests on a bloom. */
+.garden-butterfly { position: absolute; z-index: 6; left: 50%; top: 42%; width: 30px; height: 24px; pointer-events: none; transform: translate(-50%, -50%); animation: butterfly-flight 8.8s cubic-bezier(.35,.02,.22,1) both; }
+.butterfly-body { position: absolute; left: 50%; top: 4px; width: 4px; height: 19px; border-radius: 999px; background: linear-gradient(#493044, #1b1523); box-shadow: 0 0 8px rgba(255,218,173,.45); transform: translateX(-50%); z-index: 2; }
+.butterfly-body::before, .butterfly-body::after { content: ""; position: absolute; top: -4px; width: 8px; height: 9px; border-top: 1px solid rgba(255,230,190,.7); border-radius: 50%; }
+.butterfly-body::before { right: 1px; transform: rotate(34deg); }.butterfly-body::after { left: 1px; transform: rotate(-34deg); }
+.butterfly-wing { position: absolute; top: 0; width: 14px; height: 18px; border: 1px solid rgba(255,211,181,.78); background: radial-gradient(circle at 55% 38%, rgba(255,242,202,.92), rgba(213,106,130,.72) 48%, rgba(132,70,106,.62)); box-shadow: 0 0 10px rgba(241,164,154,.55); transform-origin: 100% 75%; animation: butterfly-wingbeat .22s ease-in-out infinite alternate; }
+.butterfly-wing-left { left: 0; border-radius: 75% 28% 70% 38%; transform: rotate(19deg); }.butterfly-wing-right { right: 0; border-radius: 28% 75% 38% 70%; transform-origin: 0 75%; transform: rotate(-19deg); animation-delay: -.11s; }
+@keyframes butterfly-wingbeat { from { transform: rotate(19deg) scaleY(1); } to { transform: rotate(36deg) scaleY(.72); } }
+.butterfly-wing-right { animation-name: butterfly-wingbeat-right; }
+@keyframes butterfly-wingbeat-right { from { transform: rotate(-19deg) scaleY(1); } to { transform: rotate(-36deg) scaleY(.72); } }
+@keyframes butterfly-flight {
+  0% { opacity: 0; transform: translate(-50%, -50%) translate(-125px, 96px) rotate(-12deg) scale(.72); }
+  8% { opacity: 1; }
+  23% { transform: translate(-50%, -50%) translate(92px, 24px) rotate(15deg) scale(.86); }
+  42% { transform: translate(-50%, -50%) translate(122px, -118px) rotate(28deg) scale(.78); }
+  60% { transform: translate(-50%, -50%) translate(-92px, -154px) rotate(-20deg) scale(.9); }
+  76% { transform: translate(-50%, -50%) translate(-112px, -48px) rotate(-8deg) scale(.82); }
+  88% { transform: translate(-50%, -50%) translate(-36px, -92px) rotate(5deg) scale(.74); }
+  100% { opacity: 1; transform: translate(-50%, -50%) translate(18px, -104px) rotate(2deg) scale(.68); }
+}
+@media (max-width: 640px) { .garden-butterfly { transform: translate(-50%, -50%) scale(.78); animation-name: butterfly-flight-mobile; } }
+@keyframes butterfly-flight-mobile {
+  0% { opacity: 0; transform: translate(-50%, -50%) translate(-82px, 78px) rotate(-12deg) scale(.62); }
+  10% { opacity: 1; }
+  28% { transform: translate(-50%, -50%) translate(67px, 20px) rotate(15deg) scale(.7); }
+  48% { transform: translate(-50%, -50%) translate(80px, -84px) rotate(24deg) scale(.64); }
+  68% { transform: translate(-50%, -50%) translate(-63px, -112px) rotate(-18deg) scale(.72); }
+  84% { transform: translate(-50%, -50%) translate(-72px, -34px) rotate(-7deg) scale(.66); }
+  100% { opacity: 1; transform: translate(-50%, -50%) translate(10px, -76px) rotate(2deg) scale(.58); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .garden-butterfly { animation: none; opacity: 1; transform: translate(-50%, -50%) translate(18px, -104px) scale(.68); }
+  .butterfly-wing { animation: none; }
+}
