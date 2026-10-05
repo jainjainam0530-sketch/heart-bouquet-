@@ -162,3 +162,10 @@
 - [x] Refine wing gradients, silhouettes, antennae, and body shading for a more professional finish.
 - [x] Add a delayed, subtle bouquet sway when the butterfly reaches the landing point.
 - [x] Preserve reduced-motion behavior and validate multiple bouquet variants on mobile.
+
+## Butterfly Wing Scale Refinement
+
+- [x] Enlarge both butterfly wings for a clear, balanced silhouette.
+- [x] Strengthen the centered body, wing shading, and resting scale on mobile.
+- [x] Preserve live wing movement, variant colors, and reduced-motion support.
+- [x] Validate the final visual with type-check, build, tests, and mobile preview.
