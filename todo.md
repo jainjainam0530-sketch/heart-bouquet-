@@ -169,3 +169,10 @@
 - [x] Strengthen the centered body, wing shading, and resting scale on mobile.
 - [x] Preserve live wing movement, variant colors, and reduced-motion support.
 - [x] Validate the final visual with type-check, build, tests, and mobile preview.
+
+## Butterfly Detail and Landing Petals
+
+- [x] Add fine vein details inside both butterfly wings.
+- [x] Add a tiny localized petal tremble directly below the butterfly’s feet.
+- [x] Synchronize the petal response with the butterfly’s landing timing.
+- [x] Validate the completed bouquet with type-check, build, tests, and mobile preview.

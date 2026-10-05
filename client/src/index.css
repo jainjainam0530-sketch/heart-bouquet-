@@ -944,3 +944,24 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
 @media (prefers-reduced-motion: reduce) {
   .garden-butterfly { animation: none; opacity: 1; transform: translate(-50%, -50%) translate(18px, -104px) scale(.86); }
 }
+
+/* Fine butterfly detail and a localized petal response beneath its feet. */
+.wing-vein { position: absolute; left: 50%; top: 48%; width: 1px; height: 73%; border-radius: 999px; background: rgba(255,246,215,.62); box-shadow: 0 0 2px rgba(255,255,255,.35); transform-origin: top center; pointer-events: none; }
+.butterfly-wing-left .wing-vein { transform: translateX(-50%) rotate(-27deg); }
+.butterfly-wing-right .wing-vein { transform: translateX(-50%) rotate(27deg); }
+.wing-vein-main { opacity: .72; }
+.wing-vein-upper { top: 43%; height: 48%; opacity: .48; }
+.butterfly-wing-left .wing-vein-upper { transform: translateX(-50%) rotate(-57deg); }.butterfly-wing-right .wing-vein-upper { transform: translateX(-50%) rotate(57deg); }
+.wing-vein-lower { top: 57%; height: 38%; opacity: .42; }
+.butterfly-wing-left .wing-vein-lower { transform: translateX(-50%) rotate(-4deg); }.butterfly-wing-right .wing-vein-lower { transform: translateX(-50%) rotate(4deg); }
+.landing-petal { position: absolute; z-index: -1; top: 29px; width: 12px; height: 7px; border-bottom: 1px solid rgba(255,225,191,.76); border-radius: 0 0 90% 90%; opacity: 0; transform-origin: center bottom; animation: landing-petal-tremble .72s cubic-bezier(.2,.8,.25,1) 7.78s both; }
+.landing-petal-left { left: 8px; transform: rotate(-16deg); }.landing-petal-right { right: 8px; transform: rotate(16deg); animation-delay: 7.9s; }
+@keyframes landing-petal-tremble { 0% { opacity: 0; transform: translateY(2px) rotate(0deg) scale(.55); } 18% { opacity: .88; transform: translateY(0) rotate(-8deg) scale(1); } 38% { transform: translateY(-1px) rotate(6deg) scale(1.05); } 62% { opacity: .62; transform: translateY(0) rotate(-3deg) scale(.95); } 100% { opacity: 0; transform: translateY(1px) rotate(0deg) scale(.78); } }
+@media (max-width: 640px) {
+  .wing-vein { height: 70%; }
+  .landing-petal { top: 25px; width: 10px; }
+  .landing-petal-left { left: 6px; }.landing-petal-right { right: 6px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .landing-petal { animation: none; opacity: .5; }
+}
