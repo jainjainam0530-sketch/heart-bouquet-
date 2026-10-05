@@ -883,3 +883,20 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
   .garden-butterfly { animation: none; opacity: 1; transform: translate(-50%, -50%) translate(18px, -104px) scale(.68); }
   .butterfly-wing { animation: none; }
 }
+
+/* Professional butterfly variants and the gentle flower response on landing. */
+.garden-butterfly { --butterfly-light: #fff0c9; --butterfly-mid: #d56a82; --butterfly-deep: #7d3d69; filter: drop-shadow(0 4px 5px rgba(17,5,14,.3)); }
+.butterfly-variant-1 { --butterfly-light: #f6e4ff; --butterfly-mid: #a987c6; --butterfly-deep: #49386f; }
+.butterfly-variant-2 { --butterfly-light: #fff1bb; --butterfly-mid: #d68f5a; --butterfly-deep: #80504a; }
+.butterfly-wing { background: radial-gradient(circle at 55% 35%, var(--butterfly-light) 0 12%, var(--butterfly-mid) 45%, var(--butterfly-deep) 100%); border-color: color-mix(in srgb, var(--butterfly-light) 72%, transparent); }
+.butterfly-variant-1 .butterfly-wing { border-radius: 62% 38% 72% 28%; }
+.butterfly-variant-2 .butterfly-wing { border-radius: 82% 20% 54% 46%; }
+.butterfly-variant-1 .butterfly-wing-left, .butterfly-variant-1 .butterfly-wing-right { height: 20px; width: 15px; }
+.butterfly-variant-2 .butterfly-wing-left, .butterfly-variant-2 .butterfly-wing-right { height: 17px; width: 16px; }
+.butterfly-variant-2 .butterfly-body { background: linear-gradient(#5c3b2e, #20151a); }
+.garden-butterfly::after { content: ""; position: absolute; left: 50%; top: -7px; width: 1px; height: 10px; background: rgba(255,234,193,.75); transform: rotate(18deg); transform-origin: bottom; box-shadow: 7px 1px 0 -0.2px rgba(255,234,193,.75); }
+.butterfly-landed .bouquet-svg { transform-origin: 50% 88%; animation: flowers-respond-to-butterfly .95s cubic-bezier(.2,.8,.25,1) 7.65s both; }
+.butterfly-landed .bouquet-svg::after { content: ""; }
+@keyframes flowers-respond-to-butterfly { 0% { transform: rotate(0deg) translateY(0); } 22% { transform: rotate(-1.1deg) translateY(-2px); } 46% { transform: rotate(.9deg) translateY(1px); } 68% { transform: rotate(-.45deg) translateY(0); } 100% { transform: rotate(0deg) translateY(0); } }
+@media (max-width: 640px) { .butterfly-landed .bouquet-svg { animation-delay: 7.45s; } }
+@media (prefers-reduced-motion: reduce) { .butterfly-landed .bouquet-svg { animation: none; } }

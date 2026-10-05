@@ -155,3 +155,10 @@
 - [x] Animate a short flight path around the flowers before settling near the upper blooms.
 - [x] Add continuous live wing movement with a reduced-motion fallback.
 - [x] Validate the completed bouquet on mobile plus type-check, build, and tests.
+
+## Butterfly Polish and Flower Landing Response
+
+- [x] Add three deterministic butterfly visual variants tied to bouquet variation.
+- [x] Refine wing gradients, silhouettes, antennae, and body shading for a more professional finish.
+- [x] Add a delayed, subtle bouquet sway when the butterfly reaches the landing point.
+- [x] Preserve reduced-motion behavior and validate multiple bouquet variants on mobile.
