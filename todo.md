@@ -208,3 +208,11 @@
 - [x] Preserve mode through no-repeat generation and shared bouquet URLs.
 - [x] Remove the creator flag from shared links so receivers see only the finished bouquet.
 - [x] Validate creator and receiver mobile states, mode output, type-check, build, and tests.
+
+## Public Bouquet Choice and Clean Composition
+
+- [x] Make All Flowers and Premium Only visible to every visitor on the normal opening screen.
+- [x] Clarify that mixed All Flowers bouquets can include premium blooms.
+- [x] Remove the dense grass, leaf, and accent foliage layer from the bouquet render.
+- [x] Keep only three clean hero stems so the flower silhouettes stay readable.
+- [x] Validate the public chooser and simplified receiver bouquet on mobile with type-check, build, and tests.
