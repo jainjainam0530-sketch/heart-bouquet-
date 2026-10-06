@@ -183,3 +183,11 @@
 - [x] Add unique silhouettes, layering, highlights, and cute interaction copy for each family.
 - [x] Integrate premium families into deterministic bouquet styles and flower-family selection.
 - [x] Validate representative premium bouquets on mobile with type-check, build, and tests.
+
+## Premium Stem and Leaf Design Update
+
+- [x] Add curved, fuller peony stems with broad leaf silhouettes.
+- [x] Add slender, arching orchid stems with elegant lance-shaped leaves.
+- [x] Add layered ranunculus stems with softer rounded foliage.
+- [x] Add family-specific stem weight and foliage finish while preserving responsive rendering.
+- [x] Validate representative premium bouquets with type-check, build, tests, and mobile previews.

@@ -976,3 +976,14 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
 .flower-peony .peony-head { transform-origin: center; }.flower-ranunculus .ranunculus-head { transform-origin: center; }
 .garden-screen .flower-peony.is-active, .garden-screen .flower-orchid.is-active, .garden-screen .flower-ranunculus.is-active { animation: premium-flower-breathe 2.7s ease-in-out infinite; }
 @keyframes premium-flower-breathe { 0%,100% { opacity: 1; transform: translateY(0) scale(1) rotate(0); } 50% { opacity: 1; transform: translateY(-4px) scale(1.04) rotate(1deg); } }
+
+/* Premium stems and foliage carry the same personality as their blooms. */
+.stem-peony { stroke-width: 5.6; stroke-linecap: round; opacity: .94; }
+.stem-orchid { stroke-width: 3.1; stroke-linecap: round; opacity: .84; }
+.stem-ranunculus { stroke-width: 4.5; stroke-linecap: round; opacity: .92; }
+.leaf-peony path:first-child { filter: saturate(1.04) brightness(1.03); }
+.leaf-orchid path:first-child { filter: saturate(.88) brightness(1.08); }
+.leaf-ranunculus path:first-child { filter: saturate(1.12) brightness(.98); }
+.leaf-orchid { opacity: .88; }
+.leaf-peony { opacity: .96; }
+.leaf-ranunculus { opacity: .93; }
