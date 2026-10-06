@@ -41,6 +41,7 @@ export type BouquetModel = {
   name: string;
   seed: number;
   variationId: number;
+  mode: BouquetMode;
   palette: Palette;
   styleName: string;
   flowers: BouquetFlower[];
@@ -160,12 +161,14 @@ export function createBouquet(rawName: string, variationId = 0, mode: BouquetMod
     });
   }
 
-  const leafCount = style.leafMin + Math.floor(rng() * (style.leafMax - style.leafMin + 1));
+  const leafFloor = mode === "premium" ? 5 : Math.max(8, Math.round(style.leafMin * .72));
+  const leafCeiling = mode === "premium" ? 8 : Math.min(12, Math.round(style.leafMax * .72));
+  const leafCount = leafFloor + Math.floor(rng() * (leafCeiling - leafFloor + 1));
   const leaves = Array.from({ length: leafCount }, (_, index) => {
     const side = index % 2 === 0 ? "left" : "right";
     const left = side === "left";
     return {
-      x: between(rng, left ? 70 : 270, left ? 238 : 430),
+      x: between(rng, left ? 96 : 270, left ? 228 : 404),
       y: between(rng, style.leafYMin, style.leafYMax),
       rotation: between(rng, left ? -82 + style.leafTilt : 12 + style.leafTilt, left ? -18 + style.leafTilt : 82 + style.leafTilt),
       scale: between(rng, .48, 1.02),
@@ -174,7 +177,7 @@ export function createBouquet(rawName: string, variationId = 0, mode: BouquetMod
   });
 
   const selectedTypes = Array.from(new Set(flowers.map((flower) => flower.type)));
-  return { name, seed, variationId, palette, styleName: style.name, flowers, leaves, dominant, selectedTypes, wind: between(rng, -3.5, 3.5) };
+  return { name, seed, variationId, mode, palette, styleName: style.name, flowers, leaves, dominant, selectedTypes, wind: between(rng, -3.5, 3.5) };
 }
 
 export function flowerList(model: BouquetModel) {

@@ -223,3 +223,13 @@
 - [x] Keep the extra leaf layer, grass-like foliage, eucalyptus, fern, and baby’s-breath accents hidden.
 - [x] Override the earlier hero-only stem rule so smaller blooms are also connected naturally.
 - [x] Validate the corrected premium bouquet with type-check, tests, and mobile preview.
+
+## Bouquet Replan and Final Visual Audit
+
+- [x] Reintroduce controlled foliage so bouquets feel botanical without becoming crowded.
+- [x] Differentiate mixed bouquets with balanced classic leaves and premium bouquets with fewer, larger sculptural leaves.
+- [x] Keep eucalyptus, fern, and baby’s-breath accent branches disabled to avoid visual clutter.
+- [x] Restore mode-aware bouquet metadata and preserve All Flowers versus Premium Only behavior.
+- [x] Keep every flower stem visible and ensure flower/leaf geometry remains inside the SVG canvas.
+- [x] Reduce mobile rendering cost for filler blooms and respect reduced-motion preferences.
+- [x] Validate mixed and premium mobile previews, geometry bounds, type-check, production build, and tests.

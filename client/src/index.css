@@ -1032,3 +1032,20 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
 
 /* Override the earlier hero-only cleanup: all flower stems should remain visible. */
 .bouquet-svg .stems .stem-line:nth-child(n+4) { display: inline; }
+
+/* Replanned bouquet system: core leaves return, accent branches stay off. */
+.bouquet-svg { overflow: visible; shape-rendering: geometricPrecision; }
+.bouquet-svg .leaves { display: inline; pointer-events: none; }
+.bouquet-svg .premium-accents { display: none; }
+.bouquet-svg.bouquet-mode-all .leaf-shape { opacity: .78; }
+.bouquet-svg.bouquet-mode-all .leaf-shape:nth-child(3n) { opacity: .58; transform: scale(.82); }
+.bouquet-svg.bouquet-mode-premium .leaf-shape { opacity: .94; }
+.bouquet-svg.bouquet-mode-premium .leaf-shape:nth-child(2n) { transform: scale(.88); }
+.bouquet-svg .flower-role-filler { filter: drop-shadow(0 2px 3px rgba(0,0,0,.22)); }
+.bouquet-svg .flower-role-support { filter: url(#flowerShadow); }
+@media (max-width: 640px) {
+  .bouquet-svg .flower-role-filler { filter: drop-shadow(0 1px 2px rgba(0,0,0,.18)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bouquet-svg .flower, .bouquet-svg .stem-line, .bouquet-svg .leaves { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+}
