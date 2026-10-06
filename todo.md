@@ -216,3 +216,10 @@
 - [x] Remove the dense grass, leaf, and accent foliage layer from the bouquet render.
 - [x] Keep only three clean hero stems so the flower silhouettes stay readable.
 - [x] Validate the public chooser and simplified receiver bouquet on mobile with type-check, build, and tests.
+
+## Stem Restoration and Leaf Cleanup Correction
+
+- [x] Restore a clean stem for every flower in the bouquet.
+- [x] Keep the extra leaf layer, grass-like foliage, eucalyptus, fern, and baby’s-breath accents hidden.
+- [x] Override the earlier hero-only stem rule so smaller blooms are also connected naturally.
+- [x] Validate the corrected premium bouquet with type-check, tests, and mobile preview.

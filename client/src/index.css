@@ -1025,3 +1025,10 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
 
 /* Public bouquet chooser: both modes are intentionally available before generation. */
 .creator-bouquet-mode::before { content: "BOUQUET STYLE"; }
+
+/* Final bouquet balance: every bloom keeps its stem; only decorative leaf clutter stays hidden. */
+.bouquet-svg .stems .stem-line { display: inline; }
+.bouquet-svg .leaves, .bouquet-svg .premium-accents { display: none; }
+
+/* Override the earlier hero-only cleanup: all flower stems should remain visible. */
+.bouquet-svg .stems .stem-line:nth-child(n+4) { display: inline; }
