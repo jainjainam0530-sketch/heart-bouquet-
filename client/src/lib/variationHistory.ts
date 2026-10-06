@@ -1,6 +1,6 @@
 /* Bloom For You variation memory: every new bouquet receives a fresh local variation ID and avoids recent visual fingerprints. */
 
-import { createBouquet, type BouquetModel } from "./bouquetEngine";
+import { createBouquet, type BouquetMode, type BouquetModel } from "./bouquetEngine";
 import { normalizeName } from "./nameSeed";
 
 const COUNTER_KEY = "bloom-for-you:variation-counter";
@@ -43,17 +43,17 @@ export function bouquetFingerprint(model: BouquetModel) {
   ].join("::");
 }
 
-export function createFreshBouquet(rawName: string) {
+export function createFreshBouquet(rawName: string, mode: BouquetMode = "all") {
   const name = normalizeName(rawName) || "best friend";
   const history = readHistory();
   let variationId = readCounter() + 1;
-  let model = createBouquet(name, variationId);
+  let model = createBouquet(name, variationId, mode);
   let fingerprint = bouquetFingerprint(model);
   let attempts = 0;
 
   while (history.some((record) => record.fingerprint === fingerprint) && attempts < 40) {
     variationId += 1;
-    model = createBouquet(name, variationId);
+    model = createBouquet(name, variationId, mode);
     fingerprint = bouquetFingerprint(model);
     attempts += 1;
   }

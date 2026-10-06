@@ -199,3 +199,12 @@
 - [x] Add subtle leaf shimmer and foliage sway during the growth phase.
 - [x] Preserve reduced-motion behavior and validate completed/growing responsive states.
 - [x] Run type-check, production build, and tests successfully.
+
+## Private Creator Bouquet Modes
+
+- [x] Add exactly two creator choices: All Flowers and Premium Only.
+- [x] Keep the selector hidden unless the private creator flag is present.
+- [x] Generate premium-only bouquets using only Peony, Orchid, and Ranunculus.
+- [x] Preserve mode through no-repeat generation and shared bouquet URLs.
+- [x] Remove the creator flag from shared links so receivers see only the finished bouquet.
+- [x] Validate creator and receiver mobile states, mode output, type-check, build, and tests.

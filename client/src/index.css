@@ -1004,3 +1004,15 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
 @media (prefers-reduced-motion: reduce) {
   .premium-accents, .is-growing .leaf-shape { animation: none; opacity: .88; }
 }
+
+/* Private creator selector: receiver links never carry the creator flag, so this stays out of their experience. */
+.creator-bouquet-mode { margin: 14px 0 18px; padding: 13px; border: 1px solid rgba(214,164,109,.24); border-radius: 12px; color: rgba(255,233,220,.72); background: rgba(34,10,20,.38); text-align: left; }
+.creator-bouquet-mode legend { padding: 0 7px; color: var(--gold); font-size: 9px; letter-spacing: .16em; text-transform: uppercase; }
+.creator-bouquet-mode p { margin: 0 0 10px; color: rgba(255,233,220,.48); font-size: 11px; }
+.creator-mode-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.creator-mode-options label { display: grid; gap: 3px; padding: 10px; border: 1px solid rgba(255,233,220,.14); border-radius: 9px; cursor: pointer; transition: border-color .2s ease, background .2s ease, transform .2s var(--ease-silk); }
+.creator-mode-options label:hover, .creator-mode-options label.is-selected { border-color: rgba(214,164,109,.68); background: rgba(115,42,60,.22); transform: translateY(-1px); }
+.creator-mode-options input { position: absolute; opacity: 0; pointer-events: none; }
+.creator-mode-options span { color: var(--warm-white); font-size: 12px; }.creator-mode-options small { color: rgba(255,233,220,.45); font-size: 9px; line-height: 1.35; }
+.creator-mode-options label.is-selected span::after { content: "  ✓"; color: var(--gold); }
+@media (max-width: 520px) { .creator-mode-options { grid-template-columns: 1fr; } }

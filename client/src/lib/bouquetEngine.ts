@@ -15,6 +15,8 @@ export type Palette = {
   atmosphere: string;
 };
 
+export type BouquetMode = "all" | "premium";
+
 export type BouquetFlower = {
   id: string;
   type: FlowerType;
@@ -110,6 +112,8 @@ const BOUQUET_STYLES: BouquetStyle[] = [
   },
 ];
 
+const PREMIUM_FAMILIES: FlowerType[][] = [["peony", "orchid", "ranunculus"], ["orchid", "ranunculus", "peony"], ["ranunculus", "peony", "orchid"]];
+
 const FLOWER_FAMILIES: FlowerType[][] = [
   ["rose", "tulip", "peony", "daisy"],
   ["sunflower", "hibiscus", "orchid", "daisy"],
@@ -123,13 +127,14 @@ const FLOWER_FAMILIES: FlowerType[][] = [
   ["sunflower", "wildflower", "peony", "carnation"],
 ];
 
-export function createBouquet(rawName: string, variationId = 0): BouquetModel {
+export function createBouquet(rawName: string, variationId = 0, mode: BouquetMode = "all"): BouquetModel {
   const name = normalizeName(rawName) || "best friend";
   const seed = (hashName(name) + Math.imul(variationId + 1, 2654435761)) >>> 0;
   const rng = createRng(seed);
   const firstCode = name.charCodeAt(0) || 0;
   const style = BOUQUET_STYLES[(seed + name.length * 17 + firstCode) % BOUQUET_STYLES.length];
-  const flowerSet = FLOWER_FAMILIES[(seed + name.length * 31 + firstCode) % FLOWER_FAMILIES.length];
+  const familyIndex = (seed + name.length * 31 + firstCode) % (mode === "premium" ? PREMIUM_FAMILIES.length : FLOWER_FAMILIES.length);
+  const flowerSet = mode === "premium" ? PREMIUM_FAMILIES[familyIndex] : FLOWER_FAMILIES[familyIndex];
   const paletteSeed = (hashName(`${name}-palette`) + Math.imul(variationId + 3, 2246822519)) >>> 0;
   const palette = PALETTES[(paletteSeed + style.paletteOffset) % PALETTES.length];
   const dominant = flowerSet[0];
