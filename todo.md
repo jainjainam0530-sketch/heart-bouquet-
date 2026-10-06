@@ -191,3 +191,11 @@
 - [x] Add layered ranunculus stems with softer rounded foliage.
 - [x] Add family-specific stem weight and foliage finish while preserving responsive rendering.
 - [x] Validate representative premium bouquets with type-check, build, tests, and mobile previews.
+
+## Premium Accents, Luxury Wrap, and Growth Motion
+
+- [x] Add eucalyptus-style accents, fern branches, and baby’s-breath dots to premium bouquets.
+- [x] Add a gold-thread luxury ribbon finish whenever premium flowers are present.
+- [x] Add subtle leaf shimmer and foliage sway during the growth phase.
+- [x] Preserve reduced-motion behavior and validate completed/growing responsive states.
+- [x] Run type-check, production build, and tests successfully.

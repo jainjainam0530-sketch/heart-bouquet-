@@ -987,3 +987,20 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
 .leaf-orchid { opacity: .88; }
 .leaf-peony { opacity: .96; }
 .leaf-ranunculus { opacity: .93; }
+
+/* Premium bouquet finishing details. */
+.premium-accents { opacity: 0; animation: premium-accent-in 1.4s var(--ease-silk) 2.6s forwards; pointer-events: none; }
+.eucalyptus-accent, .fern-accent, .babys-breath-accent { transform-origin: 50% 100%; }
+.premium-accents-1 .eucalyptus-accent { transform: translateX(8px) rotate(4deg); }.premium-accents-2 .fern-accent { transform: translateX(-8px) rotate(-4deg); }
+.babys-breath-accent circle { filter: drop-shadow(0 0 4px rgba(255,235,205,.72)); }
+.luxury-ribbon path:first-child { filter: saturate(.9) brightness(1.03); }
+.luxury-ribbon::after { content: ""; }
+.bouquet-svg:has(.luxury-ribbon) .luxury-ribbon { filter: drop-shadow(0 3px 5px rgba(0,0,0,.25)); }
+.is-growing .leaf-shape { animation: premium-leaf-shimmer 2.8s ease-in-out infinite; animation-delay: calc(var(--leaf-index, 0) * 90ms); }
+.is-growing .premium-accents { animation: premium-accent-in 1.4s var(--ease-silk) 2.6s forwards, premium-foliage-sway 3.6s ease-in-out 2.9s infinite; }
+@keyframes premium-accent-in { from { opacity: 0; transform: translateY(12px) scale(.88); } to { opacity: .9; transform: translateY(0) scale(1); } }
+@keyframes premium-leaf-shimmer { 0%,100% { filter: brightness(1) saturate(1); transform: rotate(0deg); } 50% { filter: brightness(1.1) saturate(1.05); transform: rotate(1.2deg); } }
+@keyframes premium-foliage-sway { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-2px) rotate(.6deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .premium-accents, .is-growing .leaf-shape { animation: none; opacity: .88; }
+}
