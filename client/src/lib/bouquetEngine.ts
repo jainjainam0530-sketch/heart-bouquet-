@@ -164,14 +164,21 @@ export function createBouquet(rawName: string, variationId = 0, mode: BouquetMod
   const leafFloor = mode === "premium" ? 9 : Math.max(13, Math.round(style.leafMin * .9));
   const leafCeiling = mode === "premium" ? 12 : Math.min(18, Math.max(leafFloor, Math.round(style.leafMax * .92)));
   const leafCount = leafFloor + Math.floor(rng() * (leafCeiling - leafFloor + 1));
+  const leafStemPool = flowers.filter((flower) => flower.role !== "filler");
   const leaves = Array.from({ length: leafCount }, (_, index) => {
     const side = index % 2 === 0 ? "left" : "right";
     const left = side === "left";
+    const stemFlower = leafStemPool[index % Math.max(1, leafStemPool.length)] ?? flowers[index % flowers.length];
+    const stemTargetX = stemFlower.x;
+    const stemTargetY = stemFlower.y + 34;
+    const alongStem = between(rng, .38, .78);
+    const stemX = 250 + (stemTargetX - 250) * alongStem;
+    const stemY = 560 + (stemTargetY - 560) * alongStem;
     return {
-      x: between(rng, left ? 96 : 270, left ? 228 : 404),
-      y: between(rng, style.leafYMin, style.leafYMax),
-      rotation: between(rng, left ? -82 + style.leafTilt : 12 + style.leafTilt, left ? -18 + style.leafTilt : 82 + style.leafTilt),
-      scale: between(rng, .48, 1.02),
+      x: stemX + (left ? -14 : 14),
+      y: Math.max(285, Math.min(505, stemY + between(rng, -8, 8))),
+      rotation: between(rng, left ? -78 + style.leafTilt : 24 + style.leafTilt, left ? -28 + style.leafTilt : 78 + style.leafTilt),
+      scale: between(rng, mode === "premium" ? .54 : .5, mode === "premium" ? .92 : .94),
       side: side as "left" | "right",
     };
   });

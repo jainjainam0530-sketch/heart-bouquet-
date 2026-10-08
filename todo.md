@@ -241,3 +241,11 @@
 - [x] Add a short connecting branch stem beneath every leaf.
 - [x] Keep the foliage within safe canvas bounds and preserve the mixed/premium visual distinction.
 - [x] Validate mobile previews, leaf counts, type-check, production build, and tests.
+
+## Stem-Anchored Professional Arrangement
+
+- [x] Derive leaf positions from real hero/support flower stems instead of free-scattering them.
+- [x] Anchor leaves through the middle and lower bouquet structure for a natural hand-tied silhouette.
+- [x] Add short branch stems that visibly return from each leaf toward its parent stem.
+- [x] Preserve fuller mixed foliage and restrained premium foliage as separate visual systems.
+- [x] Validate mobile composition, leaf ranges, type-check, production build, and tests.
