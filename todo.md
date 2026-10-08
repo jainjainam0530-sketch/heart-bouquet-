@@ -249,3 +249,11 @@
 - [x] Add short branch stems that visibly return from each leaf toward its parent stem.
 - [x] Preserve fuller mixed foliage and restrained premium foliage as separate visual systems.
 - [x] Validate mobile composition, leaf ranges, type-check, production build, and tests.
+
+## Synchronized Bouquet Growth Motion
+
+- [x] Add a gentle synchronized sway to the main stem network.
+- [x] Add a slightly offset leaf sway so foliage follows the stems naturally.
+- [x] Add restrained hero-bloom settling motion after the flowers appear.
+- [x] Scope motion to the growing phase, preserve the finished bouquet, and respect reduced-motion settings.
+- [x] Validate with type-check, production build, tests, and responsive growth previews.

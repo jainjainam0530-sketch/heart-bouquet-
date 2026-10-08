@@ -1049,3 +1049,26 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
 @media (prefers-reduced-motion: reduce) {
   .bouquet-svg .flower, .bouquet-svg .stem-line, .bouquet-svg .leaves { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }
+
+/* Natural growth motion: the bouquet settles as one living arrangement, then eases to rest. */
+.is-growing .stems,
+.is-growing .leaves,
+.is-growing .flower-role-hero { will-change: transform; }
+.is-growing .stems { animation: grow-stems 2.1s var(--ease-silk) .25s both, stem-sway 5.8s ease-in-out 2.35s infinite; }
+.is-growing .leaves { animation: unfold-leaves 1.7s var(--ease-silk) 1.1s both, leaf-sway 5.8s ease-in-out 2.8s infinite; }
+.is-growing .flower-role-hero { animation: flower-bloom 1.25s var(--ease-silk) calc(var(--bloom-delay) + 1.55s) forwards, bloom-sway 4.9s ease-in-out 4.9s infinite; }
+@keyframes stem-sway {
+  0%, 100% { transform: rotate(-.35deg) translateX(-1px); }
+  50% { transform: rotate(.45deg) translateX(1px); }
+}
+@keyframes leaf-sway {
+  0%, 100% { transform: scale(1) rotate(-.45deg); }
+  50% { transform: scale(1.01) rotate(.65deg); }
+}
+@keyframes bloom-sway {
+  0%, 100% { transform: translateY(0) rotate(-.35deg); }
+  50% { transform: translateY(-1px) rotate(.55deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .is-growing .stems, .is-growing .leaves, .is-growing .flower-role-hero { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+}
