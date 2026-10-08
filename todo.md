@@ -265,3 +265,11 @@
 - [x] Preserve a balanced florist-style hierarchy of hero, support, and filler blooms.
 - [x] Check mixed and premium bouquets at mobile and desktop sizes for attachment, spacing, and clipping.
 - [x] Re-run type-check, production build, tests, and deterministic anchor validation.
+
+## Synchronized Leaf Growth Animation
+
+- [x] Add per-leaf stagger timing during bouquet growth.
+- [x] Draw each leaf’s connecting branch before its leaf silhouette appears.
+- [x] Unfold leaves alongside the stem network instead of revealing them after growth completes.
+- [x] Preserve the final bouquet arrangement and reduced-motion behavior.
+- [x] Validate with type-check, production build, tests, and responsive previews.

@@ -1072,3 +1072,14 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
 @media (prefers-reduced-motion: reduce) {
   .is-growing .stems, .is-growing .leaves, .is-growing .flower-role-hero { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }
+
+/* Leaves now grow with the bouquet instead of appearing as a late separate layer. */
+.is-growing .bouquet-svg .leaves { animation: leaf-canopy-in .9s var(--ease-silk) .22s both, leaf-sway 5.8s ease-in-out 2.35s infinite; }
+.is-growing .bouquet-svg .leaf-shape { opacity: 0; animation: leaf-reveal .72s var(--ease-silk) var(--leaf-delay) forwards; }
+.is-growing .bouquet-svg .leaf-stem { stroke-dasharray: 70; stroke-dashoffset: 70; animation: leaf-branch-draw .62s var(--ease-silk) var(--leaf-delay) forwards; }
+@keyframes leaf-canopy-in { from { opacity: 0; transform: scaleY(.78); } to { opacity: 1; transform: scaleY(1); } }
+@keyframes leaf-reveal { from { opacity: 0; transform: scale(.55) rotate(-8deg); } to { opacity: var(--leaf-final-opacity); transform: scale(1) rotate(0); } }
+@keyframes leaf-branch-draw { from { stroke-dashoffset: 70; opacity: 0; } to { stroke-dashoffset: 0; opacity: .82; } }
+@media (prefers-reduced-motion: reduce) {
+  .is-growing .bouquet-svg .leaves, .is-growing .bouquet-svg .leaf-shape, .is-growing .bouquet-svg .leaf-stem { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+}
