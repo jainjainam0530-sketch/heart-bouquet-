@@ -233,3 +233,11 @@
 - [x] Keep every flower stem visible and ensure flower/leaf geometry remains inside the SVG canvas.
 - [x] Reduce mobile rendering cost for filler blooms and respect reduced-motion preferences.
 - [x] Validate mixed and premium mobile previews, geometry bounds, type-check, production build, and tests.
+
+## Fuller Bouquet Foliage Refinement
+
+- [x] Increase mixed-bouquet foliage to a fuller 13–18 leaves.
+- [x] Increase premium-bouquet foliage to 9–12 larger, more sculptural leaves.
+- [x] Add a short connecting branch stem beneath every leaf.
+- [x] Keep the foliage within safe canvas bounds and preserve the mixed/premium visual distinction.
+- [x] Validate mobile previews, leaf counts, type-check, production build, and tests.

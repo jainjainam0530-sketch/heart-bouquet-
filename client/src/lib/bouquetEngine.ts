@@ -161,8 +161,8 @@ export function createBouquet(rawName: string, variationId = 0, mode: BouquetMod
     });
   }
 
-  const leafFloor = mode === "premium" ? 5 : Math.max(8, Math.round(style.leafMin * .72));
-  const leafCeiling = mode === "premium" ? 8 : Math.min(12, Math.round(style.leafMax * .72));
+  const leafFloor = mode === "premium" ? 9 : Math.max(13, Math.round(style.leafMin * .9));
+  const leafCeiling = mode === "premium" ? 12 : Math.min(18, Math.max(leafFloor, Math.round(style.leafMax * .92)));
   const leafCount = leafFloor + Math.floor(rng() * (leafCeiling - leafFloor + 1));
   const leaves = Array.from({ length: leafCount }, (_, index) => {
     const side = index % 2 === 0 ? "left" : "right";
