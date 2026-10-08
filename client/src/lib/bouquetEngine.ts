@@ -32,6 +32,8 @@ export type BouquetFlower = {
 export type BouquetLeaf = {
   x: number;
   y: number;
+  anchorX: number;
+  anchorY: number;
   rotation: number;
   scale: number;
   side: "left" | "right";
@@ -177,6 +179,8 @@ export function createBouquet(rawName: string, variationId = 0, mode: BouquetMod
     return {
       x: stemX + (left ? -14 : 14),
       y: Math.max(285, Math.min(505, stemY + between(rng, -8, 8))),
+      anchorX: stemX,
+      anchorY: stemY,
       rotation: between(rng, left ? -78 + style.leafTilt : 24 + style.leafTilt, left ? -28 + style.leafTilt : 78 + style.leafTilt),
       scale: between(rng, mode === "premium" ? .54 : .5, mode === "premium" ? .92 : .94),
       side: side as "left" | "right",

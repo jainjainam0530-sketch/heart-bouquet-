@@ -257,3 +257,11 @@
 - [x] Add restrained hero-bloom settling motion after the flowers appear.
 - [x] Scope motion to the growing phase, preserve the finished bouquet, and respect reduced-motion settings.
 - [x] Validate with type-check, production build, tests, and responsive growth previews.
+
+## Final Bouquet Arrangement Audit
+
+- [x] Add explicit parent-stem coordinates to every generated leaf.
+- [x] Draw each leaf branch directly to its real parent stem instead of using a fixed curve.
+- [x] Preserve a balanced florist-style hierarchy of hero, support, and filler blooms.
+- [x] Check mixed and premium bouquets at mobile and desktop sizes for attachment, spacing, and clipping.
+- [x] Re-run type-check, production build, tests, and deterministic anchor validation.

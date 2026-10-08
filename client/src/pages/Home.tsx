@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type MouseEvent, type SyntheticEvent } from "react";
 import QRCode from "qrcode";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { createBouquet, flowerList, type BouquetFlower, type BouquetMode, type BouquetModel, type Palette } from "@/lib/bouquetEngine";
+import { createBouquet, flowerList, type BouquetFlower, type BouquetLeaf, type BouquetMode, type BouquetModel, type Palette } from "@/lib/bouquetEngine";
 import { FLOWER_META, type FlowerType } from "@/lib/flowerLibrary";
 import { normalizeName } from "@/lib/nameSeed";
 import { generatePersonalNote, personalityLine } from "@/lib/noteGenerator";
@@ -119,6 +119,12 @@ function premiumStemPath(flower: BouquetFlower): string {
   return `M250 560 C${250 + flower.bend} 488, ${flower.x + flower.bend / 2} ${flower.y + 110}, ${flower.x} ${flower.y + 26}`;
 }
 
+function leafBranchPath(leaf: BouquetLeaf): string {
+  const dx = leaf.anchorX - leaf.x;
+  const dy = leaf.anchorY - leaf.y;
+  return `M0 0 C${(dx * .32).toFixed(1)} ${(dy * .28).toFixed(1)}, ${(dx * .72).toFixed(1)} ${(dy * .72).toFixed(1)}, ${dx.toFixed(1)} ${dy.toFixed(1)}`;
+}
+
 function BouquetArtwork({ model, activeFlower, onFlower, growthProgress }: { model: BouquetModel; activeFlower: string | null; onFlower: (flower: BouquetFlower, event: SyntheticEvent<SVGGElement>) => void; growthProgress: number }) {
   const palette = model.palette;
   const premiumLeafType = model.mode === "premium" ? (model.selectedTypes.find((type) => type === "peony" || type === "orchid" || type === "ranunculus") ?? "classic") : "classic";
@@ -135,7 +141,7 @@ function BouquetArtwork({ model, activeFlower, onFlower, growthProgress }: { mod
       <filter id="flowerShadow" x="-45%" y="-45%" width="190%" height="190%"><feDropShadow dx="0" dy="9" stdDeviation="7" floodColor="#000" floodOpacity=".45" /></filter>
     </defs>
     <g className="stems" aria-hidden="true">{model.flowers.map((flower, index) => <path key={`stem-${flower.id}`} d={premiumStemPath(flower)} stroke="url(#stemGradient)" strokeWidth={flower.role === "hero" ? 6 : 3.4 + (index % 3)} fill="none" className={`stem-line stem-${flower.type}`} style={{ "--stem-delay": `${flower.delay}s` } as CSSProperties} />)}</g>
-    <g className="leaves" aria-hidden="true">{model.leaves.map((leaf, index) => <g key={`leaf-${index}`} transform={`translate(${leaf.x} ${leaf.y}) rotate(${leaf.rotation}) scale(${leaf.scale})`} className={`leaf-shape leaf-${premiumLeafType}`}><path className="leaf-stem" d={leaf.side === "left" ? "M0 0 C7 4 13 8 18 11" : "M0 0 C-7 4 -13 8 -18 11"} stroke="url(#stemGradient)" strokeOpacity=".78" strokeWidth="1.8" fill="none" strokeLinecap="round" /><path d={premiumLeafType === "peony" ? "M0 0C-48 5-68-20-55-52C-29-54-7-32 0 0Z" : premiumLeafType === "orchid" ? "M0 0C-28-8-42-36-31-62C-8-54 2-29 0 0Z" : premiumLeafType === "ranunculus" ? "M0 0C-42 4-61-21-47-48C-23-52-5-31 0 0Z" : "M0 0C-43-3-58-28-48-48C-23-45-3-29 0 0Z"} fill="url(#leafGradient)" stroke={palette.leafLight} strokeOpacity=".34" strokeWidth="1.4" /><path d={premiumLeafType === "orchid" ? "M-2-3C-15-21-25-40-30-58" : "M-3-3C-22-14-37-26-46-42"} stroke={palette.leafLight} strokeOpacity=".42" strokeWidth="1.4" fill="none" strokeLinecap="round" /></g>)}</g>
+    <g className="leaves" aria-hidden="true">{model.leaves.map((leaf, index) => <g key={`leaf-${index}`} transform={`translate(${leaf.x} ${leaf.y}) rotate(${leaf.rotation}) scale(${leaf.scale})`} className={`leaf-shape leaf-${premiumLeafType}`}><path className="leaf-stem" d={leafBranchPath(leaf)} stroke="url(#stemGradient)" strokeOpacity=".78" strokeWidth="1.8" fill="none" strokeLinecap="round" /><path d={premiumLeafType === "peony" ? "M0 0C-48 5-68-20-55-52C-29-54-7-32 0 0Z" : premiumLeafType === "orchid" ? "M0 0C-28-8-42-36-31-62C-8-54 2-29 0 0Z" : premiumLeafType === "ranunculus" ? "M0 0C-42 4-61-21-47-48C-23-52-5-31 0 0Z" : "M0 0C-43-3-58-28-48-48C-23-45-3-29 0 0Z"} fill="url(#leafGradient)" stroke={palette.leafLight} strokeOpacity=".34" strokeWidth="1.4" /><path d={premiumLeafType === "orchid" ? "M-2-3C-15-21-25-40-30-58" : "M-3-3C-22-14-37-26-46-42"} stroke={palette.leafLight} strokeOpacity=".42" strokeWidth="1.4" fill="none" strokeLinecap="round" /></g>)}</g>
     {/* Keep the composition botanical, but avoid separate accent branches that compete with the flowers. */}
     <g className={`bouquet-ribbon ${hasPremiumFlowers ? "luxury-ribbon" : ""} ${growthProgress > .76 ? "is-ready" : ""}`} aria-hidden="true"><path d="M193 511C216 527 233 531 251 532c19-1 38-6 57-22l-8 44c-23 12-45 15-62 14-21 0-42-5-61-15Z" fill={palette.petal} /><path d="M215 535c-12 23-17 38-12 54 16-7 30-21 39-43Z" fill={palette.deep} /><path d="M284 535c12 23 17 38 12 54-16-7-30-21-39-43Z" fill={palette.deep} opacity=".8" /><path d="M212 523c20 8 49 10 77 0" stroke={palette.gold} strokeOpacity=".7" strokeWidth="2" fill="none" /><circle cx="251" cy="530" r="13" fill={palette.secondary} opacity=".9" />{hasPremiumFlowers && <><path d="M201 517 Q251 540 301 517" stroke={palette.gold} strokeWidth="2.8" strokeOpacity=".9" fill="none" /><path d="M211 526 Q251 546 291 526" stroke="#f7e6b4" strokeWidth="1" strokeOpacity=".75" fill="none" /></>}</g>
     {model.flowers.map((flower) => <g key={flower.id} transform={`translate(${flower.x} ${flower.y}) rotate(${flower.rotation}) scale(${flower.scale})`}><g className={`flower flower-${flower.type} flower-role-${flower.role} ${activeFlower === flower.id ? "is-active" : ""}`} style={{ "--bloom-delay": `${flower.delay}s`, "--bloom-progress": growthProgress } as CSSProperties} role="button" tabIndex={0} aria-pressed={activeFlower === flower.id} aria-label={`Tap the ${FLOWER_META[flower.type].label}`} onClick={(event) => onFlower(flower, event)} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); onFlower(flower, event); } }}><title>{FLOWER_META[flower.type].label}</title><FlowerHead type={flower.type} palette={palette} /></g></g>)}
