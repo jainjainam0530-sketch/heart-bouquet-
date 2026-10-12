@@ -273,3 +273,13 @@
 - [x] Unfold leaves alongside the stem network instead of revealing them after growth completes.
 - [x] Preserve the final bouquet arrangement and reduced-motion behavior.
 - [x] Validate with type-check, production build, tests, and responsive previews.
+
+## Full Debugging Audit
+
+- [x] TypeScript check passes.
+- [x] Production build passes with only existing asset-resolution/chunk-size warnings.
+- [x] Full Vitest suite passes: 3 files, 6 tests.
+- [x] Add bouquet-engine regression coverage for premium mode, mixed mode, determinism, leaf anchors, and canvas bounds.
+- [x] Geometry and mode checks pass across five names and both bouquet modes.
+- [x] Mobile and desktop responsive previews show no visible clipping or layout regressions.
+- [x] Dev-server logs contain only pre-existing auth-session signature warnings, with no bouquet/runtime errors.
