@@ -283,3 +283,12 @@
 - [x] Geometry and mode checks pass across five names and both bouquet modes.
 - [x] Mobile and desktop responsive previews show no visible clipping or layout regressions.
 - [x] Dev-server logs contain only pre-existing auth-session signature warnings, with no bouquet/runtime errors.
+
+## Replay Growth Control
+
+- [x] Add a Replay growth button to the completed bouquet interface.
+- [x] Restart the current bouquet at 0% without generating a new variation or refreshing the page.
+- [x] Reset selected flower state, celebration particles, dialogs, and share status.
+- [x] Restart the ambient melody from the beginning when replaying.
+- [x] Preserve the current name, note, bouquet mode, and palette.
+- [x] Validate desktop/mobile placement, type-check, production build, and all tests.

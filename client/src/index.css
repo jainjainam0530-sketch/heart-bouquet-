@@ -1083,3 +1083,19 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
 @media (prefers-reduced-motion: reduce) {
   .is-growing .bouquet-svg .leaves, .is-growing .bouquet-svg .leaf-shape, .is-growing .bouquet-svg .leaf-stem { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }
+
+/* Replay growth: a quiet secondary action that reuses the current bouquet. */
+.garden-actions { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; }
+.replay-button { display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 16px; border: 1px solid rgba(214,164,109,.46); border-radius: 999px; color: rgba(255,233,220,.82); background: rgba(255,255,255,.035); font-size: 10px; letter-spacing: .09em; transition: color .22s ease, background .22s ease, border-color .22s ease, transform .18s var(--ease-silk), box-shadow .22s ease; }
+.replay-button span { color: var(--gold); font-size: 17px; line-height: 1; transition: transform .3s var(--ease-silk); }
+.replay-button:hover { color: var(--warm-white); background: rgba(214,164,109,.16); border-color: rgba(214,164,109,.82); transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,.18); }
+.replay-button:hover span { transform: rotate(-180deg); }
+.replay-button:active { transform: translateY(1px) scale(.97); }
+.replay-button:focus-visible { outline: 2px solid var(--rose-light); outline-offset: 4px; }
+@media (max-width: 640px) {
+  .garden-actions { gap: 10px; }
+  .replay-button { min-height: 40px; padding-inline: 14px; font-size: 9px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .replay-button, .replay-button span { transition: none; }
+}
