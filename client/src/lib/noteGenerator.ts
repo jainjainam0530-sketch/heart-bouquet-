@@ -1,6 +1,7 @@
 /* Midnight Conservatory voice: this exact handwritten note is used for every bouquet, as requested by Jainam. */
 
 import type { BouquetModel } from "./bouquetEngine";
+import { FLOWER_META } from "./flowerLibrary";
 
 export const HANDMADE_NOTE = `Hey you! 🌷
 Just a tiny little gift from me to you.
@@ -13,6 +14,8 @@ export function generatePersonalNote(_model: BouquetModel, customNote?: string) 
 }
 
 export function personalityLine(model: BouquetModel) {
-  const personalities = model.selectedTypes.slice(0, 3).map((type) => type.replace("wildflower", "wildflower"));
-  return `${personalities.join(", ")} little blooms, arranged specifically for you.`;
+  const labels = model.selectedTypes.map((type) => FLOWER_META[type].label.toLowerCase());
+  const last = labels.pop();
+  const list = last ? `${labels.join(", ")} & ${last}` : labels.join(", ");
+  return `A mix of ${list} blooms, arranged specifically for you.`;
 }

@@ -319,3 +319,12 @@
 - [x] Export the selected theme as a styled PNG card with a theme-specific filename.
 - [x] Functionally select Mint Tea and verify `mira-qr-mint.png` downloads.
 - [x] Re-run type-check, production build, tests, and responsive QR previews.
+
+## Flower Variety Restoration
+
+- [x] Expand mixed bouquet families from four styles to six distinct flower families per arrangement.
+- [x] Keep premium-only bouquets intentionally limited to Peony, Orchid, and Ranunculus.
+- [x] Verify all 12 procedural flower styles appear across representative mixed variations.
+- [x] Update the bouquet description to name every selected flower style instead of only the first three.
+- [x] Preserve deterministic generation, leaf geometry, animation performance, and the exact handmade note.
+- [x] Re-run type-check, production build, tests, geometry coverage, and responsive preview validation.

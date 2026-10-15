@@ -35,9 +35,21 @@ describe("bouquet engine regressions", () => {
   it("keeps mixed mode varied while allowing premium blooms", () => {
     const model = createBouquet("Sofia", 14, "all");
     expect(model.mode).toBe("all");
-    expect(model.selectedTypes.length).toBeGreaterThanOrEqual(2);
+    expect(model.selectedTypes.length).toBeGreaterThanOrEqual(6);
     expect(model.leaves.length).toBeGreaterThanOrEqual(13);
     assertFiniteGeometry(model);
+  });
+
+  it("exposes the full mixed flower catalog across variations", () => {
+    const seen = new Set<string>();
+    for (let variation = 0; variation < 20; variation += 1) {
+      createBouquet("Best friend", variation, "all").selectedTypes.forEach(type => seen.add(type));
+    }
+    expect(seen.size).toBeGreaterThanOrEqual(11);
+    expect(seen.has("rose")).toBe(true);
+    expect(seen.has("sunflower")).toBe(true);
+    expect(seen.has("lavender")).toBe(true);
+    expect(seen.has("wildflower")).toBe(true);
   });
 
   it("is deterministic for the same name, variation, and mode", () => {

@@ -118,16 +118,16 @@ const BOUQUET_STYLES: BouquetStyle[] = [
 const PREMIUM_FAMILIES: FlowerType[][] = [["peony", "orchid", "ranunculus"], ["orchid", "ranunculus", "peony"], ["ranunculus", "peony", "orchid"]];
 
 const FLOWER_FAMILIES: FlowerType[][] = [
-  ["rose", "tulip", "peony", "daisy"],
-  ["sunflower", "hibiscus", "orchid", "daisy"],
-  ["cherry", "daisy", "ranunculus", "wildflower"],
-  ["rose", "hibiscus", "peony", "carnation"],
-  ["lavender", "cherry", "orchid", "daisy"],
-  ["sunflower", "rose", "ranunculus", "cherry"],
-  ["hibiscus", "carnation", "peony", "lavender"],
-  ["rose", "tulip", "orchid", "carnation"],
-  ["cherry", "lavender", "ranunculus", "hibiscus"],
-  ["sunflower", "wildflower", "peony", "carnation"],
+  ["rose", "tulip", "peony", "daisy", "cherry", "wildflower"],
+  ["sunflower", "hibiscus", "orchid", "daisy", "carnation", "tulip"],
+  ["cherry", "daisy", "ranunculus", "wildflower", "lavender", "rose"],
+  ["rose", "hibiscus", "peony", "carnation", "orchid", "tulip"],
+  ["lavender", "cherry", "orchid", "daisy", "ranunculus", "wildflower"],
+  ["sunflower", "rose", "ranunculus", "cherry", "tulip", "hibiscus"],
+  ["hibiscus", "carnation", "peony", "lavender", "daisy", "wildflower"],
+  ["rose", "tulip", "orchid", "carnation", "sunflower", "cherry"],
+  ["cherry", "lavender", "ranunculus", "hibiscus", "peony", "daisy"],
+  ["sunflower", "wildflower", "peony", "carnation", "rose", "orchid"],
 ];
 
 export function createBouquet(rawName: string, variationId = 0, mode: BouquetMode = "all"): BouquetModel {
