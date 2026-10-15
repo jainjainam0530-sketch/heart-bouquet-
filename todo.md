@@ -301,3 +301,12 @@
 - [x] Make scanned/shared links open the cinematic opening and growth sequence instead of the finished bouquet.
 - [x] Preserve the exact name, variation, note, melody mood, and bouquet mode through QR playback.
 - [x] Validate with type-check, production build, tests, link-flag checks, and responsive previews.
+
+## Cute QR Code Presentation
+
+- [x] Add a soft floral QR card with pastel background and corner accents.
+- [x] Keep the QR itself high-contrast, pixelated, and scan-safe.
+- [x] Add a clear “Scan to watch it bloom from the beginning” message.
+- [x] Preserve Download QR and Close actions with responsive styling.
+- [x] Validate premium and mixed QR dialogs on mobile and desktop.
+- [x] Re-run type-check, production build, and all tests.

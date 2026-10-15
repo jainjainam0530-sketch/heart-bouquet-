@@ -1099,3 +1099,38 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
 @media (prefers-reduced-motion: reduce) {
   .replay-button, .replay-button span { transition: none; }
 }
+
+/* Boutique QR presentation: decorative around the code, never over the scan area. */
+.qr-garden-card { overflow: hidden; padding: 32px 24px 24px; border-color: rgba(190,126,110,.58); background: linear-gradient(145deg, #fffaf4 0%, #fff1ed 54%, #f9e7e6 100%); box-shadow: 0 28px 90px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,.72); }
+.qr-garden-card::before { content: ""; position: absolute; inset: 9px; border: 1px solid rgba(188,126,110,.2); border-radius: 4px; pointer-events: none; }
+.qr-floral-corner { position: absolute; z-index: 1; color: #cf7186; font-size: 30px; line-height: 1; opacity: .8; }
+.qr-floral-corner-left { top: 14px; left: 15px; transform: rotate(-18deg); }
+.qr-floral-corner-right { top: 13px; right: 15px; color: #c29555; transform: rotate(18deg); }
+.qr-garden-card .qr-close { z-index: 2; top: 13px; right: 13px; color: #8b5a52; }
+.qr-kicker { position: relative; display: inline-flex; align-items: center; gap: 8px; color: #a26068; font-size: 9px; letter-spacing: .16em; text-transform: uppercase; }
+.qr-kicker i { display: block; width: 18px; height: 1px; background: #d4a16f; }
+.qr-garden-card h2 { position: relative; margin: 11px 0 4px; color: #321321; }
+.qr-intro { position: relative; max-width: 230px; margin: 0 auto 16px; color: #8c6a67; font: 14px/1.35 "Cormorant Garamond", serif; }
+.qr-frame { position: relative; display: grid; place-items: center; width: min(100%, 246px); min-height: 246px; margin: 0 auto 12px; padding: 12px; border: 1px solid rgba(183,119,103,.38); border-radius: 20px; background: rgba(255,255,255,.72); box-shadow: 0 12px 25px rgba(150,83,87,.12), inset 0 0 0 5px rgba(255,255,255,.65); }
+.qr-frame .qr-image { position: relative; z-index: 1; width: 218px; max-width: 100%; margin: 0; border: 7px solid #fff; border-radius: 8px; box-shadow: 0 5px 16px rgba(50,19,33,.12); }
+.qr-frame .qr-loading, .qr-frame .qr-error { min-height: 218px; }
+.qr-frame-corner { position: absolute; width: 17px; height: 17px; border-color: #d39191; border-style: solid; opacity: .9; }
+.qr-frame-corner-tl { top: 8px; left: 8px; border-width: 2px 0 0 2px; border-radius: 6px 0 0; }
+.qr-frame-corner-tr { top: 8px; right: 8px; border-width: 2px 2px 0 0; border-radius: 0 6px 0 0; }
+.qr-frame-corner-bl { bottom: 8px; left: 8px; border-width: 0 0 2px 2px; border-radius: 0 0 0 6px; }
+.qr-frame-corner-br { right: 8px; bottom: 8px; border-width: 0 2px 2px 0; border-radius: 0 0 6px; }
+.qr-scan-note { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 0 auto 9px; color: #a35d6c; }
+.qr-scan-note span { color: #d29a63; font-size: 12px; }
+.qr-scan-note p { margin: 0; font-size: 10px; letter-spacing: .07em; }
+.qr-garden-card .qr-caption { max-width: 270px; color: #806360; font-size: 13px; }
+.qr-garden-card .qr-card-actions { position: relative; margin-top: 18px; }
+.qr-garden-card .qr-action { border-radius: 999px; box-shadow: 0 5px 12px rgba(120,54,67,.12); }
+@media (max-width: 420px) {
+  .qr-garden-card { padding-inline: 20px; }
+  .qr-frame { width: min(100%, 232px); min-height: 232px; }
+  .qr-frame .qr-image { width: 204px; }
+  .qr-frame .qr-loading, .qr-frame .qr-error { min-height: 204px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .qr-garden-card * { transition: none !important; }
+}
