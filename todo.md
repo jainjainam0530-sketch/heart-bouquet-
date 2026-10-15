@@ -310,3 +310,12 @@
 - [x] Preserve Download QR and Close actions with responsive styling.
 - [x] Validate premium and mixed QR dialogs on mobile and desktop.
 - [x] Re-run type-check, production build, and all tests.
+
+## Pastel QR Theme Selector
+
+- [x] Add Rose Milk, Lavender Mist, Mint Tea, and Peach Cream QR card themes.
+- [x] Add accessible swatches with selected-state styling and visible theme name.
+- [x] Keep the live QR preview high-contrast and scan-safe across themes.
+- [x] Export the selected theme as a styled PNG card with a theme-specific filename.
+- [x] Functionally select Mint Tea and verify `mira-qr-mint.png` downloads.
+- [x] Re-run type-check, production build, tests, and responsive QR previews.

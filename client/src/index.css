@@ -1134,3 +1134,12 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
 @media (prefers-reduced-motion: reduce) {
   .qr-garden-card * { transition: none !important; }
 }
+
+.qr-theme-picker { position: relative; z-index: 1; display: grid; justify-items: center; gap: 6px; margin: 0 auto 14px; color: #8c6967; font-size: 10px; letter-spacing: .08em; }
+.qr-theme-picker > div { display: flex; align-items: center; gap: 9px; }
+.qr-theme-swatch { display: grid; place-items: center; width: 25px; height: 25px; padding: 0; border: 2px solid transparent; border-radius: 50%; background: var(--theme-color); box-shadow: 0 2px 7px rgba(50,19,33,.13); transition: transform .18s var(--ease-silk), border-color .18s ease, box-shadow .18s ease; }
+.qr-theme-swatch i { display: block; width: 7px; height: 7px; border: 1px solid var(--theme-accent); border-radius: 50%; opacity: .75; }
+.qr-theme-swatch:hover { transform: translateY(-2px) scale(1.08); }
+.qr-theme-swatch.is-selected { border-color: #60404b; box-shadow: 0 0 0 3px rgba(255,255,255,.78), 0 0 0 4px var(--theme-accent), 0 4px 10px rgba(50,19,33,.16); }
+.qr-theme-picker small { color: #a26068; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; }
+@media (prefers-reduced-motion: reduce) { .qr-theme-swatch { transition: none; } }
