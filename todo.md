@@ -292,3 +292,12 @@
 - [x] Restart the ambient melody from the beginning when replaying.
 - [x] Preserve the current name, note, bouquet mode, and palette.
 - [x] Validate desktop/mobile placement, type-check, production build, and all tests.
+
+## Leaf Attachment and QR Growth Playback Fix
+
+- [x] Correct leaf branches for rotation and scale so each short petiole reaches its intended parent stem.
+- [x] Recheck mixed and premium bouquets for natural leaf placement and visual balance.
+- [x] Add a `play=1` flag to generated, shared, and QR bouquet links.
+- [x] Make scanned/shared links open the cinematic opening and growth sequence instead of the finished bouquet.
+- [x] Preserve the exact name, variation, note, melody mood, and bouquet mode through QR playback.
+- [x] Validate with type-check, production build, tests, link-flag checks, and responsive previews.

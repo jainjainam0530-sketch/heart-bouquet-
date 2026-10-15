@@ -21,6 +21,7 @@ const previewView = urlParams?.get("view") ?? (pathname === "/bouquet" ? "bouque
 const sharedVariationId = Number.parseInt(urlParams?.get("v") ?? "0", 10) || 0;
 const sharedMood = urlParams?.get("mood") ?? "dreamy";
 const sharedMode: BouquetMode = urlParams?.get("mode") === "premium" ? "premium" : "all";
+const sharedPlayGrowth = urlParams?.get("play") === "1";
 
 type Mood = {
   id: string;
@@ -122,7 +123,10 @@ function premiumStemPath(flower: BouquetFlower): string {
 function leafBranchPath(leaf: BouquetLeaf): string {
   const dx = leaf.anchorX - leaf.x;
   const dy = leaf.anchorY - leaf.y;
-  return `M0 0 C${(dx * .32).toFixed(1)} ${(dy * .28).toFixed(1)}, ${(dx * .72).toFixed(1)} ${(dy * .72).toFixed(1)}, ${dx.toFixed(1)} ${dy.toFixed(1)}`;
+  const angle = -leaf.rotation * Math.PI / 180;
+  const localX = (dx * Math.cos(angle) + dy * Math.sin(angle)) / leaf.scale;
+  const localY = (-dx * Math.sin(angle) + dy * Math.cos(angle)) / leaf.scale;
+  return `M0 0 C${(localX * .32).toFixed(1)} ${(localY * .28).toFixed(1)}, ${(localX * .72).toFixed(1)} ${(localY * .72).toFixed(1)}, ${localX.toFixed(1)} ${localY.toFixed(1)}`;
 }
 
 function BouquetArtwork({ model, activeFlower, onFlower, growthProgress }: { model: BouquetModel; activeFlower: string | null; onFlower: (flower: BouquetFlower, event: SyntheticEvent<SVGGElement>) => void; growthProgress: number }) {
@@ -156,7 +160,7 @@ export default function Home() {
   // nonce cookie and must run only at the moment of navigation.
   let { user, loading, error: authError, isAuthenticated, logout } = useAuth();
 
-  const [stage, setStage] = useState<Stage>(() => previewView === "intro" || previewView === "growing" || previewView === "bouquet" || previewView === "final" ? previewView : "opening");
+  const [stage, setStage] = useState<Stage>(() => sharedPlayGrowth ? "opening" : previewView === "intro" || previewView === "growing" || previewView === "bouquet" || previewView === "final" ? previewView : "opening");
   const [name, setName] = useState(sharedName);
   const [customNote, setCustomNote] = useState(sharedNote);
   const [showNoteEditor, setShowNoteEditor] = useState(false);
@@ -242,6 +246,7 @@ export default function Home() {
     url.searchParams.set("v", String(nextModel.variationId));
     url.searchParams.set("mood", mood);
     url.searchParams.set("mode", bouquetMode);
+    url.searchParams.set("play", "1");
     url.searchParams.delete("creator");
     if (customNote) url.searchParams.set("note", encodeNote(customNote));
     else url.searchParams.delete("note");
@@ -302,6 +307,7 @@ export default function Home() {
     url.searchParams.set("v", String(model.variationId));
     url.searchParams.set("mood", mood);
     url.searchParams.set("mode", bouquetMode);
+    url.searchParams.set("play", "1");
     url.searchParams.delete("creator");
     if (customNote) url.searchParams.set("note", encodeNote(customNote));
     url.searchParams.delete("view");
