@@ -338,3 +338,12 @@
 - [x] Apply palette colors to Daisy and Sunflower petals instead of fixed regular colors.
 - [x] Balance mixed family membership so every flower type appears repeatedly across variations.
 - [x] Validate 16-style catalog coverage, palette rotation, geometry, build, tests, and responsive previews.
+
+## Premium Bloom Particle Effects
+
+- [x] Add subtle jewel-like glints around Peony, Orchid, Ranunculus, Gardenia, Magnolia, Anemone, and Cosmos blooms.
+- [x] Time particles to each flower’s bloom delay so they appear as the flower opens.
+- [x] Use palette-matched gold, highlight, and secondary colors rather than generic white particles.
+- [x] Keep particles non-interactive and visually restrained so the bouquet remains readable.
+- [x] Hide particles under reduced-motion settings.
+- [x] Validate markup, type-check, build, tests, and responsive premium previews.

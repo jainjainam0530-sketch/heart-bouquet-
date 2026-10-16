@@ -149,6 +149,17 @@ function FlowerHead({ type, palette }: { type: FlowerType; palette: Palette }) {
   return <PetalWildflower palette={palette} />;
 }
 
+const PREMIUM_FLOWER_TYPES = new Set<FlowerType>(["peony", "orchid", "ranunculus", "gardenia", "magnolia", "anemone", "cosmos"]);
+
+function PremiumBloomParticles({ palette }: { palette: Palette }) {
+  return <g className="premium-bloom-particles" aria-hidden="true">
+    <circle className="premium-particle premium-particle-a" cx="-38" cy="-14" r="2.4" fill={palette.gold} />
+    <circle className="premium-particle premium-particle-b" cx="34" cy="-28" r="2" fill={palette.highlight} />
+    <circle className="premium-particle premium-particle-c" cx="42" cy="16" r="2.6" fill={palette.secondary} />
+    <path className="premium-particle premium-particle-d" d="M-10-46l3 3-3 3-3-3Z" fill={palette.gold} />
+  </g>;
+}
+
 function premiumStemPath(flower: BouquetFlower): string {
   if (flower.type === "peony") return `M250 560 C${250 + flower.bend * .72} 484, ${flower.x - 34} ${flower.y + 92}, ${flower.x} ${flower.y + 26}`;
   if (flower.type === "orchid") return `M250 560 C${250 + flower.bend * .5} 495, ${flower.x + 48} ${flower.y + 112}, ${flower.x} ${flower.y + 26}`;
@@ -186,7 +197,7 @@ function BouquetArtwork({ model, activeFlower, onFlower, growthProgress }: { mod
     <g className="leaves" aria-hidden="true">{model.leaves.map((leaf, index) => <g key={`leaf-${index}`} transform={`translate(${leaf.x} ${leaf.y}) rotate(${leaf.rotation}) scale(${leaf.scale})`} className={`leaf-shape leaf-${premiumLeafType}`} style={{ "--leaf-delay": `${0.35 + index * 0.13}s`, "--leaf-final-opacity": model.mode === "premium" ? ".94" : index % 3 === 0 ? ".58" : ".78" } as CSSProperties}><path className="leaf-stem" d={leafBranchPath(leaf)} stroke="url(#stemGradient)" strokeOpacity=".78" strokeWidth="1.8" fill="none" strokeLinecap="round" /><path d={premiumLeafType === "peony" ? "M0 0C-48 5-68-20-55-52C-29-54-7-32 0 0Z" : premiumLeafType === "orchid" ? "M0 0C-28-8-42-36-31-62C-8-54 2-29 0 0Z" : premiumLeafType === "ranunculus" ? "M0 0C-42 4-61-21-47-48C-23-52-5-31 0 0Z" : "M0 0C-43-3-58-28-48-48C-23-45-3-29 0 0Z"} fill="url(#leafGradient)" stroke={palette.leafLight} strokeOpacity=".34" strokeWidth="1.4" /><path d={premiumLeafType === "orchid" ? "M-2-3C-15-21-25-40-30-58" : "M-3-3C-22-14-37-26-46-42"} stroke={palette.leafLight} strokeOpacity=".42" strokeWidth="1.4" fill="none" strokeLinecap="round" /></g>)}</g>
     {/* Keep the composition botanical, but avoid separate accent branches that compete with the flowers. */}
     <g className={`bouquet-ribbon ${hasPremiumFlowers ? "luxury-ribbon" : ""} ${growthProgress > .76 ? "is-ready" : ""}`} aria-hidden="true"><path d="M193 511C216 527 233 531 251 532c19-1 38-6 57-22l-8 44c-23 12-45 15-62 14-21 0-42-5-61-15Z" fill={palette.petal} /><path d="M215 535c-12 23-17 38-12 54 16-7 30-21 39-43Z" fill={palette.deep} /><path d="M284 535c12 23 17 38 12 54-16-7-30-21-39-43Z" fill={palette.deep} opacity=".8" /><path d="M212 523c20 8 49 10 77 0" stroke={palette.gold} strokeOpacity=".7" strokeWidth="2" fill="none" /><circle cx="251" cy="530" r="13" fill={palette.secondary} opacity=".9" />{hasPremiumFlowers && <><path d="M201 517 Q251 540 301 517" stroke={palette.gold} strokeWidth="2.8" strokeOpacity=".9" fill="none" /><path d="M211 526 Q251 546 291 526" stroke="#f7e6b4" strokeWidth="1" strokeOpacity=".75" fill="none" /></>}</g>
-    {model.flowers.map((flower) => <g key={flower.id} transform={`translate(${flower.x} ${flower.y}) rotate(${flower.rotation}) scale(${flower.scale})`}><g className={`flower flower-${flower.type} flower-role-${flower.role} ${activeFlower === flower.id ? "is-active" : ""}`} style={{ "--bloom-delay": `${flower.delay}s`, "--bloom-progress": growthProgress } as CSSProperties} role="button" tabIndex={0} aria-pressed={activeFlower === flower.id} aria-label={`Tap the ${FLOWER_META[flower.type].label}`} onClick={(event) => onFlower(flower, event)} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); onFlower(flower, event); } }}><title>{FLOWER_META[flower.type].label}</title><FlowerHead type={flower.type} palette={palette} /></g></g>)}
+    {model.flowers.map((flower) => <g key={flower.id} transform={`translate(${flower.x} ${flower.y}) rotate(${flower.rotation}) scale(${flower.scale})`}><g className={`flower flower-${flower.type} flower-role-${flower.role} ${activeFlower === flower.id ? "is-active" : ""}`} style={{ "--bloom-delay": `${flower.delay}s`, "--particle-delay": `${flower.delay + 1.55}s`, "--bloom-progress": growthProgress } as CSSProperties} role="button" tabIndex={0} aria-pressed={activeFlower === flower.id} aria-label={`Tap the ${FLOWER_META[flower.type].label}`} onClick={(event) => onFlower(flower, event)} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); onFlower(flower, event); } }}><title>{FLOWER_META[flower.type].label}</title>{PREMIUM_FLOWER_TYPES.has(flower.type) && <PremiumBloomParticles palette={palette} />}<FlowerHead type={flower.type} palette={palette} /></g></g>)}
   </svg>;
 }
 
