@@ -79,11 +79,11 @@ function PetalCherry({ palette }: { palette: Palette }) {
 }
 
 function PetalDaisy({ palette }: { palette: Palette }) {
-  return <g className="daisy-head">{Array.from({ length: 8 }, (_, index) => <ellipse key={index} cx="0" cy="-15" rx="7" ry="23" fill="#fff0dc" opacity=".88" transform={`rotate(${index * 45})`} />)}<circle r="10" fill={palette.gold} /><circle r="4" fill={palette.deep} /></g>;
+  return <g className="daisy-head">{Array.from({ length: 8 }, (_, index) => <ellipse key={index} cx="0" cy="-15" rx="7" ry="23" fill={index % 2 ? palette.highlight : palette.secondary} opacity=".88" transform={`rotate(${index * 45})`} />)}<circle r="10" fill={palette.gold} /><circle r="4" fill={palette.deep} /></g>;
 }
 
 function PetalSunflower({ palette }: { palette: Palette }) {
-  return <g className="sunflower-head">{Array.from({ length: 14 }, (_, index) => <ellipse key={index} cx="0" cy="-21" rx="7" ry="30" fill="#e6b45f" opacity=".92" transform={`rotate(${index * 25.7})`} />)}<circle r="19" fill="#70402e" /><circle r="10" fill={palette.deep} opacity=".85" /></g>;
+  return <g className="sunflower-head">{Array.from({ length: 14 }, (_, index) => <ellipse key={index} cx="0" cy="-21" rx="7" ry="30" fill={index % 2 ? palette.gold : palette.secondary} opacity=".92" transform={`rotate(${index * 25.7})`} />)}<circle r="19" fill={palette.deep} /><circle r="10" fill={palette.gold} opacity=".85" /></g>;
 }
 
 function PetalHibiscus({ palette }: { palette: Palette }) {
@@ -114,6 +114,22 @@ function PetalWildflower({ palette }: { palette: Palette }) {
   return <g className="wildflower-head">{Array.from({ length: 5 }, (_, index) => <ellipse key={index} cx="0" cy="-10" rx="6" ry="13" fill={index % 2 ? palette.highlight : palette.secondary} transform={`rotate(${index * 72})`} opacity=".88" />)}<circle r="4" fill={palette.gold} /></g>;
 }
 
+function PetalGardenia({ palette }: { palette: Palette }) {
+  return <g className="gardenia-head">{Array.from({ length: 12 }, (_, index) => { const ring = index % 3; return <path key={index} d="M0 7C-23 8-38-8-32-25C-28-37-14-39-5-27C-9-41 3-49 14-40C25-31 22-15 12-4C26-15 38-5 34 8C30 19 15 23 0 7Z" fill={ring === 0 ? "url(#petalInner)" : "url(#petalSoft)"} opacity={.72 + ring * .08} transform={`rotate(${index * 30}) scale(${.62 + ring * .12})`} className="petal" />; })}<circle r="4" fill={palette.gold} opacity=".8" /></g>;
+}
+
+function PetalMagnolia({ palette }: { palette: Palette }) {
+  return <g className="magnolia-head">{Array.from({ length: 7 }, (_, index) => <path key={index} d="M0 12C-23 7-35-9-28-28C-23-43-8-48 1-35C9-48 24-43 29-28C36-9 23 8 0 12Z" fill={index % 2 ? "url(#petalSoft)" : "url(#petalMain)"} opacity=".88" transform={`rotate(${index * 51.4}) scale(${.84 + (index % 2) * .08})`} className="petal" />)}<path d="M-3 4C-1-4 2-10 5-15" stroke={palette.gold} strokeWidth="2" strokeLinecap="round" /></g>;
+}
+
+function PetalAnemone({ palette }: { palette: Palette }) {
+  return <g className="anemone-head">{Array.from({ length: 8 }, (_, index) => <path key={index} d="M0 5C-20 3-31-13-26-30C-22-43-9-48 0-38C9-48 22-43 26-30C31-13 20 3 0 5Z" fill={index % 2 ? "url(#petalMain)" : "url(#petalSoft)"} opacity=".9" transform={`rotate(${index * 45}) scale(${.86 + (index % 3) * .05})`} className="petal" />)}<circle r="8" fill={palette.deep} /><circle r="4" fill={palette.gold} /></g>;
+}
+
+function PetalCosmos({ palette }: { palette: Palette }) {
+  return <g className="cosmos-head">{Array.from({ length: 8 }, (_, index) => <ellipse key={index} cx="0" cy="-15" rx="7" ry="25" fill={index % 2 ? palette.highlight : palette.secondary} opacity=".86" transform={`rotate(${index * 45})`} />)}<circle r="5" fill={palette.gold} /><circle r="2" fill={palette.deep} /></g>;
+}
+
 function FlowerHead({ type, palette }: { type: FlowerType; palette: Palette }) {
   if (type === "rose") return <PetalRose palette={palette} />;
   if (type === "tulip") return <PetalTulip palette={palette} />;
@@ -126,6 +142,10 @@ function FlowerHead({ type, palette }: { type: FlowerType; palette: Palette }) {
   if (type === "peony") return <PetalPeony palette={palette} />;
   if (type === "orchid") return <PetalOrchid palette={palette} />;
   if (type === "ranunculus") return <PetalRanunculus palette={palette} />;
+  if (type === "gardenia") return <PetalGardenia palette={palette} />;
+  if (type === "magnolia") return <PetalMagnolia palette={palette} />;
+  if (type === "anemone") return <PetalAnemone palette={palette} />;
+  if (type === "cosmos") return <PetalCosmos palette={palette} />;
   return <PetalWildflower palette={palette} />;
 }
 
@@ -133,6 +153,8 @@ function premiumStemPath(flower: BouquetFlower): string {
   if (flower.type === "peony") return `M250 560 C${250 + flower.bend * .72} 484, ${flower.x - 34} ${flower.y + 92}, ${flower.x} ${flower.y + 26}`;
   if (flower.type === "orchid") return `M250 560 C${250 + flower.bend * .5} 495, ${flower.x + 48} ${flower.y + 112}, ${flower.x} ${flower.y + 26}`;
   if (flower.type === "ranunculus") return `M250 560 C${250 + flower.bend * 1.18} 500, ${flower.x - 42} ${flower.y + 118}, ${flower.x} ${flower.y + 26}`;
+  if (flower.type === "gardenia" || flower.type === "magnolia") return `M250 560 C${250 + flower.bend * .8} 488, ${flower.x - 18} ${flower.y + 108}, ${flower.x} ${flower.y + 26}`;
+  if (flower.type === "anemone" || flower.type === "cosmos") return `M250 560 C${250 + flower.bend * 1.05} 492, ${flower.x + 28} ${flower.y + 106}, ${flower.x} ${flower.y + 26}`;
   return `M250 560 C${250 + flower.bend} 488, ${flower.x + flower.bend / 2} ${flower.y + 110}, ${flower.x} ${flower.y + 26}`;
 }
 
@@ -147,7 +169,7 @@ function leafBranchPath(leaf: BouquetLeaf): string {
 
 function BouquetArtwork({ model, activeFlower, onFlower, growthProgress }: { model: BouquetModel; activeFlower: string | null; onFlower: (flower: BouquetFlower, event: SyntheticEvent<SVGGElement>) => void; growthProgress: number }) {
   const palette = model.palette;
-  const premiumLeafType = model.mode === "premium" ? (model.selectedTypes.find((type) => type === "peony" || type === "orchid" || type === "ranunculus") ?? "classic") : "classic";
+  const premiumLeafType = model.mode === "premium" ? (model.selectedTypes.find((type) => ["peony", "orchid", "ranunculus", "gardenia", "magnolia", "anemone", "cosmos"].includes(type)) ?? "classic") : "classic";
   const hasPremiumFlowers = premiumLeafType !== "classic";
   return <svg className={`bouquet-svg bouquet-mode-${model.mode} ${hasPremiumFlowers ? "has-premium-blooms" : "has-mixed-blooms"}`} viewBox="0 0 500 600" preserveAspectRatio="xMidYMid meet" role="img" aria-label={`A code-built personalized bouquet for ${model.name}`}>
     <defs>

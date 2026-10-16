@@ -72,14 +72,16 @@ type BouquetStyle = {
 };
 
 const PALETTES: Palette[] = [
-  { name: "Rose Garden", petal: "#d56a82", deep: "#612038", highlight: "#ffd7cf", secondary: "#efb2ad", leaf: "#3f6851", leafLight: "#91b99c", gold: "#d6a46d", atmosphere: "#321321" },
-  { name: "Sunset", petal: "#d97762", deep: "#682d31", highlight: "#ffe0b8", secondary: "#efaa82", leaf: "#4d6d4e", leafLight: "#a5c493", gold: "#e4b66f", atmosphere: "#3b201a" },
-  { name: "Lavender Dream", petal: "#a987c6", deep: "#3d2a57", highlight: "#f4d9e3", secondary: "#d1b6e1", leaf: "#45645d", leafLight: "#9fbbaa", gold: "#cbb28a", atmosphere: "#241b37" },
-  { name: "Midnight Bloom", petal: "#a95079", deep: "#341736", highlight: "#f4c8da", secondary: "#c874a0", leaf: "#3d5f56", leafLight: "#8fb6a8", gold: "#c6a9c8", atmosphere: "#25112e" },
-  { name: "Spring Garden", petal: "#de879b", deep: "#73384c", highlight: "#fff1d6", secondary: "#f4c4a5", leaf: "#4c7651", leafLight: "#a8c58e", gold: "#d5b26f", atmosphere: "#33261b" },
-  { name: "Cherry Blossom", petal: "#e29cae", deep: "#74374e", highlight: "#fff3e9", secondary: "#f5cad4", leaf: "#4d705d", leafLight: "#a5c4a8", gold: "#d8b37d", atmosphere: "#321923" },
-  { name: "Golden Hour", petal: "#d98b54", deep: "#663238", highlight: "#ffe4a7", secondary: "#efbc74", leaf: "#466b4b", leafLight: "#a6c18a", gold: "#e3bd71", atmosphere: "#39241a" },
-  { name: "Romantic Wine", petal: "#be526f", deep: "#4a192d", highlight: "#ffd4cd", secondary: "#dd8c99", leaf: "#3d604d", leafLight: "#8eaf94", gold: "#d0a36d", atmosphere: "#2b101b" },
+  { name: "Garnet Velvet", petal: "#b43f68", deep: "#3a0e2b", highlight: "#ffe1e8", secondary: "#df7898", leaf: "#315b50", leafLight: "#84b7a1", gold: "#e4b86a", atmosphere: "#21091d" },
+  { name: "Sapphire Blush", petal: "#6f78c9", deep: "#1d245a", highlight: "#e8e9ff", secondary: "#a4a9ef", leaf: "#285a59", leafLight: "#82c3b2", gold: "#f0c878", atmosphere: "#101a3c" },
+  { name: "Amethyst Smoke", petal: "#9562c4", deep: "#291442", highlight: "#f3e7ff", secondary: "#c49be8", leaf: "#35615d", leafLight: "#8cc4ae", gold: "#e1bd78", atmosphere: "#1b102e" },
+  { name: "Emerald Noir", petal: "#4f9b83", deep: "#123d3a", highlight: "#dcfff0", secondary: "#86cfad", leaf: "#244c43", leafLight: "#78b99b", gold: "#e5c77a", atmosphere: "#0b282c" },
+  { name: "Champagne Orchid", petal: "#c98eae", deep: "#4d2344", highlight: "#fff5df", secondary: "#e8bed0", leaf: "#406456", leafLight: "#a4c7a4", gold: "#f0ca83", atmosphere: "#2b1526" },
+  { name: "Cobalt Peony", petal: "#487ab7", deep: "#162d5c", highlight: "#e1f0ff", secondary: "#8fb9e5", leaf: "#27564e", leafLight: "#7ebaa7", gold: "#efc56e", atmosphere: "#101d3b" },
+  { name: "Obsidian Rose", petal: "#8d3b70", deep: "#240d2d", highlight: "#ffd9ed", secondary: "#c776aa", leaf: "#2b5049", leafLight: "#79ae96", gold: "#d9b56d", atmosphere: "#170a20" },
+  { name: "Antique Coral", petal: "#c66b78", deep: "#512233", highlight: "#ffe8dc", secondary: "#e6a398", leaf: "#3a604d", leafLight: "#9cc59b", gold: "#efc67e", atmosphere: "#32151f" },
+  { name: "Rose Garden", petal: "#c95578", deep: "#4b1730", highlight: "#ffe0e4", secondary: "#e99ab1", leaf: "#315b50", leafLight: "#91b99c", gold: "#d6a46d", atmosphere: "#321321" },
+  { name: "Lavender Dream", petal: "#9b73c8", deep: "#312054", highlight: "#f4e0ff", secondary: "#c7a6e7", leaf: "#45645d", leafLight: "#9fbbaa", gold: "#d8b879", atmosphere: "#241b37" },
 ];
 
 const BOUQUET_STYLES: BouquetStyle[] = [
@@ -115,19 +117,24 @@ const BOUQUET_STYLES: BouquetStyle[] = [
   },
 ];
 
-const PREMIUM_FAMILIES: FlowerType[][] = [["peony", "orchid", "ranunculus"], ["orchid", "ranunculus", "peony"], ["ranunculus", "peony", "orchid"]];
+const PREMIUM_FAMILIES: FlowerType[][] = [
+  ["peony", "orchid", "ranunculus", "gardenia", "magnolia", "anemone"],
+  ["orchid", "ranunculus", "magnolia", "anemone", "cosmos", "peony"],
+  ["ranunculus", "peony", "orchid", "gardenia", "anemone", "cosmos"],
+  ["gardenia", "magnolia", "anemone", "orchid", "peony", "ranunculus"],
+];
 
 const FLOWER_FAMILIES: FlowerType[][] = [
   ["rose", "tulip", "peony", "daisy", "cherry", "wildflower"],
-  ["sunflower", "hibiscus", "orchid", "daisy", "carnation", "tulip"],
-  ["cherry", "daisy", "ranunculus", "wildflower", "lavender", "rose"],
-  ["rose", "hibiscus", "peony", "carnation", "orchid", "tulip"],
-  ["lavender", "cherry", "orchid", "daisy", "ranunculus", "wildflower"],
-  ["sunflower", "rose", "ranunculus", "cherry", "tulip", "hibiscus"],
-  ["hibiscus", "carnation", "peony", "lavender", "daisy", "wildflower"],
-  ["rose", "tulip", "orchid", "carnation", "sunflower", "cherry"],
-  ["cherry", "lavender", "ranunculus", "hibiscus", "peony", "daisy"],
-  ["sunflower", "wildflower", "peony", "carnation", "rose", "orchid"],
+  ["sunflower", "hibiscus", "orchid", "lavender", "carnation", "magnolia"],
+  ["cherry", "daisy", "ranunculus", "wildflower", "lavender", "anemone"],
+  ["rose", "hibiscus", "peony", "carnation", "orchid", "cosmos"],
+  ["lavender", "cherry", "orchid", "daisy", "ranunculus", "gardenia"],
+  ["sunflower", "rose", "ranunculus", "cherry", "tulip", "magnolia"],
+  ["hibiscus", "carnation", "peony", "lavender", "anemone", "wildflower"],
+  ["rose", "tulip", "orchid", "carnation", "sunflower", "cosmos"],
+  ["cherry", "lavender", "ranunculus", "hibiscus", "gardenia", "cosmos"],
+  ["sunflower", "wildflower", "peony", "magnolia", "rose", "gardenia"],
 ];
 
 export function createBouquet(rawName: string, variationId = 0, mode: BouquetMode = "all"): BouquetModel {

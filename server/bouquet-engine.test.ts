@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createBouquet } from "../client/src/lib/bouquetEngine";
 
-const premiumTypes = new Set(["peony", "orchid", "ranunculus"]);
+const premiumTypes = new Set(["peony", "orchid", "ranunculus", "gardenia", "magnolia", "anemone", "cosmos"]);
 
 function assertFiniteGeometry(model: ReturnType<typeof createBouquet>) {
   for (const flower of model.flowers) {
@@ -45,11 +45,15 @@ describe("bouquet engine regressions", () => {
     for (let variation = 0; variation < 20; variation += 1) {
       createBouquet("Best friend", variation, "all").selectedTypes.forEach(type => seen.add(type));
     }
-    expect(seen.size).toBeGreaterThanOrEqual(11);
+    expect(seen.size).toBeGreaterThanOrEqual(16);
     expect(seen.has("rose")).toBe(true);
     expect(seen.has("sunflower")).toBe(true);
     expect(seen.has("lavender")).toBe(true);
     expect(seen.has("wildflower")).toBe(true);
+    expect(seen.has("gardenia")).toBe(true);
+    expect(seen.has("magnolia")).toBe(true);
+    expect(seen.has("anemone")).toBe(true);
+    expect(seen.has("cosmos")).toBe(true);
   });
 
   it("is deterministic for the same name, variation, and mode", () => {

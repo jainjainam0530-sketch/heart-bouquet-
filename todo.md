@@ -328,3 +328,13 @@
 - [x] Update the bouquet description to name every selected flower style instead of only the first three.
 - [x] Preserve deterministic generation, leaf geometry, animation performance, and the exact handmade note.
 - [x] Re-run type-check, production build, tests, geometry coverage, and responsive preview validation.
+
+## Premium Flower Catalog and Jewel Palette Expansion
+
+- [x] Add Gardenia, Magnolia, Anemone, and Cosmos as new procedural flower families.
+- [x] Add matching premium stems, petal silhouettes, active states, and color treatment.
+- [x] Expand premium bouquets from three to seven luxury flower families.
+- [x] Replace ordinary palettes with jewel-toned themes including Garnet Velvet, Sapphire Blush, Emerald Noir, Cobalt Peony, and Champagne Orchid.
+- [x] Apply palette colors to Daisy and Sunflower petals instead of fixed regular colors.
+- [x] Balance mixed family membership so every flower type appears repeatedly across variations.
+- [x] Validate 16-style catalog coverage, palette rotation, geometry, build, tests, and responsive previews.

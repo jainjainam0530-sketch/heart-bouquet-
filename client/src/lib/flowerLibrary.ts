@@ -1,6 +1,6 @@
 /* Midnight Conservatory flower library: names and interactions stay extensible while artwork remains procedural SVG. */
 
-export type FlowerType = "rose" | "tulip" | "cherry" | "daisy" | "sunflower" | "hibiscus" | "lavender" | "carnation" | "wildflower" | "peony" | "orchid" | "ranunculus";
+export type FlowerType = "rose" | "tulip" | "cherry" | "daisy" | "sunflower" | "hibiscus" | "lavender" | "carnation" | "wildflower" | "peony" | "orchid" | "ranunculus" | "gardenia" | "magnolia" | "anemone" | "cosmos";
 
 export type FlowerMeta = {
   label: string;
@@ -22,7 +22,10 @@ export const FLOWER_META: Record<FlowerType, FlowerMeta> = {
   peony: { label: "Peony", symbol: "✤", personality: "lush", interaction: "A soft, luxurious bloom with room for every feeling." },
   orchid: { label: "Orchid", symbol: "❁", personality: "elegant", interaction: "A graceful little statement, chosen with care." },
   ranunculus: { label: "Ranunculus", symbol: "✥", personality: "layered", interaction: "So many petals, and somehow still perfectly sweet." },
+  gardenia: { label: "Gardenia", symbol: "❋", personality: "refined", interaction: "A quietly elegant bloom with a little secret glow." },
+  magnolia: { label: "Magnolia", symbol: "✾", personality: "serene", interaction: "Soft, sculptural, and impossible not to notice." },
+  anemone: { label: "Anemone", symbol: "✹", personality: "modern", interaction: "A jewel-toned little statement with perfect contrast." },
+  cosmos: { label: "Cosmos", symbol: "✧", personality: "airy", interaction: "A light, graceful bloom with a little bit of magic." },
 };
 
 export const FLOWER_TYPES = Object.keys(FLOWER_META) as FlowerType[];
-

@@ -1143,3 +1143,30 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
 .qr-theme-swatch.is-selected { border-color: #60404b; box-shadow: 0 0 0 3px rgba(255,255,255,.78), 0 0 0 4px var(--theme-accent), 0 4px 10px rgba(50,19,33,.16); }
 .qr-theme-picker small { color: #a26068; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; }
 @media (prefers-reduced-motion: reduce) { .qr-theme-swatch { transition: none; } }
+
+
+/* Jewel-bloom polish: new premium families keep the same refined depth language. */
+.garden-screen .flower-gardenia,
+.garden-screen .flower-magnolia,
+.garden-screen .flower-anemone,
+.garden-screen .flower-cosmos { filter: url(#flowerShadow) drop-shadow(0 0 7px color-mix(in srgb, var(--palette-petal, #9b73c8) 30%, transparent)); }
+.flower-gardenia .petal,
+.flower-magnolia .petal,
+.flower-anemone .petal,
+.flower-cosmos .petal { transform-box: fill-box; transform-origin: center bottom; transition: filter .35s ease, opacity .35s ease; }
+.flower-gardenia:hover .petal,
+.flower-gardenia.is-active .petal,
+.flower-magnolia:hover .petal,
+.flower-magnolia.is-active .petal,
+.flower-anemone:hover .petal,
+.flower-anemone.is-active .petal,
+.flower-cosmos:hover .petal,
+.flower-cosmos.is-active .petal { filter: brightness(1.14) saturate(1.12); }
+.garden-screen .flower-gardenia.is-active,
+.garden-screen .flower-magnolia.is-active,
+.garden-screen .flower-anemone.is-active,
+.garden-screen .flower-cosmos.is-active { animation: premium-flower-breathe 2.7s ease-in-out infinite; }
+.stem-gardenia, .stem-magnolia { stroke-width: 5; stroke-linecap: round; opacity: .94; }
+.stem-anemone, .stem-cosmos { stroke-width: 3.8; stroke-linecap: round; opacity: .88; }
+.leaf-gardenia path:first-child, .leaf-magnolia path:first-child { filter: saturate(.96) brightness(1.06); }
+.leaf-anemone path:first-child, .leaf-cosmos path:first-child { filter: saturate(1.08) brightness(1.02); }
