@@ -366,3 +366,13 @@
 - [x] Restyle the visible QR immediately when a pastel theme swatch is selected.
 - [x] Keep the downloaded keepsake aligned with the premium card presentation.
 - [x] Validate type-check, production build, tests, and live QR-route behavior.
+
+## Final Scene, QR, and Share Regression Fix
+
+- [x] Restore the missing `stage === "final"` render block after the One more thing transition.
+- [x] Restore Share this garden, WhatsApp, Instagram, Copy link, QR code, Print Card, and Grow another actions.
+- [x] Preserve the custom styled QR renderer, pastel theme picker, and keepsake download flow.
+- [x] Verify direct final URLs render instead of a blank screen.
+- [x] Verify the real bouquet-to-final transition through One more thing.
+- [x] Verify QR opening, Mint Tea theme restyling, QR closing, and copy-link feedback.
+- [x] Re-run type-check, production build, and all tests: 7 tests passed.
