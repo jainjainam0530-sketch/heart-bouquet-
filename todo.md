@@ -357,3 +357,12 @@
 - [x] Rename the export action to Download Keepsake and align the PNG export with the card hierarchy.
 - [x] Preserve selectable pastel themes, responsive layout, Download/Close actions, and reduced-motion behavior.
 - [x] Validate the redesigned QR dialog with type-check, build, tests, and responsive preview.
+
+## Styled Premium QR Modules
+
+- [x] Replace the plain black QR image with rounded modules and custom rounded finder patterns inspired by the supplied references.
+- [x] Apply a restrained theme-aware gradient using the selected card palette.
+- [x] Preserve quiet-zone spacing, finder contrast, and error-correction support for scan reliability.
+- [x] Restyle the visible QR immediately when a pastel theme swatch is selected.
+- [x] Keep the downloaded keepsake aligned with the premium card presentation.
+- [x] Validate type-check, production build, tests, and live QR-route behavior.
