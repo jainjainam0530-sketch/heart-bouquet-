@@ -376,3 +376,14 @@
 - [x] Verify the real bouquet-to-final transition through One more thing.
 - [x] Verify QR opening, Mint Tea theme restyling, QR closing, and copy-link feedback.
 - [x] Re-run type-check, production build, and all tests: 7 tests passed.
+
+## Deep Debugging Audit
+
+- [x] Trace the One more thing state transition and identify missing final JSX as the blank-screen root cause.
+- [x] Restore the guarded final screen and all QR/share/print actions.
+- [x] Verify direct `view=final` routes render without a blank state.
+- [x] Verify the real bouquet-to-final transition in the browser.
+- [x] Verify QR opening, theme restyling, QR closing, copy-link feedback, and share controls.
+- [x] Verify browser console has no client-rendering errors on the final scene.
+- [x] Add `server/final-screen.test.ts` regression coverage for the final scene and action surface.
+- [x] Complete type-check, production build, and all tests: 4 files, 9 tests passed.
