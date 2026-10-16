@@ -1188,3 +1188,38 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
 @media (prefers-reduced-motion: reduce) {
   .premium-bloom-particles, .premium-particle { animation: none !important; opacity: 0 !important; }
 }
+
+
+/* Collector-card QR redesign: quiet luxury, generous paper space, and scan-first contrast. */
+.qr-keepsake-card { width: min(92vw, 470px); padding: 34px 34px 26px; border: 1px solid rgba(137,89,95,.32); border-radius: 5px; background: linear-gradient(145deg, rgba(255,253,248,.98), rgba(250,242,236,.98)); box-shadow: 0 28px 70px rgba(30,8,18,.25), 0 2px 0 rgba(255,255,255,.8) inset; }
+.qr-keepsake-card::before { content: ""; position: absolute; inset: 11px; border: 1px solid rgba(137,89,95,.2); border-radius: 2px; pointer-events: none; }
+.qr-collection-mark { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; margin: 0 0 22px; color: #9c6870; font: 700 10px/1 Arial, sans-serif; letter-spacing: .22em; }
+.qr-collection-mark i { display: block; width: 58px; height: 1px; background: linear-gradient(90deg, transparent, #c99a77); }
+.qr-keepsake-card .qr-close { z-index: 2; color: #90606a; }
+.qr-keepsake-card .qr-kicker { color: #a87572; letter-spacing: .22em; font-size: 8px; }
+.qr-keepsake-card .qr-kicker i { width: 14px; background: #bd8a75; }
+.qr-keepsake-card h2 { margin-top: 13px; color: #2f1723; font-size: clamp(29px, 6vw, 38px); letter-spacing: -.025em; }
+.qr-keepsake-card .qr-intro { max-width: 260px; margin-bottom: 7px; color: #866b69; font-size: 15px; }
+.qr-edition { margin: 0 0 17px; color: #ad7c75; font: 700 8px/1.4 Arial, sans-serif; letter-spacing: .2em; }
+.qr-keepsake-card .qr-theme-picker { margin-bottom: 17px; }
+.qr-keepsake-card .qr-frame { width: min(100%, 278px); min-height: 278px; margin-bottom: 15px; padding: 16px; border: 1px solid rgba(137,89,95,.32); border-radius: 4px; background: #fffefa; box-shadow: 0 13px 24px rgba(65,30,38,.1), 0 0 0 6px rgba(255,255,255,.66); }
+.qr-keepsake-card .qr-keepsake-frame::before, .qr-keepsake-card .qr-keepsake-frame::after { content: ""; position: absolute; width: 5px; height: 5px; border: 1px solid #b88372; border-radius: 50%; background: #fffefa; }
+.qr-keepsake-card .qr-keepsake-frame::before { top: -4px; left: 50%; transform: translateX(-50%); }
+.qr-keepsake-card .qr-keepsake-frame::after { bottom: -4px; left: 50%; transform: translateX(-50%); }
+.qr-keepsake-card .qr-frame .qr-image { width: 242px; border: 0; border-radius: 0; box-shadow: none; image-rendering: pixelated; }
+.qr-keepsake-card .qr-frame-corner { width: 13px; height: 13px; border-color: #a96f72; }
+.qr-keepsake-card .qr-frame-corner-tl { top: 7px; left: 7px; }.qr-keepsake-card .qr-frame-corner-tr { top: 7px; right: 7px; }.qr-keepsake-card .qr-frame-corner-bl { bottom: 7px; left: 7px; }.qr-keepsake-card .qr-frame-corner-br { right: 7px; bottom: 7px; }
+.qr-keepsake-card .qr-scan-note { margin-bottom: 8px; color: #9a636c; }.qr-keepsake-card .qr-scan-note span { color: #bd8a63; font-size: 10px; }.qr-keepsake-card .qr-scan-note p { font-size: 9px; letter-spacing: .12em; text-transform: uppercase; }
+.qr-keepsake-card .qr-caption { max-width: 270px; margin-bottom: 13px; color: #806668; font-size: 11px; line-height: 1.5; }
+.qr-card-footer { position: relative; display: flex; align-items: center; justify-content: center; gap: 10px; margin: 0 auto 18px; color: #a87572; font: 700 7px/1 Arial, sans-serif; letter-spacing: .18em; }
+.qr-card-footer i { display: block; width: 22px; height: 1px; background: #c99978; }
+.qr-keepsake-card .qr-card-actions { position: relative; margin-top: 0; padding-top: 15px; border-top: 1px solid rgba(137,89,95,.16); }
+.qr-keepsake-card .qr-action { min-height: 37px; padding-inline: 14px; border-radius: 2px; box-shadow: none; font-size: 9px; letter-spacing: .1em; }
+.qr-keepsake-card .qr-action:not(.qr-action-muted) { color: #fffaf4; background: #5e3847; border-color: #5e3847; }
+.qr-keepsake-card .qr-action:not(.qr-action-muted):hover { background: #402532; }
+.qr-keepsake-card .qr-action-muted { color: #805c61; border-color: rgba(128,92,97,.3); background: transparent; }
+@media (max-width: 420px) {
+  .qr-keepsake-card { padding: 28px 24px 22px; }
+  .qr-keepsake-card .qr-frame { width: min(100%, 252px); min-height: 252px; padding: 14px; }
+  .qr-keepsake-card .qr-frame .qr-image { width: 220px; }
+}

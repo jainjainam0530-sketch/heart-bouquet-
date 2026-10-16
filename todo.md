@@ -347,3 +347,13 @@
 - [x] Keep particles non-interactive and visually restrained so the bouquet remains readable.
 - [x] Hide particles under reduced-motion settings.
 - [x] Validate markup, type-check, build, tests, and responsive premium previews.
+
+## Premium Minimalist QR Keepsake
+
+- [x] Reframe the QR dialog as a collectible Bloom For You personal edition card.
+- [x] Add a restrained BFY mark, edition label, hairline rules, and quiet-luxury typography.
+- [x] Use a paper-like card surface, slim inset border, corner registration details, and a centered QR frame.
+- [x] Keep the QR high-contrast, pixelated, and scan-safe inside the premium frame.
+- [x] Rename the export action to Download Keepsake and align the PNG export with the card hierarchy.
+- [x] Preserve selectable pastel themes, responsive layout, Download/Close actions, and reduced-motion behavior.
+- [x] Validate the redesigned QR dialog with type-check, build, tests, and responsive preview.
