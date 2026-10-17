@@ -397,3 +397,12 @@
 - [x] Verify Mint Tea theme switching still restyles the QR.
 - [x] Verify the themed keepsake PNG downloads successfully as `suraj-qr-mint.png`.
 - [x] Add QR renderer regression coverage; 5 files and 11 tests now pass.
+
+## Standard Warm QR Simplification
+
+- [x] Replace the custom gradient/rounded QR modules with the standard `qrcode` PNG renderer.
+- [x] Use a single warm burgundy QR ink with the selected card paper color.
+- [x] Keep the premium minimalist frame, floral corners, theme picker, and keepsake export.
+- [x] Preserve error correction level M, quiet-zone margin, and mobile-friendly scan geometry.
+- [x] Verify the QR renders in the live card for Ashmi and remains readable at preview size.
+- [x] Update QR regression tests; type-check, build, and 11 tests pass.
