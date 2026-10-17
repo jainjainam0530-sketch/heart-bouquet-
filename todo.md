@@ -387,3 +387,13 @@
 - [x] Verify browser console has no client-rendering errors on the final scene.
 - [x] Add `server/final-screen.test.ts` regression coverage for the final scene and action surface.
 - [x] Complete type-check, production build, and all tests: 4 files, 9 tests passed.
+
+## Mobile QR Generation Fix
+
+- [x] Reproduce the reported QR failure on the final keepsake card.
+- [x] Identify unsupported `CanvasRenderingContext2D.roundRect` as the mobile compatibility issue.
+- [x] Replace every QR and keepsake rounded-rectangle call with a portable quadratic-curve path helper.
+- [x] Verify the QR appears again in the live final-scene preview.
+- [x] Verify Mint Tea theme switching still restyles the QR.
+- [x] Verify the themed keepsake PNG downloads successfully as `suraj-qr-mint.png`.
+- [x] Add QR renderer regression coverage; 5 files and 11 tests now pass.

@@ -51,6 +51,21 @@ const QR_THEMES: QrTheme[] = [
   { id: "peach", label: "Peach Cream", bg: "#f8e4cf", paper: "#fffaf2", accent: "#c58b58", ink: "#4a2b20" },
 ];
 
+function traceRoundedRect(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number) {
+  const safeRadius = Math.max(0, Math.min(radius, width / 2, height / 2));
+  context.beginPath();
+  context.moveTo(x + safeRadius, y);
+  context.lineTo(x + width - safeRadius, y);
+  context.quadraticCurveTo(x + width, y, x + width, y + safeRadius);
+  context.lineTo(x + width, y + height - safeRadius);
+  context.quadraticCurveTo(x + width, y + height, x + width - safeRadius, y + height);
+  context.lineTo(x + safeRadius, y + height);
+  context.quadraticCurveTo(x, y + height, x, y + height - safeRadius);
+  context.lineTo(x, y + safeRadius);
+  context.quadraticCurveTo(x, y, x + safeRadius, y);
+  context.closePath();
+}
+
 function renderStyledQrDataUrl(value: string, theme: QrTheme): string {
   const qr = QRCode.create(value, { errorCorrectionLevel: "M" });
   const moduleCount = qr.modules.size;
@@ -69,8 +84,7 @@ function renderStyledQrDataUrl(value: string, theme: QrTheme): string {
   context.fillStyle = gradient;
   const isFinder = (row: number, column: number) => (row < 7 && column < 7) || (row < 7 && column >= moduleCount - 7) || (row >= moduleCount - 7 && column < 7);
   const roundedModule = (x: number, y: number, size: number, radius: number) => {
-    context.beginPath();
-    context.roundRect(x, y, size, size, radius);
+    traceRoundedRect(context, x, y, size, size, radius);
     context.fill();
   };
   for (let row = 0; row < moduleCount; row += 1) {
@@ -83,18 +97,15 @@ function renderStyledQrDataUrl(value: string, theme: QrTheme): string {
   }
   const drawFinder = (originX: number, originY: number) => {
     context.fillStyle = theme.ink;
-    context.beginPath();
-    context.roundRect(originX, originY, scale * 7, scale * 7, scale * .85);
+    traceRoundedRect(context, originX, originY, scale * 7, scale * 7, scale * .85);
     context.fill();
     context.fillStyle = theme.paper;
     context.fillRect(originX + scale, originY + scale, scale * 5, scale * 5);
     context.fillStyle = theme.accent;
-    context.beginPath();
-    context.roundRect(originX + scale * 2, originY + scale * 2, scale * 3, scale * 3, scale * .45);
+    traceRoundedRect(context, originX + scale * 2, originY + scale * 2, scale * 3, scale * 3, scale * .45);
     context.fill();
     context.fillStyle = theme.paper;
-    context.beginPath();
-    context.roundRect(originX + scale * 2.5, originY + scale * 2.5, scale * 2, scale * 2, scale * .3);
+    traceRoundedRect(context, originX + scale * 2.5, originY + scale * 2.5, scale * 2, scale * 2, scale * .3);
     context.fill();
   };
   drawFinder(quietZone * scale, quietZone * scale);
@@ -509,8 +520,7 @@ export default function Home() {
     const context = canvas.getContext("2d");
     if (!context) return;
     const roundedRect = (x: number, y: number, width: number, height: number, radius: number) => {
-      context.beginPath();
-      context.roundRect(x, y, width, height, radius);
+      traceRoundedRect(context, x, y, width, height, radius);
     };
     context.fillStyle = theme.bg;
     context.fillRect(0, 0, canvas.width, canvas.height);
