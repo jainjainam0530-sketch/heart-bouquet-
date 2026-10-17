@@ -17,4 +17,10 @@ describe("QR renderer compatibility", () => {
     expect(homeSource).toContain("canvas.toDataURL(\"image/png\")");
     expect(homeSource).toContain("qrImage.src = qrDataUrl");
   });
+
+  it("builds recipient-safe links on the public site rather than the Sandbox preview", () => {
+    expect(homeSource).toContain('const PUBLIC_GARDEN_ORIGIN = "https://heartgift-3qf4yyep.manus.space"');
+    expect(homeSource).toContain("new URL(PUBLIC_GARDEN_ORIGIN)");
+    expect(homeSource).not.toContain("new URL(window.location.origin)");
+  });
 });

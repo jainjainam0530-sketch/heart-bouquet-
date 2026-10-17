@@ -63,6 +63,8 @@ async function renderStyledQrDataUrl(value: string, theme: QrTheme): Promise<str
   });
 }
 
+const PUBLIC_GARDEN_ORIGIN = "https://heartgift-3qf4yyep.manus.space";
+
 function decodeNote(encoded: string | null): string {
   if (!encoded) return "";
   try {
@@ -364,7 +366,9 @@ export default function Home() {
 
   function getGardenUrl() {
     if (!model) return "";
-    const url = new URL(window.location.origin);
+    // QR codes and shared links must work on a recipient's phone, so never
+    // encode the temporary Sandbox preview origin.
+    const url = new URL(PUBLIC_GARDEN_ORIGIN);
     url.searchParams.set("name", model.name);
     url.searchParams.set("v", String(model.variationId));
     url.searchParams.set("mood", mood);
