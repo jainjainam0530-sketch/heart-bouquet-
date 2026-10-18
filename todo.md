@@ -415,3 +415,13 @@
 - [x] Ensure future domain changes require only an environment-setting update, not a source-code edit.
 - [x] Add regression coverage preventing `window.location.origin` and private Sandbox URLs from returning.
 - [x] Validate type-check, production build, and 12 passing tests.
+
+## Expanded Melody Catalog and GitHub Handoff
+
+- [x] Generate original Twilight Piano and Garden Rain instrumental tracks.
+- [x] Upload both tracks to WebDev storage and wire their hosted paths into the sound panel.
+- [x] Expand the selectable moods from three to five: Dreamy Lo-Fi, Whimsical Waltz, Classic Elegance, Twilight Piano, and Garden Rain.
+- [x] Add mood-specific icons and descriptions with a scrollable mobile-safe panel.
+- [x] Preserve mood persistence through shared and QR links.
+- [x] Add regression coverage; 14 tests pass.
+- [x] Push the complete project source to the `jainjainam0530-sketch/heart-bouquet-` GitHub repository on `main`.
