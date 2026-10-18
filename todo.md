@@ -406,3 +406,12 @@
 - [x] Preserve error correction level M, quiet-zone margin, and mobile-friendly scan geometry.
 - [x] Verify the QR renders in the live card for Ashmi and remains readable at preview size.
 - [x] Update QR regression tests; type-check, build, and 11 tests pass.
+
+## Permanent Public URL Configuration
+
+- [x] Add `VITE_PUBLIC_SITE_URL` as the configurable source for QR and sharing destinations.
+- [x] Normalize trailing slashes so generated URLs remain clean.
+- [x] Keep `https://heartgift-3qf4yyep.manus.space` as a safe fallback when the variable is not set.
+- [x] Ensure future domain changes require only an environment-setting update, not a source-code edit.
+- [x] Add regression coverage preventing `window.location.origin` and private Sandbox URLs from returning.
+- [x] Validate type-check, production build, and 12 passing tests.

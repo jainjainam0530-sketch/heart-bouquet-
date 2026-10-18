@@ -19,7 +19,9 @@ describe("QR renderer compatibility", () => {
   });
 
   it("builds recipient-safe links on the public site rather than the Sandbox preview", () => {
-    expect(homeSource).toContain('const PUBLIC_GARDEN_ORIGIN = "https://heartgift-3qf4yyep.manus.space"');
+    expect(homeSource).toContain('const DEFAULT_PUBLIC_GARDEN_ORIGIN = "https://heartgift-3qf4yyep.manus.space"');
+    expect(homeSource).toContain("import.meta.env.VITE_PUBLIC_SITE_URL");
+    expect(homeSource).toContain(".replace(/\\/+$/, \"\")");
     expect(homeSource).toContain("new URL(PUBLIC_GARDEN_ORIGIN)");
     expect(homeSource).not.toContain("new URL(window.location.origin)");
   });

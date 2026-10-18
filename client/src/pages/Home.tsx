@@ -63,7 +63,8 @@ async function renderStyledQrDataUrl(value: string, theme: QrTheme): Promise<str
   });
 }
 
-const PUBLIC_GARDEN_ORIGIN = "https://heartgift-3qf4yyep.manus.space";
+const DEFAULT_PUBLIC_GARDEN_ORIGIN = "https://heartgift-3qf4yyep.manus.space";
+const PUBLIC_GARDEN_ORIGIN = (import.meta.env.VITE_PUBLIC_SITE_URL || DEFAULT_PUBLIC_GARDEN_ORIGIN).replace(/\/+$/, "");
 
 function decodeNote(encoded: string | null): string {
   if (!encoded) return "";
