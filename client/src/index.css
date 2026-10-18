@@ -659,6 +659,8 @@ button:focus-visible, [role="button"]:focus-visible { outline: 1px solid var(--g
   display: flex;
   flex-direction: column;
   gap: 8px;
+  max-height: min(420px, 52vh);
+  overflow-y: auto;
 }
 
 .music-mood-choice {

@@ -33,7 +33,17 @@ const MOODS: Mood[] = [
   { id: "dreamy", label: "Dreamy Lo-Fi", src: "/manus-storage/ambient-garden-melody_5c0d2f70.mp3" },
   { id: "whimsical", label: "Whimsical Waltz", src: "/manus-storage/whimsical-garden-melody_761bd115.mp3" },
   { id: "classic", label: "Classic Elegance", src: "/manus-storage/classic-garden-melody_4b53cefa.mp3" },
+  { id: "twilight", label: "Twilight Piano", src: "/manus-storage/twilight-piano-garden_811cecb2.mp3" },
+  { id: "rain", label: "Garden Rain", src: "/manus-storage/garden-rain-melody_674a5bec.mp3" },
 ];
+
+const MOOD_DETAILS: Record<string, { icon: string; description: string }> = {
+  dreamy: { icon: "✦", description: "soft and atmospheric" },
+  whimsical: { icon: "❀", description: "light and playful" },
+  classic: { icon: "◈", description: "piano and strings" },
+  twilight: { icon: "☾", description: "tender felt piano" },
+  rain: { icon: "⌁", description: "fresh and peaceful" },
+};
 
 type QrTheme = {
   id: string;
@@ -648,8 +658,8 @@ export default function Home() {
                 onClick={() => { handleMoodChange(m.id); setIsMusicPanelOpen(false); }}
                 aria-pressed={mood === m.id}
               >
-                <span className="music-mood-icon" aria-hidden="true">{m.id === "dreamy" ? "✦" : m.id === "whimsical" ? "❀" : "◈"}</span>
-                <span><strong>{m.label}</strong><small>{m.id === "dreamy" ? "soft and atmospheric" : m.id === "whimsical" ? "light and playful" : "piano and strings"}</small></span>
+                <span className="music-mood-icon" aria-hidden="true">{MOOD_DETAILS[m.id].icon}</span>
+                <span><strong>{m.label}</strong><small>{MOOD_DETAILS[m.id].description}</small></span>
                 {mood === m.id && <span className="music-mood-check" aria-hidden="true">✓</span>}
               </button>
             ))}
